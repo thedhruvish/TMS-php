@@ -1,4 +1,8 @@
   <!--  BEGIN FOOTER  -->
+
+  </div>
+
+  </div>
   <div class="footer-wrapper">
     <div class="footer-section f-section-1">
       <p class="">Copyright © <span class="dynamic-year">2025</span> All rights reserved.</p>
