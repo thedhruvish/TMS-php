@@ -296,8 +296,9 @@
           </div>
           <div class="shadow-bottom"></div>
           <ul class="list-unstyled menu-categories" id="accordionExample">
-            <li class="menu active">
-              <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+            <!-- dashboard navbar -->
+            <li class="menu">
+              <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <div class="">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -311,21 +312,24 @@
                   </svg>
                 </div>
               </a>
-              <ul class="collapse submenu list-unstyled show" id="dashboard" data-bs-parent="#accordionExample">
+              <ul class="collapse submenu list-unstyled" id="dashboard" data-bs-parent="#accordionExample">
                 <li class="active">
-                  <a href="./index.php"> Analytics </a>
+                  <a href="dashboard.php"> Analytics </a>
                 </li>
                 <li>
-                  <a href="./index2.html"> Sales </a>
+                  <a href="seller.php"> Sales </a>
                 </li>
               </ul>
             </li>
-            <li class="menu active">
-              <a href="products.php" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+
+            <!-- products navbar -->
+            <li class="menu">
+              <a href="#products" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <div class="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
                   </svg>
                   <span>Products</span>
                 </div>
@@ -335,12 +339,125 @@
                   </svg>
                 </div>
               </a>
-              <ul class="collapse submenu list-unstyled show" id="dashboard" data-bs-parent="#accordionExample">
+              <ul class="collapse submenu list-unstyled " id="products" data-bs-parent="#accordionExample">
                 <li class="active">
-                  <a href="./products"> Products </a>
+                  <a href="./products.php"> Products </a>
                 </li>
                 <li>
-                  <a href="./index2.html"> Sales </a>
+                  <a href="./products-add.php"> Add Products </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- cetegory navbar -->
+            <li class="menu">
+              <a href="#cetegory" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  <span>Cetegory</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="cetegory" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./cetegory.php"> Cetegory </a>
+                </li>
+                <li>
+                  <a href="./cetegory-add.php"> add Cetegory </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- customer navbar -->
+            <li class="menu">
+              <a href="#customer" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                  <span>Customer</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="customer" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./customer.php"> Customer </a>
+                </li>
+                <li>
+                  <a href="./customer-add.php"> add Customer </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- invoice navbar -->
+            <li class="menu">
+              <a href="#invoice" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 2h16a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-4 2V4a2 2 0 0 1 2-2z" />
+                    <line x1="8" y1="9" x2="16" y2="9" />
+                    <line x1="8" y1="13" x2="16" y2="13" />
+                    <line x1="8" y1="17" x2="12" y2="17" />
+                  </svg>
+
+                  <span>Invoice</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="invoice" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./invoice.php"> Invoice </a>
+                </li>
+                <li>
+                  <a href="./invoice-add.php"> add Invoice </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Inquiry  navbar -->
+            <li class="menu">
+              <a href="#inquiry" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+
+
+                  <span>Inquiry</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="inquiry" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./inquiry.php"> Inquiry </a>
+                </li>
+                <li>
+                  <a href="./inquiry-add.php"> add Inquiry </a>
                 </li>
               </ul>
             </li>
