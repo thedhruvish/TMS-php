@@ -442,8 +442,6 @@
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
                   </svg>
-
-
                   <span>Inquiry</span>
                 </div>
                 <div>
@@ -462,6 +460,161 @@
               </ul>
             </li>
 
+            <!-- User -->
+            <li class="menu">
+              <a href="#user" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>user</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="user" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./user.php"> user </a>
+                </li>
+                <li>
+                  <a href="./user-add.php"> add user </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- payment -->
+            <li class="menu">
+              <a href="#payment" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>Payment</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="payment" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./payment.php"> payment </a>
+                </li>
+                <li>
+                  <a href="./payment-add.php"> add payment </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- attendant -->
+                <li class="menu">
+              <a href="#attendant" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>Attendant</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="attendant" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./attendant.php"> attendant </a>
+                </li>
+                <li>
+                  <a href="./attendant-add.php"> add attendant </a>
+                </li>
+              </ul>
+            </li>
+            <!-- stoack -->
+                         <li class="menu">
+              <a href="#stoack" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>stoack</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="stoack" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./stoack.php"> stoack </a>
+                </li>
+                <li>
+                  <a href="./stoack-add.php"> add stoack </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- weblink -->
+            <li class="menu">
+              <a href="#weblink" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>weblink</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="weblink" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./weblink.php"> weblink </a>
+                </li>
+                <li>
+                  <a href="./weblink-add.php"> add weblink </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- log -->
+            <li class="menu">
+              <a href="#log" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <div class="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  </svg>
+                  <span>Log</span>
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
+              <ul class="collapse submenu list-unstyled " id="log" data-bs-parent="#accordionExample">
+                <li class="active">
+                  <a href="./log.php"> log </a>
+                </li>
+                <li>
+                  <a href="./log-add.php"> add log </a>
+                </li>
+              </ul>
+            </li>
+                                    
             <li class="menu menu-heading">
               <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
