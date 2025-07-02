@@ -1,4 +1,4 @@
-<?php $pageTitle = "Product";
+<?php $pageTitle = "Inquiry";
 	require_once '../include/header-admin.php'; 
 	require_once '../include/sidebar-admin.php'; 
 ?>
