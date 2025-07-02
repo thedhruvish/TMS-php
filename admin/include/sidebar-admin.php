@@ -5,7 +5,7 @@
         <ul class="navbar-item theme-brand flex-row  text-center">
           <li class="nav-item theme-logo">
             <a href="index.php">
-              <img src="../src/assets/img/logo2.svg" class="navbar-logo" alt="logo">
+              <img src="../../src/assets/img/logo2.svg" class="navbar-logo" alt="logo">
             </a>
           </li>
           <li class="nav-item theme-text">
@@ -66,7 +66,7 @@
               <div class="notification-scroll">
                 <div class="dropdown-item">
                   <div class="media server-log">
-                    <img src="../src/assets/img/profile-16.jpeg" class="img-fluid me-2" alt="avatar">
+                    <img src="../../src/assets/img/profile-16.jpeg" class="img-fluid me-2" alt="avatar">
                     <div class="media-body">
                       <div class="data-info">
                         <h6 class="">Kara Young</h6>
@@ -85,7 +85,7 @@
 
                 <div class="dropdown-item">
                   <div class="media ">
-                    <img src="../src/assets/img/profile-15.jpeg" class="img-fluid me-2" alt="avatar">
+                    <img src="../../src/assets/img/profile-15.jpeg" class="img-fluid me-2" alt="avatar">
                     <div class="media-body">
                       <div class="data-info">
                         <h6 class="">Daisy Anderson</h6>
@@ -104,7 +104,7 @@
 
                 <div class="dropdown-item">
                   <div class="media file-upload">
-                    <img src="../src/assets/img/profile-21.jpeg" class="img-fluid me-2" alt="avatar">
+                    <img src="../../src/assets/img/profile-21.jpeg" class="img-fluid me-2" alt="avatar">
                     <div class="media-body">
                       <div class="data-info">
                         <h6 class="">Oscar Garner</h6>
@@ -204,7 +204,7 @@
             <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="avatar-container">
                 <div class="avatar avatar-sm avatar-indicators avatar-online">
-                  <img alt="avatar" src="../src/assets/img/profile-30.png" class="rounded-circle">
+                  <img alt="avatar" src="../../src/assets/img/profile-30.png" class="rounded-circle">
                 </div>
               </div>
             </a>
@@ -278,7 +278,7 @@
             <div class="nav-logo">
               <div class="nav-item theme-logo">
                 <a href="./index.php">
-                  <img src="../src/assets/img/logo.svg" class="navbar-logo" alt="logo">
+                  <img src="../../src/assets/img/logo.svg" class="navbar-logo" alt="logo">
                 </a>
               </div>
               <div class="nav-item theme-text">

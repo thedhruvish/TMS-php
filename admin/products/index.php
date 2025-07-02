@@ -1,8 +1,8 @@
 <?php $pageTitle = "Products";
-include('../header-admin.php');
-include('../sidebar-admin.php');
+    include('../include/header-admin.php');
+    include('../include/sidebar-admin.php');
 ?>
 
 
 
-<?php include('../footer-admin.php'); ?>
+<?php include('../include/footer-admin.php'); ?>
