@@ -1,5 +1,5 @@
-<?php 
+<?php
 
-header('location: auth/login.php')
+header('location: login.php');
 
 ?>

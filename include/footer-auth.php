@@ -5,7 +5,7 @@
 </div>
 </div>
 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-<script src="../src/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="./src/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 
 

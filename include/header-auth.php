@@ -1,3 +1,8 @@
+<?php
+include_once "config.php";
+$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,19 +11,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
   <title><?php echo isset($pageTitle) ? $pageTitle : 'Authentication'; ?> </title>
-  <link rel="icon" type="image/x-icon" href="../src/assets/img/favicon.ico" />
-  <link href="../layouts/vertical-light-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
-  <link href="../layouts/vertical-light-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
-  <script src="../layouts/vertical-light-menu/loader.js"></script>
+  <link rel="icon" type="image/x-icon" href="./src/assets/img/favicon.ico" />
+  <link href="./layouts/vertical-light-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
+  <link href="./layouts/vertical-light-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
+  <script src="./layouts/vertical-light-menu/loader.js"></script>
   <!-- BEGIN GLOBAL MANDATORY STYLES -->
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-  <link href="../src/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="./src/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-  <link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
-  <link href="../src/assets/css/light/authentication/auth-boxed.css" rel="stylesheet" type="text/css" />
+  <link href="./layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+  <link href="./src/assets/css/light/authentication/auth-boxed.css" rel="stylesheet" type="text/css" />
 
-  <link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
-  <link href="../src/assets/css/dark/authentication/auth-boxed.css" rel="stylesheet" type="text/css" />
+  <link href="./layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
+  <link href="./src/assets/css/dark/authentication/auth-boxed.css" rel="stylesheet" type="text/css" />
   <!-- END GLOBAL MANDATORY STYLES -->
 
 </head>
