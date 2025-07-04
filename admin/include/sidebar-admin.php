@@ -267,6 +267,7 @@
     <div class="main-container" id="container">
 
       <div class="overlay"></div>
+      <div class="cs-overlay"></div>
       <div class="search-overlay"></div>
 
       <!--  BEGIN SIDEBAR  -->
@@ -593,7 +594,7 @@
 
             <!-- log -->
             <li class="menu">
-              <a href="#log" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+              <a href=" log.php" aria-expanded="false" class="dropdown-toggle">
                 <div class="">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
                     <circle cx="12" cy="12" r="10" />
@@ -601,20 +602,7 @@
                   </svg>
                   <span>Log</span>
                 </div>
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
               </a>
-              <ul class="collapse submenu list-unstyled " id="log" data-bs-parent="#accordionExample">
-                <li class="active">
-                  <a href="./log.php"> log </a>
-                </li>
-                <li>
-                  <a href="./log-add.php"> add log </a>
-                </li>
-              </ul>
             </li>
 
             <li class="menu menu-heading">
