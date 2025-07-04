@@ -250,7 +250,7 @@
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                     <polyline points="16 17 21 12 16 7"></polyline>
                     <line x1="21" y1="12" x2="9" y2="12"></line>
-                  </svg> 
+                  </svg>
                   <span>Log Out</span>
                 </a>
               </div>
@@ -567,31 +567,18 @@
 
             <!-- weblink -->
             <li class="menu">
-              <a href="#weblink" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+              <a href="weblink.php" aria-expanded="false" class="dropdown-toggle">
                 <div class="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe">
                     <circle cx="12" cy="12" r="10" />
                     <line x1="2" y1="12" x2="22" y2="12" />
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                   </svg>
                   <span>Weblink</span>
                 </div>
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
               </a>
-              <ul class="collapse submenu list-unstyled " id="weblink" data-bs-parent="#accordionExample">
-                <li class="active">
-                  <a href="./weblink.php"> weblink </a>
-                </li>
-                <li>
-                  <a href="./weblink-add.php"> add weblink </a>
-                </li>
-              </ul>
             </li>
-
+            
             <!-- log -->
             <li class="menu">
               <a href=" log.php" aria-expanded="false" class="dropdown-toggle">

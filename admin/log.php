@@ -5,7 +5,9 @@ require_once './include/sidebar-admin.php';
 
 
 <div class="row">
-
+    <div class="seperator-header layout-top-spacing">
+        <h4 class="">LOG</h4>
+    </div>
     <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-content widget-content-area">
@@ -43,7 +45,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference1">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -74,7 +78,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference2">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -83,7 +89,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -105,7 +111,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference3">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -114,7 +122,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -136,7 +144,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference4">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -145,7 +155,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -167,7 +177,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference5" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference5">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -176,7 +188,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -198,7 +210,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference6">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -207,7 +221,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -229,7 +243,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference7" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference7">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -238,7 +254,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -260,7 +276,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference8" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference8">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -269,7 +287,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -291,7 +309,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference9" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference9">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -300,7 +320,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -322,7 +342,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference10" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference10">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -331,7 +353,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -353,7 +375,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference11" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference11">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -362,7 +386,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -384,7 +408,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference12" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference12">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -393,7 +419,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -415,7 +441,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference13" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference13">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -424,7 +452,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -446,7 +474,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference14" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference14">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -455,7 +485,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -477,7 +507,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference15" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference15">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -486,7 +518,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -508,7 +540,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference16" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference16">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -517,7 +551,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -539,7 +573,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference17" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference17">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -548,7 +584,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -570,7 +606,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference18" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference18">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -579,7 +617,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -601,7 +639,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference19" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference19">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -610,7 +650,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -632,7 +672,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference20">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -641,7 +683,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -663,7 +705,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference21" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference21">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -672,7 +716,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -694,7 +738,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference22" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference22">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -703,7 +749,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -725,7 +771,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference23" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference23">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -734,7 +782,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -756,7 +804,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference24" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference24">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -765,7 +815,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -787,7 +837,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference25" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference25">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -796,7 +848,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -818,7 +870,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference26" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference26">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -827,7 +881,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -849,7 +903,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference27" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference27">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -858,7 +914,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -880,7 +936,9 @@ require_once './include/sidebar-admin.php';
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-dark btn-sm">Open</button>
                                     <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference28" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference28">
                                         <a class="dropdown-item" href="#">Action</a>
@@ -889,7 +947,7 @@ require_once './include/sidebar-admin.php';
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
