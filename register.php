@@ -1,16 +1,20 @@
 <?php $pageTitle = "Register";
 include_once "./include/header-auth.php";
 
+if (isset($_SESSION['user_id'])) {
+
+  $url = $_SESSION['role'] == "admin" ? "admin" : "staff";
+
+  header("Location:" . $url);
+}
 if (isset($_POST['submit'])) {
   $name = $_POST['name'];
   $mobile_no = $_POST['mobile_no'];
   $email = $_POST['email'];
   $password = $_POST['password'];
 
-  // Insert query
-  $sql = "INSERT INTO users (name, mobile_no, email, password) VALUES ('$name', '$mobile_no', '$email', '$password')";
-
-  if (mysqli_query($conn, $sql)) {
+  $insert_user_result = $db->create("users", ["name", "mobile_no", "email", "password"], [$name, $mobile_no, $email, $password]);
+  if ($insert_user_result) {
     echo "<div class='alert alert-success'>User registered successfully!</div>";
 
     header("Location: login.php");

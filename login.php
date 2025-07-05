@@ -1,6 +1,10 @@
 <?php $pageTitle = "Login";
 include_once "./include/header-auth.php";
 
+if (isset($_GET['error'])) {
+  echo "<div class='alert alert-danger'>" . $_GET['error'] . "</div>";
+}
+
 if (isset($_SESSION['user_id'])) {
 
   $url = $_SESSION['role'] == "admin" ? "admin" : "staff";
@@ -11,10 +15,12 @@ if (isset($_SESSION['user_id'])) {
 if (isset($_POST['login'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
-
-  // Fetch user by email
-  $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-  $result = mysqli_query($conn, $sql);
+  $result = $db->read("users", [
+    "where" => [
+      "email" => ["=" => $email],
+      'password' => ['=' => $password]
+    ],
+  ]);
 
   if (mysqli_num_rows($result) === 1) {
     $user = mysqli_fetch_assoc($result);

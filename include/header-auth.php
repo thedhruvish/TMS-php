@@ -1,6 +1,8 @@
 <?php
 include_once "config.php";
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+include_once "./Database.php";
+$db = new Database($conn);
 session_start();
 ?>
 <!DOCTYPE html>
