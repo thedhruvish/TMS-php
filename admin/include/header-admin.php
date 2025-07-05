@@ -26,16 +26,24 @@
   <link href="../src/assets/css/dark/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
   <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
-   <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../src/plugins/src/table/datatable/datatables.css">
+  <!-- BEGIN PAGE LEVEL STYLES -->
+  <link rel="stylesheet" type="text/css" href="../src/plugins/src/table/datatable/datatables.css">
 
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/dt-global_style.css">
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/custom_dt_miscellaneous.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/dt-global_style.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/custom_dt_miscellaneous.css">
 
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
 
-    <!-- END PAGE LEVEL STYLES -->
+  <!-- END PAGE LEVEL STYLES -->
+
+
+  <!--  BEGIN invoce STYLE FILE  -->
+  <link href="../src/assets/css/light/apps/invoice-list.css" rel="stylesheet" type="text/css" />
+
+  <link href="../src/assets/css/dark/apps/invoice-list.css" rel="stylesheet" type="text/css" />
+  <!--  END CUSTOM STYLE FILE  -->
+
 
 </head>
 
