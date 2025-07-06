@@ -1,6 +1,8 @@
 <?php
 $pageTitle = "OTP Verfity";
 include_once "./include/header-auth.php";
+include_once "send_mail.php";
+
 $is_otp = true;
 $email = $_SESSION['reset_email'] ?? '';
 $user_id = $_SESSION['user_id_reset'] ?? '';
@@ -12,6 +14,8 @@ function send_otp()
   $otp = rand(1000, 9999);
   $expires = date("Y-m-d H:i:s", strtotime("+10 minutes"));
   $db->create('reset_password', ["user_id", "email", 'otp', "otp_expires", "is_verified"], [$user_id, $email, $otp, $expires, 0]);
+
+  send_otp_mail($email, $otp,"Password Reset ");
 }
 
 //  password-reset form submit than genrate new opt ,save db and send mail to
