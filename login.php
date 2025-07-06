@@ -65,6 +65,11 @@ if (isset($_POST['login'])) {
 
     <div class="col-12">
       <div class="mb-4">
+        <a href="password-reset.php" class="text-primary "> Forget your password ?</a>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-4">
         <button name="login" type="submit" class="btn btn-secondary w-100">SIGN IN</button>
       </div>
     </div>
