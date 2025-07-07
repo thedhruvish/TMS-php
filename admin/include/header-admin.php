@@ -54,6 +54,25 @@ $db = new Database($conn);
   <link href="../src/assets/css/dark/apps/invoice-list.css" rel="stylesheet" type="text/css" />
   <!--  END CUSTOM STYLE FILE  -->
 
+      <!-- BEGIN PAGE user STYLES -->
+    <link href="../src/assets/css/light/components/modal.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/light/apps/contacts.css" rel="stylesheet" type="text/css" />
+
+    <link href="../src/assets/css/dark/components/modal.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/dark/apps/contacts.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->  
+<!-- invoice -->
+      <link href="../src/plugins/src/flatpickr/flatpickr.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../src/plugins/src/filepond/filepond.min.css">
+    <link rel="stylesheet" href="../src/plugins/src/filepond/FilePondPluginImagePreview.min.css">
+
+    <link href="../src/plugins/css/light/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="../src/plugins/css/light/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/light/apps/invoice-add.css" rel="stylesheet" type="text/css" />
+
+    <link href="../src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="../src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
 
 </head>
 
