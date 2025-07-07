@@ -1,12 +1,11 @@
 <?php
-include_once "../config/db.php";
-include_once "../Database.php";
+require_once "../Database.php";
+
 if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
   session_destroy();
   $new_path = preg_replace("#/admin/[^/]+\.php$#", "/login.php", $_SERVER['REQUEST_URI']);
   header("location: $new_path?error=login Required");
 }
-$db = new Database($conn);
 ?>
 
 <!DOCTYPE html>

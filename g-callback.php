@@ -1,13 +1,10 @@
 <?php
 
-include_once "./config.php";
-include_once "./Database.php";
+require_once "./Database.php";
 session_start();
 
 if ($_GET['code']) {
   $code = $_GET['code'];
-  $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-  $db = new Database($conn);
   $postFields = [
     "code" => $code,
     "client_id" => GOOGLE_CLIENT_ID,
@@ -46,7 +43,7 @@ if ($_GET['code']) {
     $data = json_decode($payload, true);
 
 
-    $query_search_res = $db->read("users", [
+    $query_search_res = $DB->read("users", [
       "where" => [
         "email" => [
           "=" => $data['email']
@@ -60,14 +57,13 @@ if ($_GET['code']) {
       $_SESSION['user_id'] = $exsting['id'];
       $_SESSION['email'] = $exsting['email'];
       $_SESSION['role'] = $exsting['role'];
-      echo $exsting['role'];
       if ($exsting['role'] === 'admin') {
         header("Location: ./admin");
       } else {
         header("Location: ./staff");
       }
     } else {
-      $insert_res = $db->create("users", ["email", "name", "profile_picture", "auth_provider"], [$data['email'], $data['name'], $data['picture'], "google"]);
+      $insert_res = $DB->create("users", ["email", "name", "profile_picture", "auth_provider"], [$data['email'], $data['name'], $data['picture'], "google"]);
       header("Location: staff");
     }
   }

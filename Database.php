@@ -1,23 +1,30 @@
 <?php
 
+require_once "config.php";
+
 class Database
 {
 
   private $conn;
 
   // Connect to DB
-  public function __construct($conn)
+  public function __construct()
   {
-    $this->conn = $conn;
+    $this->conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if (!$this->conn) {
-      die("Connection failed: " . mysqli_connect_error());
+        die("Connection failed: " . mysqli_connect_error());
     }
+  
   }
 
   // Escape input
   private function escape($value)
   {
     return mysqli_real_escape_string($this->conn, $value);
+  }
+
+  public function check_connection()  {    
+    print_r($this->conn);
   }
 
   // CREATE record
@@ -112,5 +119,9 @@ class Database
     mysqli_close($this->conn);
   }
 }
+session_start();
+
+$DB  =  new Database();
+
 
 ?>

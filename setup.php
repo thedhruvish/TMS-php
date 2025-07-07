@@ -7,14 +7,14 @@ if (!$conn) {
     die("❌ Connection failed: " . mysqli_connect_error());
 }
 
-$db_exists = false;
+$DB_exists = false;
 $sql_file = './db_dump/tms-php-1.sql'; // ✅ Make sure this path and file exists
 
 // Check if the database exists
-$db_check_query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NAME . "'";
-$db_result = mysqli_query($conn, $db_check_query);
-if (mysqli_num_rows($db_result) > 0) {
-    $db_exists = true;
+$DB_check_query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NAME . "'";
+$DB_result = mysqli_query($conn, $DB_check_query);
+if (mysqli_num_rows($DB_result) > 0) {
+    $DB_exists = true;
 }
 
 // Handle confirmation POST
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
 <body>
     <h2>Database Setup</h2>
 
-    <?php if ($db_exists): ?>
+    <?php if ($DB_exists): ?>
         <p>⚠️ The database '<strong><?php echo DB_NAME; ?></strong>' already exists.</p>
         <form method="POST">
             <p>Do you want to <strong>drop and recreate</strong> it?</p>

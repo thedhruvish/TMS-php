@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
 
-  $insert_user_result = $db->create("users", ["name", "mobile_no", "email", "password"], [$name, $mobile_no, $email, $password]);
+  $insert_user_result = $DB->create("users", ["name", "mobile_no", "email", "password"], [$name, $mobile_no, $email, $password]);
   if ($insert_user_result) {
     echo "<div class='alert alert-success'>User registered successfully!</div>";
 

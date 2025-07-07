@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 if (isset($_POST['login'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
-  $result = $db->read("users", [
+  $result = $DB->read("users", [
     "where" => [
       "email" => ["=" => $email],
       'password' => ['=' => $password]
@@ -58,7 +58,7 @@ if (isset($_POST['login'])) {
     <div class="col-12">
       <div class="mb-4">
         <label class="form-label">Password</label>
-        <input name="password" type="text" class="form-control">
+        <input name="password" type="password" class="form-control">
       </div>
     </div>
 

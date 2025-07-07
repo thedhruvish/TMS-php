@@ -10,10 +10,10 @@ $user_id = $_SESSION['user_id_reset'] ?? '';
 
 function send_otp()
 {
-  global $user_id, $email, $db;
+  global $user_id, $email, $DB;
   $otp = rand(1000, 9999);
   $expires = date("Y-m-d H:i:s", strtotime("+10 minutes"));
-  $db->create('reset_password', ["user_id", "email", 'otp', "otp_expires", "is_verified"], [$user_id, $email, $otp, $expires, 0]);
+  $DB->create('reset_password', ["user_id", "email", 'otp', "otp_expires", "is_verified"], [$user_id, $email, $otp, $expires, 0]);
 
   send_otp_mail($email, $otp,"Password Reset ");
 }
@@ -23,7 +23,7 @@ if (isset($_POST['recover'])) {
   $email = $_POST['email'];
   $_SESSION['reset_email'] = $email;
 
-  $result = $db->read("users", [
+  $result = $DB->read("users", [
     "where" => [
       "email" => ["=" => $email],
     ]
@@ -45,7 +45,7 @@ if (isset($_POST['recover'])) {
 // otp check after set user new password
 if (isset($_POST['reset_passowrd'])) {
   $pwd = $_POST['passowrd'];
-  $db->update("users", ["password"], [$pwd], "email", $email);
+  $DB->update("users", ["password"], [$pwd], "email", $email);
   session_reset();
   header("Location: login.php");
 }
@@ -55,7 +55,7 @@ if (isset($_POST['verify'])) {
   // concet otp
   $otp_user = (int)$_POST['otp-1'] . $_POST['otp-2'] . $_POST['otp-3'] . $_POST['otp-4'];
 
-  $reset_password_result = $db->read("reset_password", [
+  $reset_password_result = $DB->read("reset_password", [
     "where" => [
       "email" => ["=" => $email],
       "otp" => ["=" => $otp_user],
@@ -65,7 +65,7 @@ if (isset($_POST['verify'])) {
   $reset_password_data = mysqli_fetch_assoc($reset_password_result);
 
   if (mysqli_num_rows($reset_password_result) == 1) {
-    $db->update("reset_password", ["is_verified"], [1], "id", $reset_password_data['id']);
+    $DB->update("reset_password", ["is_verified"], [1], "id", $reset_password_data['id']);
     $is_otp = false;
   } else {
     echo "<div class='alert alert-danger'>Invalid OTP</div>";

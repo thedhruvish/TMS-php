@@ -1,9 +1,13 @@
 <?php
-include_once "config.php";
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-include_once "./Database.php";
-$db = new Database($conn);
-session_start();
+require_once "./Database.php";
+
+if (isset($_SESSION['user_id'])) {
+  if ($_SESSION['role'] === 'admin') {
+      header("Location: ./admin");
+    } else {
+      header("Location: ./staff");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
