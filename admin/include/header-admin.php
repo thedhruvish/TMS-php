@@ -73,6 +73,13 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
     <link href="../src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
     <link href="../src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
 
+    <!-- switch ?Attendant? -->
+         <link href="../src/assets/css/light/scrollspyNav.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../src/assets/css/light/forms/switches.css">
+
+    <link href="../src/assets/css/dark/scrollspyNav.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
+
 </head>
 
 <body class="layout-boxed">
