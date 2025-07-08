@@ -104,3 +104,5 @@ CREATE TABLE reset_password (
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+INSERT INTO users(name,email,password,mobile_no,role)values('admin','admin@gmail.com','admin@123',7894568756,'admin')

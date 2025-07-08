@@ -52,13 +52,13 @@ if (isset($_POST['login'])) {
     <div class="col-md-12">
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input name="email" type="email" class="form-control">
+        <input name="email" type="email" class="form-control" value="admin@gmail.com">
       </div>
     </div>
     <div class="col-12">
       <div class="mb-4">
         <label class="form-label">Password</label>
-        <input name="password" type="password" class="form-control">
+        <input name="password" type="password" class="form-control" value="admin@123">
       </div>
     </div>
 
