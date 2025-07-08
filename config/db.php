@@ -10,4 +10,8 @@ if (!$conn) {
 }
 session_start();
 
+// database CURD oprations
+
+
+
 ?>

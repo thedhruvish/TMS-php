@@ -1,4 +1,14 @@
-<?php include_once "../config/db.php"; ?>
+<?php
+include_once "../config/db.php";
+include_once "../Database.php";
+if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
+  session_destroy();
+  $new_path = preg_replace("#/admin/[^/]+\.php$#", "/login.php", $_SERVER['REQUEST_URI']);
+  header("location: $new_path?error=login Required");
+}
+$db = new Database($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +35,44 @@
   <link href="../src/assets/css/light/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
   <link href="../src/assets/css/dark/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
   <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+  <!-- BEGIN PAGE LEVEL STYLES -->
+  <link rel="stylesheet" type="text/css" href="../src/plugins/src/table/datatable/datatables.css">
+
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/dt-global_style.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/custom_dt_miscellaneous.css">
+
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
+
+  <!-- END PAGE LEVEL STYLES -->
+
+
+  <!--  BEGIN invoce STYLE FILE  -->
+  <link href="../src/assets/css/light/apps/invoice-list.css" rel="stylesheet" type="text/css" />
+
+  <link href="../src/assets/css/dark/apps/invoice-list.css" rel="stylesheet" type="text/css" />
+  <!--  END CUSTOM STYLE FILE  -->
+
+      <!-- BEGIN PAGE user STYLES -->
+    <link href="../src/assets/css/light/components/modal.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/light/apps/contacts.css" rel="stylesheet" type="text/css" />
+
+    <link href="../src/assets/css/dark/components/modal.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/dark/apps/contacts.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->  
+<!-- invoice -->
+      <link href="../src/plugins/src/flatpickr/flatpickr.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../src/plugins/src/filepond/filepond.min.css">
+    <link rel="stylesheet" href="../src/plugins/src/filepond/FilePondPluginImagePreview.min.css">
+
+    <link href="../src/plugins/css/light/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="../src/plugins/css/light/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/light/apps/invoice-add.css" rel="stylesheet" type="text/css" />
+
+    <link href="../src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="../src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="../src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
 
 </head>
 
