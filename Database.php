@@ -31,7 +31,7 @@ class Database
   public function create($table, $columns, $values)
   {
     $cols = implode(",", $columns);
-    $vals = implode("','", array_map([$this, 'escape'], $values));
+    $vals = implode("','",  $values);
     $sql = "INSERT INTO $table ($cols) VALUES ('$vals')";
     return mysqli_query($this->conn, $sql);
   }
@@ -47,7 +47,6 @@ class Database
     if (isset($filters['where']) && is_array($filters['where'])) {
       foreach ($filters['where'] as $col => $condition) {
         foreach ($condition as $op => $val) {
-          $val = $this->escape($val);
           $whereParts[] = "$col $op '$val'";
         }
       }
@@ -58,7 +57,6 @@ class Database
       $orParts = [];
       foreach ($filters['or_where'] as $col => $condition) {
         foreach ($condition as $op => $val) {
-          $val = $this->escape($val);
           $orParts[] = "$col $op '$val'";
         }
       }
@@ -96,11 +94,9 @@ class Database
   {
     $set = [];
     foreach ($columns as $index => $col) {
-      $val = $this->escape($values[$index]);
-      $set[] = "$col = '$val'";
+      $set[] = "$col = '$values[$index]'";
     }
     $setString = implode(", ", $set);
-    $whereValue = $this->escape($whereValue);
     $sql = "UPDATE $table SET $setString WHERE $whereColumn = '$whereValue'";
     return mysqli_query($this->conn, $sql);
   }
@@ -108,7 +104,6 @@ class Database
   // DELETE
   public function delete($table, $whereColumn, $whereValue)
   {
-    $whereValue = $this->escape($whereValue);
     $sql = "DELETE FROM $table WHERE $whereColumn = '$whereValue'";
     return mysqli_query($this->conn, $sql);
   }
