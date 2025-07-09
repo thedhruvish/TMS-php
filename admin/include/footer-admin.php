@@ -26,6 +26,8 @@
   <script src="../src/plugins/src/mousetrap/mousetrap.min.js"></script>
   <script src="../src/plugins/src/waves/waves.min.js"></script>
   <script src="../layouts/vertical-light-menu/app.js"></script>
+  <script src="../src/plugins/src/highlight/highlight.pack.js"></script>
+
   <!-- END GLOBAL MANDATORY SCRIPTS -->
 
 
@@ -47,6 +49,8 @@
   <script src="../src/plugins/src/table/datatable/button-ext/buttons.print.min.js"></script>
   <script src="../src/plugins/src/table/datatable/custom_miscellaneous.js"></script>
     <!-- END PAGE LEVEL SCRIPTS -->   
+  <script src="../src/assets/js/scrollspyNav.js"></script>
+
   </body>
 
   </html>
