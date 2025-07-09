@@ -1,4 +1,4 @@
-<!-- <?php $pageTitle = "category create";
+<?php $pageTitle = "category create";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 ?>
@@ -82,4 +82,4 @@ require_once './include/sidebar-admin.php';
 </div>
 
 
-<?php include('./include/footer-admin.php'); ?> -->
+<?php include('./include/footer-admin.php'); ?> 
