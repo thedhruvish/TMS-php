@@ -8,6 +8,9 @@ if (isset($_SESSION['user_id'])) {
       header("Location: ./staff");
     }
 }
+  include_once "config.php";
+  $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+  session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">

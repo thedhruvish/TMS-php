@@ -2,4 +2,4 @@
 
 header('location: login.php');
 
-?>
+?>a
