@@ -1,85 +1,126 @@
-<!-- <?php $pageTitle = "category create";
+<?php $pageTitle = "category create";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 ?>
 
-<div class="row layout-top-spacing">
 
-    <div id="basic" class="col-lg-12 layout-spacing">
-        <div class="statbox widget box box-shadow">
-            <div class="widget-header">
-                <div class="row">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Input Text</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="widget-content widget-content-area">
-
-                <div class="row">
-                    <div class="col-lg-12 col-12 ">
-                        <form method="post">
-                            <div class="form-group">
-
-                                <div class="row">
-
-                                    <div class="col-xl-4">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">Large Input</label>
-                                            <input class="form-control form-control-lg" type="text"
-                                                placeholder=".form-control-lg">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">Default Input</label>
-                                            <input class="form-control" type="text" placeholder="Default input">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlInput1">Small Input</label>
-                                            <input class="form-control form-control-sm" type="text"
-                                                placeholder=".form-control-sm">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group">
-                                    <p>Use input <code>type="range"</code>.</p>
-
-                                    <label for="customRange1" class="form-label visually-hidden">Example range</label>
-                                    <input type="range" class="form-range" id="customRange1">
-                                </div>
-
-                                <div class="mb-3">
-                                    <input class="form-control file-upload-input" type="file" id="formFile">
-                                </div>
-
-                                <div class="form-group mb-4">
-                                    <label for="exampleFormControlInput2">Email address</label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput2"
-                                        placeholder="name@example.com">
-                                </div>
-
-                                <p>Use input <code>type="text"</code>.</p>
-                                <label for="t-text" class="visually-hidden">Text</label>
-                                <input id="t-text" type="text" name="txt" placeholder="Some Text..."
-                                    class="form-control" required>
-                                <input type="submit" name="txt" class="mt-4 btn btn-primary">
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+<link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
 
 
+<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+<link rel="stylesheet" type="text/css" href="../src/plugins/src/tagify/tagify.css">
 
-            </div>
+
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/editors/quill/quill.snow.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/tagify/custom-tagify.css">
+
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/editors/quill/quill.snow.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/tagify/custom-tagify.css">
+<!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+<!--  BEGIN CUSTOM STYLE FILE  -->
+<link rel="stylesheet" href="../src/assets/css/light/apps/blog-create.css">
+<link rel="stylesheet" href="../src/assets/css/dark/apps/blog-create.css">
+<!--  END CUSTOM STYLE FILE  -->
+
+
+<div class="row mb-4 layout-spacing layout-top-spacing">
+
+  <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+    <div class="widget-content widget-content-area blog-create-section">
+
+      <div class="row mb-4">
+        <div class="col-sm-12">
+          <label>Content</label>
+          <input type="text" class="form-control" id="post-title" placeholder="Post Title">
         </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-sm-12">
+          <label>Content</label>
+          <div id="blog-description"></div>
+        </div>
+      </div>
+
     </div>
+
+    <div class="widget-content widget-content-area blog-create-section mt-4">
+
+      <h5 class="mb-4">SEO Settings</h5>
+
+      <div class="row mb-4">
+        <div class="col-xxl-12 mb-4">
+          <input type="text" class="form-control" id="post-meta-title" placeholder="Meta Title">
+        </div>
+        <div class="col-xxl-12">
+          <label for="post-meta-description">Meta Description</label>
+          <textarea name="post-meta-description" class="form-control" id="post-meta-description" cols="10" rows="5"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
+    <div class="widget-content widget-content-area blog-create-section">
+      <div class="row">
+        <div class="col-xxl-12 mb-4">
+          <div class="switch form-switch-custom switch-inline form-switch-primary">
+            <input class="switch-input" type="checkbox" role="switch" id="showPublicly" checked>
+            <label class="switch-label" for="showPublicly">Publish</label>
+          </div>
+        </div>
+        <div class="col-xxl-12 mb-4">
+          <div class="switch form-switch-custom switch-inline form-switch-primary">
+            <input class="switch-input" type="checkbox" role="switch" id="enableComment" checked>
+            <label class="switch-label" for="enableComment">Enable Comments</label>
+          </div>
+        </div>
+        <div class="col-xxl-12 col-md-12 mb-4">
+          <label for="tags">Tags</label>
+          <input id="tags" class="blog-tags" value="">
+        </div>
+
+        <div class="col-xxl-12 col-md-12 mb-4">
+          <label for="category">Category</label>
+          <input id="category" name="category" placeholder="Choose...">
+        </div>
+
+        <div class="col-xxl-12 col-md-12 mb-4">
+
+
+
+        </div>
+
+        <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
+          <button class="btn btn-success w-100">Create Post</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>
 
 
-<?php include('./include/footer-admin.php'); ?> -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../src/plugins/src/editors/quill/quill.js"></script>
+<script src="../src/plugins/src/filepond/filepond.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
+<script src="../src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+<script src="../src/plugins/src/tagify/tagify.min.js"></script>
+
+<script src="../src/assets/js/apps/blog-create.js"></script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
+
+
+
+<?php include_once './include/footer-admin.php'; ?>
