@@ -8,8 +8,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'tms-phps');
 
 // google auth
-define('GOOGLE_CLIENT_ID', '548770837279-ck7uoutg2hfui10lm6358kncn5vcckas.apps.googleusercontent.com');
-define('GOOGLE_CLIENT_SECRET', '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');
+define('GOOGLE_CLIENT_ID', '952752472768-sbnvpm60s3vm6hj93lac9kd5q2cdmj87.apps.googleusercontent.com');
+define('GOOGLE_CLIENT_SECRET', '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');
 define('GOOGLE_REDIRECT_URI', 'http://localhost/tms-php/g-callback.php');
 
 
