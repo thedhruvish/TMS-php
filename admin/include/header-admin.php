@@ -3,8 +3,7 @@ require_once "../Database.php";
 
 if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
   session_destroy();
-  $new_path = preg_replace("#/admin/[^/]+\.php$#", "/login.php", $_SERVER['REQUEST_URI']);
-  header("location: $new_path?error=login Required");
+  header("location: ../login.php?error=login Required");
 }
 ?>
 
@@ -84,7 +83,7 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
     <link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
     <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
     <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
-    <!-- END PAGE LEVEL STYLES -->
+    <!-- END PAGE LEVEL STYLES -->     
 
 
 </head>
