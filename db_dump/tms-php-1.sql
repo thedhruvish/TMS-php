@@ -57,7 +57,7 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `password` text NOT NULL,
   `mobile_no` int(10) DEFAULT NULL,
-  `role` text NOT NULL DEFAULT 'saff',
+  `role` text NOT NULL DEFAULT 'staff',
   `profile_picture` text DEFAULT NULL,
   `auth_provider` text NOT NULL DEFAULT 'local',
   `2-step-auth` int(11) NOT NULL DEFAULT 0,
@@ -105,4 +105,5 @@ CREATE TABLE reset_password (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-INSERT INTO users(name,email,password,mobile_no,role)values('admin','admin@gmail.com','admin@123',7894568756,'admin')
+INSERT INTO users(name,email,password,mobile_no,role)values('admin','admin@gmail.com','admin@123',7894568756,'admin');
+INSERT INTO users(name,email,password,mobile_no,role)values('staff','staff@gmail.com','staff@123',7894568756,'staff');
