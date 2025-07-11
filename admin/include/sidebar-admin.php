@@ -527,31 +527,17 @@
             </li>
             <!-- stoack -->
             <li class="menu">
-              <a href="#stoack" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+              <a href="stoack.php" aria-expanded="false" class="dropdown-toggle">
                 <div class="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
                     <polygon points="12 2 2 7 12 12 22 7 12 2" />
                     <polyline points="2 17 12 22 22 17" />
                     <polyline points="2 12 12 17 22 12" />
                   </svg>
                   <span>Stoack</span>
                 </div>
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
               </a>
-              <ul class="collapse submenu list-unstyled " id="stoack" data-bs-parent="#accordionExample">
-                <li class="active">
-                  <a href="./stoack.php"> stoack </a>
-                </li>
-                <li>
-                  <a href="./stoack-add.php"> add stoack </a>
-                </li>
-              </ul>
             </li>
-
             <!-- weblink -->
             <li class="menu">
               <a href="weblink.php" aria-expanded="false" class="dropdown-toggle">
