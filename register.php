@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
 
     header("Location: login.php");
   } else {
-    echo "<div class='alert alert-danger'>Error: " . mysqli_error(mysql: $conn) . "</div>";
+    echo "<div class='alert alert-danger'>Error: Some went Wrong !!! </div>";
   }
 }
 

@@ -5,14 +5,14 @@ if (isset($_SESSION)) {
   session_unset();
   session_destroy();
 
-  $new_path = str_replace("/admin/logout.php", "/login.php", $full_url);
+  $new_path = str_replace("/staff/logout.php", "/login.php", $full_url);
   echo $new_path;
   // echo $url;
   header("Location: $new_path ");
 } 
 
 
-$new_path = str_replace("/admin/logout.php", "/login.php", $full_url);
+$new_path = str_replace("/staff/logout.php", "/login.php", $full_url);
 header("Location: $new_path ");
 
 ?>

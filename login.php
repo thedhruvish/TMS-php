@@ -25,10 +25,15 @@ if (isset($_POST['login'])) {
   if (mysqli_num_rows($result) === 1) {
     $user = mysqli_fetch_assoc($result);
 
+    if ($user['is_verified'] == 0) {
+      header("location: ./login.php?error=Contect to Admin for the approved to account");
+      exit();
+    }
+
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['role'] = $user['role'];
-
+    
     if ($user['role'] === 'admin') {
       header("Location: ./admin");
     } else {
@@ -52,13 +57,13 @@ if (isset($_POST['login'])) {
     <div class="col-md-12">
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input name="email" type="email" class="form-control" value="admin@gmail.com">
+        <input name="email" type="email" class="form-control">
       </div>
     </div>
     <div class="col-12">
       <div class="mb-4">
         <label class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" value="admin@123">
+        <input name="password" type="password" class="form-control">
       </div>
     </div>
 
