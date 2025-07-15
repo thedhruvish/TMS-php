@@ -54,6 +54,10 @@ if ($_GET['code']) {
 
     if (mysqli_num_rows($query_search_res) > 0) {
       $exsting = mysqli_fetch_assoc($query_search_res);
+      if ($exsting['is_verified'] == 0) {
+        header("location: login.php?error=Contect to Admin for the approved to account.");
+        exit();
+      }
       $_SESSION['user_id'] = $exsting['id'];
       $_SESSION['email'] = $exsting['email'];
       $_SESSION['role'] = $exsting['role'];
@@ -64,7 +68,8 @@ if ($_GET['code']) {
       }
     } else {
       $insert_res = $DB->create("users", ["email", "name", "profile_picture", "auth_provider"], [$data['email'], $data['name'], $data['picture'], "google"]);
-      header("Location: staff");
+      header("location: login.php?error=Contect to Admin for the approved to account.");
+        exit();
     }
   }
 
