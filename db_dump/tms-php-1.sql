@@ -52,20 +52,20 @@ CREATE TABLE products (
 -- Table structure for table users
 --
 
-CREATE TABLE users (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  is_verified TINYINT(1) NOT NULL DEFAULT 0,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  password TEXT NOT NULL,
-  mobile_no BIGINT DEFAULT NULL,
-  role TEXT NOT NULL DEFAULT 'staff',
-  profile_picture TEXT DEFAULT NULL,
-  auth_provider TEXT NOT NULL DEFAULT 'local',
-  two_step_auth TINYINT(1) NOT NULL DEFAULT 0,
-  created_by INT(11) NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+CREATE TABLE `users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `is_verified` TINYINT(1) NOT NULL DEFAULT 0,
+  `name` TEXT NOT NULL,
+  `email` TEXT NOT NULL,
+  `password` TEXT NOT NULL,
+  `mobile_no` BIGINT DEFAULT NULL,
+  `role` TEXT NOT NULL DEFAULT 'staff',
+  `profile_picture` TEXT DEFAULT NULL,
+  `auth_provider` TEXT NOT NULL DEFAULT 'local',
+  `two_step_auth` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_by` INT(11) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -98,13 +98,42 @@ INSERT INTO users(name,email,password,mobile_no,role,is_verified)values('admin',
 INSERT INTO users(name,email,password,mobile_no,role,is_verified)values('staff','staff@gmail.com','staff@123',7894568756,'staff',1);
 
 -- user login log
-CREATE TABLE IF NOT EXISTS user_log (
+CREATE TABLE IF NOT EXISTS `user_log` (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
   email TEXT NOT NULL,
   is_success TINYINT(1) NOT NULL DEFAULT 0, 
   login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+-- product table
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `product_code` varchar(100) NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `regular_price` decimal(10,2) DEFAULT NULL,
+  `sale_price` decimal(10,2) DEFAULT NULL,
+  `includes_tax` tinyint(1) DEFAULT 0,
+  `in_stock` tinyint(1) DEFAULT 0,
+  `show_publicly` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `image` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+  ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+COMMIT;
