@@ -3,22 +3,24 @@ $pageTitle = "Products";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// 1. First verify we can connect to database
-try {
-    $testConnection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if (!$testConnection) {
-        throw new Exception("Database connection failed: " . mysqli_connect_error());
+// Handle delete action
+if (isset($_GET['delete_id'])) {
+    try {
+        $deleteId = (int)$_GET['delete_id'];
+        $result = $DB->delete("products", "id", $deleteId);
+        if ($result) {
+            $_SESSION['message'] = "Product deleted successfully";
+        } else {
+            $_SESSION['message'] = "Error deleting product";
+        }
+        header("Location: products.php");
+        exit();
+    } catch (Exception $e) {
+        $error = "Error deleting product: " . $e->getMessage();
     }
-    mysqli_close($testConnection);
-} catch (Exception $e) {
-    die('<div class="alert alert-danger m-3">'.$e->getMessage().'</div>');
 }
 
-// 2. Get products from database
+// Database connection and data fetching
 $products = [];
 $error = null;
 
@@ -27,14 +29,9 @@ try {
     if ($res === false) {
         throw new Exception("Query failed");
     }
-    
+
     if (mysqli_num_rows($res) > 0) {
         $products = mysqli_fetch_all($res, MYSQLI_ASSOC);
-        
-        // Debug output - view in browser's developer tools
-        echo "<!-- DEBUG: Products Data \n";
-        print_r($products);
-        echo "\n-->";
     }
 } catch (Exception $e) {
     $error = $e->getMessage();
@@ -45,14 +42,16 @@ $searchTerm = $_GET['search'] ?? '';
 $categoryFilter = $_GET['category'] ?? '';
 $sortBy = $_GET['sort'] ?? 'newest';
 
-// Filter and sort logic
-$filteredProducts = $products; // Start with all products
+// Get available categories
+$categories = array_unique(array_column($products, 'category'));
+
+// Filter products
+$filteredProducts = $products;
 
 if (!empty($searchTerm)) {
     $filteredProducts = array_filter($filteredProducts, function($product) use ($searchTerm) {
         return stripos($product['name'], $searchTerm) !== false || 
-               stripos($product['description'], $searchTerm) !== false ||
-               stripos($product['product_code'], $searchTerm) !== false;
+               stripos($product['description'], $searchTerm) !== false;
     });
 }
 
@@ -62,7 +61,7 @@ if (!empty($categoryFilter)) {
     });
 }
 
-// Sorting
+// Sort products
 usort($filteredProducts, function($a, $b) use ($sortBy) {
     switch ($sortBy) {
         case 'price_low':
@@ -73,47 +72,97 @@ usort($filteredProducts, function($a, $b) use ($sortBy) {
             return strtotime($b['created_at']) <=> strtotime($a['created_at']);
     }
 });
-
-// Get unique categories
-$categories = array_unique(array_column($products, 'category'));
-$categories = array_filter($categories); // Remove empty values
-sort($categories);
 ?>
 
-<!-- Search and Filter UI (unchanged from your original) -->
+<!-- Search and Filter UI -->
 <div class="row mb-4 align-items-center justify-content-between">
-  <div class="col-md-6 d-flex align-items-center">
-    <form method="get" class="w-100">
-      <input type="text" name="search" class="form-control w-100" 
-             placeholder="Search products..." value="<?= htmlspecialchars($searchTerm) ?>" style="max-width: 250px;">
+  <div class="col-lg-6 d-flex align-items-center">
+    <form method="get" class="d-flex flex-grow-1 gap-2">
+      <input type="text" name="search" class="form-control" style="max-width: 300px;"
+             placeholder="Search products..." value="<?= htmlspecialchars($searchTerm) ?>">
+      <button type="submit" class="btn btn-primary px-3">Search</button>
     </form>
   </div>
 
-  <div class="col-md-6 text-md-end text-start mt-3 mt-md-0">
-    <form method="get" class="d-inline-flex gap-2 flex-wrap justify-content-md-end align-items-center w-100">
+  <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
+    <form id="filterForm" method="get" class="d-inline-block w-100">
       <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
-      
-      <select name="category" class="form-select w-auto" style="min-width: 160px;" onchange="this.form.submit()">
-        <option value="">All Categories</option>
-        <?php foreach($categories as $cat): ?>
-          <option value="<?= htmlspecialchars($cat) ?>" <?= $categoryFilter === $cat ? 'selected' : '' ?>>
-            <?= htmlspecialchars(ucfirst($cat)) ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
+      <input type="hidden" name="category" id="categoryInput" value="<?= htmlspecialchars($categoryFilter) ?>">
+      <input type="hidden" name="sort" id="sortInput" value="<?= htmlspecialchars($sortBy) ?>">
 
-      <select name="sort" class="form-select w-auto" style="min-width: 140px;" onchange="this.form.submit()">
-        <option value="newest" <?= $sortBy === 'newest' ? 'selected' : '' ?>>Newest</option>
-        <option value="price_low" <?= $sortBy === 'price_low' ? 'selected' : '' ?>>Price: Low to High</option>
-        <option value="price_high" <?= $sortBy === 'price_high' ? 'selected' : '' ?>>Price: High to Low</option>
-      </select>
+      <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
+        <!-- Category Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?= $categoryFilter ?: 'All Categories' ?>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
+            <?php foreach ($categories as $cat): if (!empty($cat)): ?>
+              <li><a class="dropdown-item" href="#" onclick="selectCategory('<?= htmlspecialchars($cat) ?>')"><?= htmlspecialchars($cat) ?></a></li>
+            <?php endif; endforeach; ?>
+          </ul>
+        </div>
 
-      <button id="shareSelected" class="btn btn-primary px-4 py-2">Share Selected</button>
+        <!-- Sort Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php
+              echo match($sortBy) {
+                'price_low' => 'Price: Low to High',
+                'price_high' => 'Price: High to Low',
+                default => 'Newest'
+              };
+            ?>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="selectSort('newest')">Newest</a></li>
+            <li><a class="dropdown-item" href="#" onclick="selectSort('price_low')">Price: Low to High</a></li>
+            <li><a class="dropdown-item" href="#" onclick="selectSort('price_high')">Price: High to Low</a></li>
+          </ul>
+        </div>
+
+        <!-- Share Selected -->
+        <button type="button" class="btn btn-secondary" onclick="shareSelectedProducts()">Share Selected</button>
+      </div>
     </form>
   </div>
 </div>
 
-<!-- Error Display -->
+<!-- Scripts for Dropdown Selection -->
+<script>
+  function selectCategory(value) {
+    document.getElementById('categoryInput').value = value;
+    document.getElementById('filterForm').submit();
+  }
+
+  function selectSort(value) {
+    document.getElementById('sortInput').value = value;
+    document.getElementById('filterForm').submit();
+  }
+
+  function shareSelectedProducts() {
+    const selected = Array.from(document.querySelectorAll('.product-check:checked'))
+                          .map(cb => cb.value);
+    if (selected.length === 0) {
+      alert("No products selected.");
+      return;
+    }
+    const shareLink = "https://yourdomain.com/share?products=" + selected.join(',');
+    navigator.clipboard.writeText(shareLink)
+      .then(() => alert("Link copied: " + shareLink))
+      .catch(() => alert("Failed to copy link."));
+  }
+</script>
+
+<!-- Messages -->
+<?php if (isset($_SESSION['message'])): ?>
+<div class="alert alert-success alert-dismissible fade show">
+  <?= $_SESSION['message'] ?>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php unset($_SESSION['message']); endif; ?>
+
 <?php if ($error): ?>
 <div class="alert alert-danger">
   Database Error: <?= htmlspecialchars($error) ?>
@@ -141,40 +190,81 @@ sort($categories);
             <input type="checkbox" class="form-check-input product-check" value="<?= $product['id'] ?>">
           </div>
           
-          <!-- Status Badge -->
-          <span class="badge <?= $product['in_stock'] ? 'badge-primary' : 'badge-danger' ?> position-absolute top-0 end-0 m-2 z-2">
-            <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
-          </span>
+          <!-- Category Badge -->
+          <?php if(!empty($product['category'])): ?>
+            <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-2">
+              <?= htmlspecialchars($product['category']) ?>
+            </span>
+          <?php endif; ?>
 
           <!-- Product Image -->
           <img src="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>" 
                class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>"
                style="height: 180px; object-fit: cover;">
 
-          <div class="card-footer">
-            <div class="row">
-              <div class="col-12 mb-2 text-truncate">
-                <b><?= htmlspecialchars($product['name']) ?></b>
-              </div>
-              <div class="col-6">
-                <span class="badge bg-primary"><?= htmlspecialchars($product['category']) ?></span>
-              </div>
-              <div class="col-6 text-end">
-                <?php if($product['sale_price'] && $product['sale_price'] < $product['regular_price']): ?>
-                  <p class="text-danger mb-0">
-                    <del>$<?= number_format($product['regular_price'], 2) ?></del> 
-                    <span class="text-success fw-bold">$<?= number_format($product['sale_price'], 2) ?></span>
-                  </p>
-                <?php else: ?>
-                  <p class="text-success fw-bold mb-0">$<?= number_format($product['regular_price'], 2) ?></p>
-                <?php endif; ?>
-              </div>
+          <!-- Product Info -->
+          <div class="card-body pb-2">
+            <h6 class="card-title mb-2"><?= htmlspecialchars($product['name']) ?></h6>
+            <div class="d-flex align-items-center mb-2">
+              <?php if(!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']): ?>
+                <span class="text-danger text-decoration-line-through me-2">
+                  $<?= number_format($product['regular_price'], 2) ?>
+                </span>
+                <span class="text-success fw-bold">
+                  $<?= number_format($product['sale_price'], 2) ?>
+                </span>
+              <?php else: ?>
+                <span class="text-success fw-bold">
+                  $<?= number_format($product['regular_price'], 2) ?>
+                </span>
+              <?php endif; ?>
             </div>
+            
+            <!-- Edit and Delete Buttons -->
+            <div class="d-flex justify-content-between mt-2">
+              <a href="edit-product.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+              <button onclick="confirmDelete(<?= $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
+            </div>
+          </div>
+
+          <!-- Stock Badge -->
+          <div class="card-footer bg-transparent p-2">
+            <span class="badge <?= $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
+              <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
+            </span>
           </div>
         </div>
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this product?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a id="deleteConfirmBtn" href="#" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDelete(productId) {
+    const deleteBtn = document.getElementById('deleteConfirmBtn');
+    deleteBtn.href = `products.php?delete_id=${productId}`;
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+  }
+</script>
 
 <?php include_once('./include/footer-admin.php'); ?>
