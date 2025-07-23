@@ -107,3 +107,13 @@ CREATE TABLE IF NOT EXISTS `user_log` (
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- attendance table
+
+CREATE TABLE attendance (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT,
+  date DATE
+  status CHAR(1) CHECK (status IN ('p','a'))
+)

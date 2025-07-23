@@ -4,6 +4,10 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 $currentYear = date('Y');
 $currentMonth = date('m');
+
+$result = $DB->read("users")
+
+
 ?>
 <!-- BREADCRUMB -->
 <div class="page-meta">
@@ -71,17 +75,16 @@ $currentMonth = date('m');
                 </tr>
             </thead>
             <tbody>
-                <?php for ($j = 1; $j <= 10; $j++) { ?>
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
-                        <td>
-                            <div class="d-flex">
-                                <div class="usr-img-frame me-2 rounded-circle">
-                                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                                </div>
-                                <p class="align-self-center mb-0 admin-name">Tiger <?= $j ?></p>
-                            </div>
+                         <td>
+                            <?php echo $row['name']; ?>
                         </td>
-                        <td>admin<?= $j ?>@gmail.com</td>
+                                
+                        <td>
+                            <?php echo $row['email']; ?>
+                        </td>
+                        
                         <!-- JS will inject attendance columns -->
                     </tr>
                 <?php } ?>
