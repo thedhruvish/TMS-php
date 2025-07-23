@@ -18,38 +18,19 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: tms-php
+-- Database: `tms-php`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table products
+-- Table structure for table `products`
 --
-
-CREATE TABLE products (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  title TEXT NOT NULL,
-  description LONGTEXT NOT NULL,
-  category_id INT(11) NOT NULL,
-  price INT(11) NOT NULL,
-  cost_price INT(11) NOT NULL,
-  stock_quantity INT(11) NOT NULL,
-  supplier_id INT(11) NOT NULL,
-  tags LONGTEXT NOT NULL,
-  status VARCHAR(20) NOT NULL DEFAULT 'draft', -- Fixed TEXT+DEFAULT issue
-  image_url MEDIUMTEXT DEFAULT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  created_by INT(11) NOT NULL,
-  discount INT(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table users
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
