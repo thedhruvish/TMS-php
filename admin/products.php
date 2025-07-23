@@ -147,7 +147,7 @@ sort($categories);
           </span>
 
           <!-- Product Image -->
-          <img src="<?= !empty($product['image']) ? '../'.htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>" 
+          <img src="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>" 
                class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>"
                style="height: 180px; object-fit: cover;">
 
