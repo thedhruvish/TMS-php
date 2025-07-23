@@ -1,109 +1,180 @@
-<?php $pageTitle = "Products";
+<?php 
+$pageTitle = "Products";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// 1. First verify we can connect to database
+try {
+    $testConnection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    if (!$testConnection) {
+        throw new Exception("Database connection failed: " . mysqli_connect_error());
+    }
+    mysqli_close($testConnection);
+} catch (Exception $e) {
+    die('<div class="alert alert-danger m-3">'.$e->getMessage().'</div>');
+}
+
+// 2. Get products from database
+$products = [];
+$error = null;
+
+try {
+    $res = $DB->read("products");
+    if ($res === false) {
+        throw new Exception("Query failed");
+    }
+    
+    if (mysqli_num_rows($res) > 0) {
+        $products = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        
+        // Debug output - view in browser's developer tools
+        echo "<!-- DEBUG: Products Data \n";
+        print_r($products);
+        echo "\n-->";
+    }
+} catch (Exception $e) {
+    $error = $e->getMessage();
+}
+
+// Handle filters
+$searchTerm = $_GET['search'] ?? '';
+$categoryFilter = $_GET['category'] ?? '';
+$sortBy = $_GET['sort'] ?? 'newest';
+
+// Filter and sort logic
+$filteredProducts = $products; // Start with all products
+
+if (!empty($searchTerm)) {
+    $filteredProducts = array_filter($filteredProducts, function($product) use ($searchTerm) {
+        return stripos($product['name'], $searchTerm) !== false || 
+               stripos($product['description'], $searchTerm) !== false ||
+               stripos($product['product_code'], $searchTerm) !== false;
+    });
+}
+
+if (!empty($categoryFilter)) {
+    $filteredProducts = array_filter($filteredProducts, function($product) use ($categoryFilter) {
+        return strcasecmp($product['category'], $categoryFilter) === 0;
+    });
+}
+
+// Sorting
+usort($filteredProducts, function($a, $b) use ($sortBy) {
+    switch ($sortBy) {
+        case 'price_low':
+            return $a['regular_price'] <=> $b['regular_price'];
+        case 'price_high':
+            return $b['regular_price'] <=> $a['regular_price'];
+        default: // newest
+            return strtotime($b['created_at']) <=> strtotime($a['created_at']);
+    }
+});
+
+// Get unique categories
+$categories = array_unique(array_column($products, 'category'));
+$categories = array_filter($categories); // Remove empty values
+sort($categories);
 ?>
 
-<!-- 🔍 Toolbar -->
+<!-- Search and Filter UI (unchanged from your original) -->
 <div class="row mb-4 align-items-center justify-content-between">
-  <!-- Left: Search -->
   <div class="col-md-6 d-flex align-items-center">
-    <input type="text" class="form-control w-100" placeholder="Search products..." style="max-width: 250px;">
+    <form method="get" class="w-100">
+      <input type="text" name="search" class="form-control w-100" 
+             placeholder="Search products..." value="<?= htmlspecialchars($searchTerm) ?>" style="max-width: 250px;">
+    </form>
   </div>
 
-  <!-- Right: Categories, Sort By, Share -->
   <div class="col-md-6 text-md-end text-start mt-3 mt-md-0">
-    <div class="d-inline-flex gap-2 flex-wrap justify-content-md-end align-items-center w-100">
-      <select class="form-select w-auto" style="min-width: 160px;">
-        <option selected>All Categories</option>
-        <option>Shoes</option>
-        <option>Electronics</option>
-        <option>Accessories</option>
+    <form method="get" class="d-inline-flex gap-2 flex-wrap justify-content-md-end align-items-center w-100">
+      <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
+      
+      <select name="category" class="form-select w-auto" style="min-width: 160px;" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        <?php foreach($categories as $cat): ?>
+          <option value="<?= htmlspecialchars($cat) ?>" <?= $categoryFilter === $cat ? 'selected' : '' ?>>
+            <?= htmlspecialchars(ucfirst($cat)) ?>
+          </option>
+        <?php endforeach; ?>
       </select>
 
-      <select class="form-select w-auto" style="min-width: 140px;">
-        <option selected>Sort By</option>
-        <option>Newest</option>
-        <option>Price: Low to High</option>
-        <option>Price: High to Low</option>
+      <select name="sort" class="form-select w-auto" style="min-width: 140px;" onchange="this.form.submit()">
+        <option value="newest" <?= $sortBy === 'newest' ? 'selected' : '' ?>>Newest</option>
+        <option value="price_low" <?= $sortBy === 'price_low' ? 'selected' : '' ?>>Price: Low to High</option>
+        <option value="price_high" <?= $sortBy === 'price_high' ? 'selected' : '' ?>>Price: High to Low</option>
       </select>
 
       <button id="shareSelected" class="btn btn-primary px-4 py-2">Share Selected</button>
-    </div>
+    </form>
   </div>
 </div>
 
-<!-- 🛒 Product Cards -->
+<!-- Error Display -->
+<?php if ($error): ?>
+<div class="alert alert-danger">
+  Database Error: <?= htmlspecialchars($error) ?>
+</div>
+<?php endif; ?>
+
+<!-- Product Grid -->
 <div class="row">
-
-  <!-- Product Card 1 -->
-  <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
-    <div class="card style-6 h-100 position-relative overflow-hidden">
-
-      <!-- Checkbox in image corner -->
-      <div class="position-absolute top-0 start-0 m-2 z-2">
-        <input type="checkbox" class="form-check-input product-check" value="1">
+  <?php if(empty($filteredProducts)): ?>
+    <div class="col-12">
+      <div class="alert alert-info">
+        No products found. 
+        <?php if(!empty($searchTerm) || !empty($categoryFilter)): ?>
+          <a href="products.php" class="alert-link">Clear filters</a>
+        <?php endif; ?>
       </div>
-
-      <!-- NEW badge -->
-      <span class="badge badge-primary position-absolute top-0 end-0 m-2 z-2">NEW</span>
-
-      <img src="../src/assets/img/product-3.jpg" class="card-img-top" alt="Nike Green Shoes">
-
-      <div class="card-footer">
-        <div class="row">
-          <div class="col-12 mb-2 text-truncate">
-            <b>Nike Green Shoes</b>
+    </div>
+  <?php else: ?>
+    <?php foreach($filteredProducts as $product): ?>
+      <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
+        <div class="card style-6 h-100 position-relative overflow-hidden">
+          
+          <!-- Checkbox -->
+          <div class="position-absolute top-0 start-0 m-2 z-2">
+            <input type="checkbox" class="form-check-input product-check" value="<?= $product['id'] ?>">
           </div>
-          <div class="col-6">
-            <div class="badge--group">
-              <span class="badge badge-primary badge-dot"></span>
-              <span class="badge badge-danger badge-dot"></span>
-              <span class="badge badge-info badge-dot"></span>
+          
+          <!-- Status Badge -->
+          <span class="badge <?= $product['in_stock'] ? 'badge-primary' : 'badge-danger' ?> position-absolute top-0 end-0 m-2 z-2">
+            <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
+          </span>
+
+          <!-- Product Image -->
+          <img src="<?= !empty($product['image']) ? '../'.htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>" 
+               class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>"
+               style="height: 180px; object-fit: cover;">
+
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-12 mb-2 text-truncate">
+                <b><?= htmlspecialchars($product['name']) ?></b>
+              </div>
+              <div class="col-6">
+                <span class="badge bg-primary"><?= htmlspecialchars($product['category']) ?></span>
+              </div>
+              <div class="col-6 text-end">
+                <?php if($product['sale_price'] && $product['sale_price'] < $product['regular_price']): ?>
+                  <p class="text-danger mb-0">
+                    <del>$<?= number_format($product['regular_price'], 2) ?></del> 
+                    <span class="text-success fw-bold">$<?= number_format($product['sale_price'], 2) ?></span>
+                  </p>
+                <?php else: ?>
+                  <p class="text-success fw-bold mb-0">$<?= number_format($product['regular_price'], 2) ?></p>
+                <?php endif; ?>
+              </div>
             </div>
-          </div>
-          <div class="col-6 text-end">
-            <p class="text-success fw-bold mb-0">$150.00</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Product Card 2 -->
-  <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
-    <div class="card style-6 h-100 position-relative overflow-hidden">
-
-      <div class="position-absolute top-0 start-0 m-2 z-2">
-        <input type="checkbox" class="form-check-input product-check" value="2">
-      </div>
-
-      <span class="badge badge-danger position-absolute top-0 end-0 m-2 z-2">SALE</span>
-
-      <img src="../src/assets/img/product-10.jpg" class="card-img-top" alt="Camera">
-
-      <div class="card-footer">
-        <div class="row">
-          <div class="col-12 mb-2 text-truncate">
-            <b>Camera</b>
-          </div>
-          <div class="col-6">
-            <div class="badge--group">
-              <span class="badge badge-warning badge-dot"></span>
-              <span class="badge badge-success badge-dot"></span>
-              <span class="badge badge-danger badge-dot"></span>
-            </div>
-          </div>
-          <div class="col-6 text-end">
-            <p class="text-danger mb-0"><del>$21.00</del> <span class="text-success fw-bold">$11.00</span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ➕ Add more cards here by duplicating -->
-
+    <?php endforeach; ?>
+  <?php endif; ?>
 </div>
-
 
 <?php include_once('./include/footer-admin.php'); ?>
