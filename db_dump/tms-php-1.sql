@@ -119,3 +119,10 @@ ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
+--  category
+CREATE TABLE category (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description TEXT,
+  image VARCHAR(255),
+  tag VARCHAR(100)
+);
