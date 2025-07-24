@@ -47,6 +47,13 @@ $isUpdate = false;
 $updateId = null;
 $uploadedImagePath = null;
 
+// Get all categories from database
+$categories = [];
+$categoriesRes = $DB->read("category");
+if ($categoriesRes && mysqli_num_rows($categoriesRes) > 0) {
+    $categories = mysqli_fetch_all($categoriesRes, MYSQLI_ASSOC);
+}
+
 // View mode
 if (isset($_GET['id'])) {
     $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['id']]]]);
@@ -206,8 +213,10 @@ if (isset($_POST['save'])) {
                             <label>Category</label>
                             <select name="category" class="form-select" <?= $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
-                                <?php foreach (['electronics', 'clothing', 'organic', 'apperal', 'accessories'] as $cat): ?>
-                                    <option value="<?= $cat ?>" <?= $product['category'] === $cat ? 'selected' : '' ?>><?= ucfirst($cat) ?></option>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat['tag']) ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($cat['tag']) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
