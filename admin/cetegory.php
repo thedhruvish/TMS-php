@@ -12,7 +12,8 @@ require_once './include/sidebar-admin.php';
         <table id="html5-extension" class="table dt-table-hover" style="width:100%">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Category</th>
+              <th>Description</th>
               <th>Image</th>
               <th>Total Product</th>
               <th>Edit</th>
@@ -22,6 +23,7 @@ require_once './include/sidebar-admin.php';
           <tbody>
             <tr>
               <td>Tiger Nixon</td>
+              <td>System Architect1</td>
               <td>
                 <div class="d-flex">
                   <div class="usr-img-frame mr-2 rounded-circle">
