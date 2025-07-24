@@ -65,6 +65,8 @@ try {
             ]);
             $category['product_count'] = $productRes ? mysqli_num_rows($productRes) : 0;
         }
+    unset($category); 
+
     }
     
     // Get all unique category tags for filter dropdown
