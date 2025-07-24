@@ -20,6 +20,7 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
+
 // Database connection and data fetching
 $products = [];
 $error = null;
@@ -221,8 +222,8 @@ usort($filteredProducts, function($a, $b) use ($sortBy) {
             </div>
             
             <!-- Edit and Delete Buttons -->
-            <div class="d-flex justify-content-between mt-2">
-              <a href="edit-product.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+           <div class="d-flex justify-content-between mt-2">
+              <a href="products-add.php?u_id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
               <button onclick="confirmDelete(<?= $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
             </div>
           </div>

@@ -3,7 +3,6 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 ?>
 
-
 <link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
 <link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
 
@@ -28,7 +27,6 @@ require_once './include/sidebar-admin.php';
 <link rel="stylesheet" href="../src/assets/css/dark/apps/ecommerce-create.css">
 <!--  END CUSTOM STYLE FILE  -->
 
-
 <?php
 
 $product = [
@@ -49,7 +47,7 @@ $isUpdate = false;
 $updateId = null;
 $uploadedImagePath = null;
 
-//  View mode
+// View mode
 if (isset($_GET['id'])) {
     $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['id']]]]);
     if ($res && mysqli_num_rows($res) > 0) {
@@ -57,6 +55,8 @@ if (isset($_GET['id'])) {
         $readonly = true;
     }
 }
+
+// Update mode
 if (isset($_GET['u_id'])) {
     $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
     if ($res && mysqli_num_rows($res) > 0) {
@@ -70,7 +70,7 @@ if (isset($_GET['u_id'])) {
 // Handle Form Submission
 if (isset($_POST['save'])) {
     if (isset($_FILES['image'])) {
-        $uploadDir =  '../images/';
+        $uploadDir = '../images/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -80,8 +80,16 @@ if (isset($_POST['save'])) {
         $targetPath = $uploadDir . $uniqueName;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = '../images/' . $uniqueName; //  DB storage path
+            $uploadedImagePath = '../images/' . $uniqueName;
+            
+            // Delete old image if it exists and we're updating
+            if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
+                unlink($product['image']);
+            }
         }
+    } elseif ($isUpdate && !empty($product['image'])) {
+        // Keep existing image if no new image was uploaded
+        $uploadedImagePath = $product['image'];
     }
 
     $data = [
@@ -95,7 +103,7 @@ if (isset($_POST['save'])) {
         isset($_POST['includes_tax']) ? 1 : 0,
         isset($_POST['in_stock']) ? 1 : 0,
         isset($_POST['show_publicly']) ? 1 : 0,
-        $uploadedImagePath // new image column
+        $uploadedImagePath
     ];
 
     $columns = [
@@ -109,13 +117,15 @@ if (isset($_POST['save'])) {
         'includes_tax',
         'in_stock',
         'show_publicly',
-        'image' // Add this column to your DB table
+        'image'
     ];
 
     if ($isUpdate && $updateId !== null) {
         $DB->update('products', $columns, $data, 'id', $updateId);
+        $_SESSION['message'] = "Product updated successfully";
     } else {
         $DB->create('products', $columns, $data);
+        $_SESSION['message'] = "Product added successfully";
     }
 
     header("Location: products.php?success=1");
@@ -123,6 +133,20 @@ if (isset($_POST['save'])) {
 }
 
 ?>
+
+<!-- Messages -->
+<?php if (isset($_SESSION['message'])): ?>
+<div class="alert alert-success alert-dismissible fade show">
+    <?= $_SESSION['message'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php unset($_SESSION['message']); endif; ?>
+
+<?php if (isset($error)): ?>
+<div class="alert alert-danger">
+    Error: <?= htmlspecialchars($error) ?>
+</div>
+<?php endif; ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
     <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -142,8 +166,14 @@ if (isset($_POST['save'])) {
 
             <div class="row">
                 <div class="col-md-8">
-                    <label>Upload Images </label>
+                    <label>Upload Images</label>
                     <input type="file" class="form-control" name="image" <?= $readonly ? 'disabled' : '' ?>>
+                    <?php if ($isUpdate && !empty($product['image'])): ?>
+                        <div class="mt-2">
+                            <img src="<?= $product['image'] ?>" alt="Current Product Image" style="max-height: 100px;">
+                            <p class="text-muted small mt-1">Current image</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="form-check form-switch mt-4">
@@ -219,7 +249,6 @@ if (isset($_POST['save'])) {
     </div>
 </form>
 
-
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../src/plugins/src/editors/quill/quill.js"></script>
 <script src="../src/plugins/src/filepond/filepond.min.js"></script>
@@ -234,7 +263,6 @@ if (isset($_POST['save'])) {
 <script src="../src/plugins/src/tagify/tagify.min.js"></script>
 
 <script src="../src/assets/js/apps/ecommerce-create.js"></script>
-
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <?php require_once './include/footer-admin.php'; ?>
