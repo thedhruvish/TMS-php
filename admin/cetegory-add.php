@@ -2,6 +2,8 @@
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 ?>
+<link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+<link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
 
 <div class="row mb-4 layout-spacing layout-top-spacing">
     <form method="POST" enctype="multipart/form-data">
@@ -31,7 +33,7 @@ require_once './include/sidebar-admin.php';
                         <input type="file" class="form-control" name="image" accept="image/*">
                     </div>
                 </div>
-            
+
                 <!-- Publish Toggle -->
                 <div class="row mb-4">
                     <div class="col-12">
