@@ -103,7 +103,7 @@ if (isset($_GET['id'])) {
                     <form method="post" autocomplete="off">
                         <!-- hidden id for update -->
                         <?php if ($edit_mode || $view_mode): ?>
-                            <input type="hidden" name="invoice_id" value="<?= htmlspecialchars($invoice['id'] ?? '') ?>">
+                            <input type="hidden" name="invoice_id" value="<?= $invoice['id'] ?? '' ?>">
                         <?php endif; ?>
 
                         <div class="invoice-content">
@@ -116,7 +116,7 @@ if (isset($_GET['id'])) {
                                             name="invoice_label"
                                             class="form-control"
                                             placeholder="Invoice Label"
-                                            value="<?= htmlspecialchars($invoice['invoice_label'] ?? 'Invoice') ?>"
+                                            value="<?= $invoice['invoice_label'] ?? 'Invoice' ?>"
                                             <?= $view_mode ? 'readonly' : '' ?>>
                                     </div>
                                 </div>
@@ -131,28 +131,28 @@ if (isset($_GET['id'])) {
                                                     <label class="col-sm-3 col-form-label-sm">Name</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" name="client_name" class="form-control form-control-sm" placeholder="Client Name"
-                                                            value="<?= htmlspecialchars($invoice['client_name'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            value="<?= $invoice['client_name'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
                                                         <input type="email" name="client_email" class="form-control form-control-sm" placeholder="name@company.com"
-                                                            value="<?= htmlspecialchars($invoice['client_email'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            value="<?= $invoice['client_email'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Address</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" name="client_address" class="form-control form-control-sm" placeholder="XYZ Street"
-                                                            value="<?= htmlspecialchars($invoice['client_address'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            value="<?= $invoice['client_address'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Phone</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" name="client_phone" class="form-control form-control-sm" placeholder="(123) 456 789"
-                                                            value="<?= htmlspecialchars($invoice['client_phone'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            value="<?= $invoice['client_phone'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                     </div>
                                                 </div>
                                             </div>
@@ -166,17 +166,17 @@ if (isset($_GET['id'])) {
                                         <div class="col-md-3">
                                             <label>Invoice Number</label>
                                             <input type="text" name="invoice_number" class="form-control form-control-sm" placeholder="#0001"
-                                                value="<?= htmlspecialchars($invoice['invoice_number'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?= $invoice['invoice_number'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                         </div>
                                         <div class="col-md-3">
                                             <label>Invoice Date</label>
                                             <input type="date" name="invoice_date" class="form-control form-control-sm"
-                                                value="<?= htmlspecialchars($invoice['invoice_date'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?= $invoice['invoice_date'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                         </div>
                                         <div class="col-md-3">
                                             <label>Due Date</label>
                                             <input type="date" name="due_date" class="form-control form-control-sm"
-                                                value="<?= htmlspecialchars($invoice['due_date'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?= $invoice['due_date'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                         </div>
                                     </div>
                                 </div>
@@ -207,17 +207,17 @@ if (isset($_GET['id'])) {
                                                         </td>
                                                         <td class="description">
                                                             <input type="text" name="items[<?= $idx ?>][description]" class="form-control form-control-sm" placeholder="Item Description"
-                                                                value="<?= htmlspecialchars($it['description'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                                            <textarea name="items[<?= $idx ?>][additional_details]" class="form-control" placeholder="Additional Details" <?= $view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($it['additional_details'] ?? '') ?></textarea>
+                                                                value="<?= $it['description'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            <textarea name="items[<?= $idx ?>][additional_details]" class="form-control" placeholder="Additional Details" <?= $view_mode ? 'readonly' : '' ?>><?= $it['additional_details'] ?? '' ?></textarea>
                                                         </td>
                                                         <td class="rate">
                                                             <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
-                                                                value="<?= htmlspecialchars($it['rate'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                                value="<?= $it['rate'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                         </td>
 
                                                         <td class="qty">
                                                             <input type="number" name="items[<?= $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
-                                                                value="<?= htmlspecialchars($it['quantity'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                                value="<?= $it['quantity'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                         </td>
 
                                                         <td class="text-right amount">
@@ -245,21 +245,21 @@ if (isset($_GET['id'])) {
                                                 <label class="col-sm-3 col-form-label-sm">Account #</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="account_number" class="form-control form-control-sm" placeholder="Bank Account Number"
-                                                        value="<?= htmlspecialchars($invoice['account_number'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?= $invoice['account_number'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label-sm">Bank Name</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="bank_name" class="form-control form-control-sm" placeholder="Insert Bank Name"
-                                                        value="<?= htmlspecialchars($invoice['bank_name'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?= $invoice['bank_name'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label-sm">SWIFT code</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="swift_code" class="form-control form-control-sm" placeholder="Insert Code"
-                                                        value="<?= htmlspecialchars($invoice['swift_code'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?= $invoice['swift_code'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                         </div>
@@ -303,7 +303,7 @@ if (isset($_GET['id'])) {
                                 <div class="invoice-detail-note">
                                     <label>Notes</label>
                                     <textarea name="notes" class="form-control" rows="3" placeholder='Notes - For example, "Thank you for doing business with us"'
-                                        <?= $view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($invoice['notes'] ?? '') ?></textarea>
+                                        <?= $view_mode ? 'readonly' : '' ?>><?= $invoice['notes'] ?? '' ?></textarea>
                                 </div>
 
                                 <!-- Save / Preview buttons -->
@@ -314,11 +314,11 @@ if (isset($_GET['id'])) {
                                                 <button type="submit" class="btn btn-success w-100">Save Invoice</button>
                                             </div>
                                         <?php endif; ?>
-                                        <div class="col-md-4 mb-2">
+                                        <!-- <div class="col-md-4 mb-2">
                                             <a href="./app-invoice-preview.html" class="btn btn-secondary w-100">Preview</a>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-4 mb-2">
-                                            <a href="javascript:history.back()" class="btn btn-outline-dark w-100">Back</a>
+                                            <a href="./invoice.php" class="btn btn-outline-dark w-100">Back</a>
                                         </div>
                                     </div>
                                 </div>

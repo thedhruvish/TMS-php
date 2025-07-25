@@ -1,4 +1,4 @@
-<?php 
+<?php
 $pageTitle = "Category Create";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
             $uploadedImagePath = 'images/categories/' . $uniqueName;
-            
+
             // Delete old image if it exists and we're updating
             if ($isUpdate && !empty($category['image']) && file_exists('../' . $category['image'])) {
                 unlink('../' . $category['image']);
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         }
-        
+
         // If we get here, the operation failed
         $error = "Failed to save category to database. Please check your data.";
     } catch (Exception $e) {
@@ -93,16 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])): ?>
-<div class="alert alert-success alert-dismissible fade show">
-    <?= $_SESSION['message'] ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php unset($_SESSION['message']); endif; ?>
+    <div class="alert alert-success alert-dismissible fade show">
+        <?= $_SESSION['message'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php unset($_SESSION['message']);
+endif; ?>
 
 <?php if (isset($error)): ?>
-<div class="alert alert-danger">
-    Error: <?= htmlspecialchars($error) ?>
-</div>
+    <div class="alert alert-danger">
+        Error: <?= $error ?>
+    </div>
 <?php endif; ?>
 
 <div class="row mb-4 layout-spacing layout-top-spacing">
@@ -114,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label class="form-label">Category Name (Tag)</label>
-                        <input type="text" class="form-control" name="title" placeholder="Category name" 
-                               value="<?= htmlspecialchars($category['tag']) ?>" required>
+                        <input type="text" class="form-control" name="title" placeholder="Category name"
+                            value="<?= $category['tag'] ?>" required>
                         <small class="text-muted">This will be stored as the category tag</small>
                     </div>
                 </div>
@@ -124,8 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="4" 
-                                  placeholder="Enter category description"><?= htmlspecialchars($category['description']) ?></textarea>
+                        <textarea class="form-control" name="description" rows="4"
+                            placeholder="Enter category description"><?= $category['description'] ?></textarea>
                     </div>
                 </div>
 

@@ -88,7 +88,7 @@ if (isset($_POST['save'])) {
                         ?>
 
                             <tr>
-                                <td><?php echo htmlspecialchars($u['name']); ?></td>
+                                <td><?php echo $u['name']; ?></td>
 
                                 <td class="text-center">
                                     <!-- hidden input = absent when switch is off -->

@@ -24,8 +24,8 @@ $reult = $DB->read("user_log");
                             <th>login time</th>
                         </tr>
                     </thead>
-                        <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($reult)) { ?>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($reult)) { ?>
                             <tr>
                                 <td><?php echo $row['id']; ?></td>
                                 <td><?php echo $row['user_id']; ?></td>
@@ -33,8 +33,8 @@ $reult = $DB->read("user_log");
                                 <td><?php echo $row['is_success']; ?></td>
                                 <td><?php echo $row['login_time']; ?></td>
                             </tr>
-                            <?php } ?>
-                        </tbody>
+                        <?php } ?>
+                    </tbody>
 
                 </table>
             </div>

@@ -17,15 +17,15 @@ while ($row = mysqli_fetch_assoc($res)) $users[] = $row;
 
 /* ---- attendance ---- */
 
-$res = $DB->read("attendance",[
-    "where"=>[
-        "YEAR(att_date)"=>["=" =>  $selectedYear],
-        "MONTH(att_date)" => ["=" => $selectedMonth]
-    ]
+$res = $DB->read("attendance", [
+  "where" => [
+    "YEAR(att_date)" => ["=" =>  $selectedYear],
+    "MONTH(att_date)" => ["=" => $selectedMonth]
+  ]
 ]);
 
 while ($row = mysqli_fetch_assoc($res)) {
-    $attendance[$row['user_id']][$row['att_date']] = $row['status'];
+  $attendance[$row['user_id']][$row['att_date']] = $row['status'];
 }
 ?>
 
@@ -47,13 +47,13 @@ while ($row = mysqli_fetch_assoc($res)) {
       <select class="form-select form-select-sm" id="monthSelect" style="width:120px;">
         <?php for ($m = 1; $m <= 12; $m++): ?>
           <option value="<?= $m ?>" <?= $m == $selectedMonth ? 'selected' : '' ?>>
-            <?= date('F', mktime(0,0,0,$m,1)) ?>
+            <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
           </option>
         <?php endfor; ?>
       </select>
 
       <select class="form-select form-select-sm" id="yearSelect" style="width:100px;">
-        <?php for ($y = $currentYear-1; $y <= $currentYear+1; $y++): ?>
+        <?php for ($y = $currentYear - 1; $y <= $currentYear + 1; $y++): ?>
           <option value="<?= $y ?>" <?= $y == $selectedYear ? 'selected' : '' ?>><?= $y ?></option>
         <?php endfor; ?>
       </select>
@@ -63,9 +63,9 @@ while ($row = mysqli_fetch_assoc($res)) {
 
     <!-- right button -->
     <div class="ms-auto">
-        <a href="attendant.php">
-            <button class="btn btn-outline-secondary btn-sm">Edit Today Attendance</button>
-        </a>
+      <a href="attendant.php">
+        <button class="btn btn-outline-secondary btn-sm">Edit Today Attendance</button>
+      </a>
     </div>
   </div>
 </div>
@@ -85,12 +85,12 @@ while ($row = mysqli_fetch_assoc($res)) {
       <tbody>
         <?php foreach ($users as $u): ?>
           <tr>
-            <td><?= htmlspecialchars($u['name']) ?></td>
+            <td><?= $u['name'] ?></td>
             <?php
             for ($d = 1; $d <= $daysInMonth; $d++):
-                $date   = sprintf('%04d-%02d-%02d', $selectedYear, $selectedMonth, $d);
-                $status = $attendance[$u['id']][$date] ?? 'A';
-                $class  = ($date > date('Y-m-d')) ? 'text-bg-dark' : ($status=='P' ? 'bg-success' : 'bg-secondary');
+              $date   = sprintf('%04d-%02d-%02d', $selectedYear, $selectedMonth, $d);
+              $status = $attendance[$u['id']][$date] ?? 'A';
+              $class  = ($date > date('Y-m-d')) ? 'text-bg-dark' : ($status == 'P' ? 'bg-success' : 'bg-secondary');
             ?>
               <td class="<?= $class ?> fw-bold"><?= $status ?></td>
             <?php endfor; ?>
@@ -102,12 +102,12 @@ while ($row = mysqli_fetch_assoc($res)) {
 </div>
 
 <script>
-/* simple redirect when dropdowns change */
-document.getElementById('btnView').addEventListener('click', () => {
-   const m = document.getElementById('monthSelect').value;
-   const y = document.getElementById('yearSelect').value;
-   location.search = `month=${m}&year=${y}`;
-});
+  /* simple redirect when dropdowns change */
+  document.getElementById('btnView').addEventListener('click', () => {
+    const m = document.getElementById('monthSelect').value;
+    const y = document.getElementById('yearSelect').value;
+    location.search = `month=${m}&year=${y}`;
+  });
 </script>
 
 <?php require_once './include/footer-admin.php'; ?>

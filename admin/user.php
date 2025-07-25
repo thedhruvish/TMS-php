@@ -2,7 +2,7 @@
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
-$data =$DB->read('users');
+$data = $DB->read('users');
 
 // print_r($data);
 ?>
@@ -15,7 +15,10 @@ $data =$DB->read('users');
                 <div class="col-xl-4 col-lg-5 col-md-5 col-sm-7 filtered-list-search layout-spacing align-self-center">
                     <form class="form-inline my-2 my-lg-0">
                         <div class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
                             <input type="text" class="form-control product-search" id="input-search" placeholder="Search Contacts...">
                         </div>
                     </form>
@@ -23,11 +26,28 @@ $data =$DB->read('users');
 
                 <div class="col-xl-8 col-lg-7 col-md-7 col-sm-5 text-sm-right text-center layout-spacing align-self-center">
                     <div class="d-flex justify-content-sm-end justify-content-center">
-                        <svg id="btn-add-contact" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                        <svg id="btn-add-contact" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
 
                         <div class="switch align-self-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list view-list active-view"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid view-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list view-list active-view">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3" y2="6"></line>
+                                <line x1="3" y1="12" x2="3" y2="12"></line>
+                                <line x1="3" y1="18" x2="3" y2="18"></line>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid view-grid">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
                         </div>
                     </div>
 
@@ -123,45 +143,56 @@ $data =$DB->read('users');
                             <h4 style="margin-left: 3px;">Phone</h4>
                         </div>
                         <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2  delete-multiple"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2  delete-multiple">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
                         </div>
                     </div>
                 </div>
-                <?php while($row = mysqli_fetch_assoc($data)) {?>
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
+                <?php while ($row = mysqli_fetch_assoc($data)) { ?>
+                    <div class="items">
+                        <div class="item-content">
+                            <div class="user-profile">
+                                <div class="n-chk align-self-center text-center">
+                                    <div class="form-check form-check-primary me-0 mb-0">
+                                        <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
+                                    </div>
+                                </div>
+                                <img src="../src/assets/img/profile-5.jpeg" alt="avatar">
+                                <div class="user-meta-info">
+                                    <p class="user-name" data-name="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></p>
+                                    <p class="user-work" data-occupation="<?php echo $row['role'] ?>"><?php echo $row['role'] ?></p>
                                 </div>
                             </div>
-                            <img src="../src/assets/img/profile-5.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></p>
-                                <p class="user-work" data-occupation="<?php echo $row['role'] ?>"><?php echo $row['role'] ?></p>
+                            <div class="user-email">
+                                <p class="info-title">Email: </p>
+                                <p class="usr-email-addr" data-email="<?php echo $row['email'] ?>"><?php echo $row['email'] ?></p>
+                            </div>
+                            <div class="user-email">
+                                <p class="info-title">Auth Provider: </p>
+                                <p class="usr-email-addr" data-email="<?php echo $row['auth_provider'] ?>"><?php echo $row['auth_provider'] ?></p>
+                            </div>
+                            <div class="user-phone">
+                                <p class="info-title">Phone: </p>
+                                <p class="usr-ph-no" data-phone="<?php echo $row['mobile_no'] ?>"><?php echo $row['mobile_no'] ?></p>
+                            </div>
+                            <div class="action-btn">
+                                <a href="./user-add.php?u_id=<?php echo $row['id']; ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit">
+                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                    </svg> </a>
+                                <a href="./user-add.php?d_id=<?php echo $row['id']; ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="8.5" cy="7" r="4"></circle>
+                                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                                    </svg></a>
                             </div>
                         </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="<?php echo $row['email'] ?>"><?php echo $row['email'] ?></p>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Auth Provider: </p>
-                            <p class="usr-email-addr" data-email="<?php echo $row['auth_provider'] ?>"><?php echo $row['auth_provider'] ?></p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="<?php echo $row['mobile_no'] ?>"><?php echo $row['mobile_no'] ?></p>
-                        </div>
-                        <div class="action-btn">
-                            <a href="./user-add.php?u_id=<?php echo $row['id']; ?>">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>                    </a>
-                            <a href="./user-add.php?d_id=<?php echo $row['id']; ?>">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg></a>
-                        </div>
                     </div>
-                </div>
                 <?php } ?>
             </div>
 

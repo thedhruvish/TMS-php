@@ -40,8 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
     if (file_exists($sql_file)) {
         $sql = file_get_contents($sql_file);
 
-        // Debug: Uncomment to view SQL being executed
-        // echo "<pre>" . htmlspecialchars($sql) . "</pre>";
 
         if (mysqli_multi_query($conn, $sql)) {
             do {
@@ -92,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
         if (file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
 
-            // echo "<pre>" . htmlspecialchars($sql) . "</pre>"; // Optional debug
+            // echo "<pre>" . $sql . "</pre>"; // Optional debug
 
             if (mysqli_multi_query($conn, $sql)) {
                 do {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $pageTitle = "Stock Management";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
@@ -15,16 +15,16 @@ if ($result && mysqli_num_rows($result) > 0) {
         $productRes = $DB->read("products", array(
             'where' => array('id' => array('=' => $stock['product_id']))
         ));
-        
+
         if ($productRes && mysqli_num_rows($productRes) > 0) {
             $product = mysqli_fetch_assoc($productRes);
             $stock['product_name'] = $product['name'];
-            
+
             // Calculate pending stock (current - sold - dead)
             $sold = $stock['sold_stock'] ?? 0;
             $dead = $stock['dead_stock'] ?? 0;
             $stock['pending_stock'] = $stock['current_stock'] - $sold - $dead;
-            
+
             $stockData[] = $stock;
         }
     }
@@ -44,7 +44,7 @@ if (isset($_GET['delete_id'])) {
     <div class="seperator-header layout-top-spacing">
         <h4 class="">Stock Management</h4>
     </div>
-    
+
     <?php if (isset($_SESSION['message'])): ?>
         <div class="col-12">
             <div class="alert alert-success alert-dismissible fade show">
@@ -54,14 +54,14 @@ if (isset($_GET['delete_id'])) {
         </div>
         <?php unset($_SESSION['message']); ?>
     <?php endif; ?>
-    
+
     <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-content widget-content-area">
                 <div class="mb-4">
                     <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
                 </div>
-                
+
                 <table id="html5-extension" class="table dt-table-hover" style="width:100%">
                     <thead>
                         <tr>
@@ -78,7 +78,7 @@ if (isset($_GET['delete_id'])) {
                     <tbody>
                         <?php foreach ($stockData as $stock): ?>
                             <tr>
-                                <td><?= htmlspecialchars($stock['product_name']) ?></td>
+                                <td><?= $stock['product_name'] ?></td>
                                 <td><?= $stock['current_stock'] ?></td>
                                 <td><?= $stock['sold_stock'] ?? '0' ?></td>
                                 <td><?= $stock['dead_stock'] ?? '0' ?></td>
@@ -92,7 +92,7 @@ if (isset($_GET['delete_id'])) {
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                        
+
                         <?php if (empty($stockData)): ?>
                             <tr>
                                 <td colspan="8" class="text-center">No stock records found</td>
@@ -125,12 +125,12 @@ if (isset($_GET['delete_id'])) {
 </div>
 
 <script>
-function confirmDelete(stockId) {
-    const deleteBtn = document.getElementById('deleteConfirmBtn');
-    deleteBtn.href = `stoack.php?delete_id=${stockId}`;
-    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    modal.show();
-}
+    function confirmDelete(stockId) {
+        const deleteBtn = document.getElementById('deleteConfirmBtn');
+        deleteBtn.href = `stoack.php?delete_id=${stockId}`;
+        const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
 </script>
 
 <?php include('./include/footer-admin.php'); ?>

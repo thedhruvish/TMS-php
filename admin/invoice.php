@@ -1,14 +1,46 @@
 <?php $pageTitle = "Invoice";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+$invoices = null;
+if (isset($_GET['search'])) {
+  $search = $_GET['search'];
 
-$invoices = $DB->read('invoices', ['order' => 'id DESC']);
+  $invoices = $DB->read('invoices', [
+    'or_where' => [
+      'client_email' => ['LIKE' => "%$search%"],
+      'client_name' => ['LIKE' => "%$search%"],
+      'total'        => ['LIKE' => "%$search%"],
+    ],
+    'order' => 'id DESC'
+  ]);
+} else {
+  $invoices = $DB->read('invoices', ['order' => 'id DESC']);
+}
 ?>
-<div class="row " id="cancel-row">
+
+<div class="row">
+  <div class="seperator-header layout-top-spacing d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Invoice</h4>
+    <a href="invoice-add.php" class="btn btn-primary">Add Invoice</a>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="row mb-4 align-items-center justify-content-between">
+    <div class="col-lg-6 d-flex align-items-center">
+      <form method="get" class="d-flex flex-grow-1 gap-2">
+        <input type="text" name="search" class="form-control" style="max-width: 300px;"
+          placeholder="Search Email..." value="<?= @$searchTerm ?>">
+        <button type="submit" class="btn btn-primary px-3">Search</button>
+        <?php if (!empty($searchTerm) || !empty($filterCategory)): ?>
+          <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
+        <?php endif; ?>
+      </form>
+    </div>
+  </div>
 
   <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
     <div class="widget-content widget-content-area br-8">
-      <table id="invoice-list" class="table dt-table-hover" style="width:100%">
+      <table class="table dt-table-hover" style="width:100%">
         <thead>
           <tr>
             <th class="checkbox-column"> Record no. </th>
@@ -24,7 +56,7 @@ $invoices = $DB->read('invoices', ['order' => 'id DESC']);
           <?php while ($row = mysqli_fetch_assoc($invoices)) { ?>
             <tr>
               <td class="checkbox-column"> <?php echo $row['id']; ?></td>
-              <td><a href="./app-invoice-preview.html"><span class="inv-number"><?php echo $row['id']; ?></span></a></td>
+              <td><a href="./invoice-add.php"><span class="inv-number"><?php echo $row['id']; ?></span></a></td>
               <td>
                 <div class="d-flex">
 
@@ -56,7 +88,7 @@ $invoices = $DB->read('invoices', ['order' => 'id DESC']);
       </table>
     </div>
   </div>
-
 </div>
+
 
 <?php include_once './include/footer-admin.php'; ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $pageTitle = "Edit Stock";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
@@ -26,10 +26,10 @@ if (isset($_GET['id'])) {
     $stockRes = $DB->read("stock", [
         'where' => ['id' => ['=' => $stockId]]
     ]);
-    
+
     if ($stockRes && mysqli_num_rows($stockRes) > 0) {
         $stock = mysqli_fetch_assoc($stockRes);
-        
+
         // Get product name
         $productRes = $DB->read("products", [
             'where' => ['id' => ['=' => $stock['product_id']]]
@@ -47,15 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentStock = (int)$_POST['current_stock'];
     $soldStock = (int)$_POST['sold_stock'];
     $deadStock = (int)$_POST['dead_stock'];
-    
+
     // Update stock record
-    $DB->update('stock', 
+    $DB->update(
+        'stock',
         ['current_stock', 'sold_stock', 'dead_stock'],
         [$currentStock, $soldStock, $deadStock],
         'id',
         $stockId
     );
-    
+
     $_SESSION['message'] = "Stock updated successfully";
     header("Location: stoack.php");
     exit;
@@ -81,35 +82,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="widget-content widget-content-area blog-create-section">
             <form method="POST">
                 <input type="hidden" name="stock_id" value="<?= $stock['id'] ?>">
-                
+
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Product</label>
-                        <input type="text" class="form-control" value="<?= htmlspecialchars($stock['product_name']) ?>" readonly>
+                        <input type="text" class="form-control" value="<?= $stock['product_name'] ?>" readonly>
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Initial Stock</label>
-                        <input type="number" class="form-control" name="current_stock" 
-                               value="<?= $stock['current_stock'] ?>" required min="0">
+                        <input type="number" class="form-control" name="current_stock"
+                            value="<?= $stock['current_stock'] ?>" required min="0">
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Sold Stock</label>
-                        <input type="number" class="form-control" name="sold_stock" 
-                               value="<?= $stock['sold_stock'] ?>" min="0">
+                        <input type="number" class="form-control" name="sold_stock"
+                            value="<?= $stock['sold_stock'] ?>" min="0">
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Dead Stock</label>
-                        <input type="number" class="form-control" name="dead_stock" 
-                               value="<?= $stock['dead_stock'] ?>" min="0">
+                        <input type="number" class="form-control" name="dead_stock"
+                            value="<?= $stock['dead_stock'] ?>" min="0">
                     </div>
                 </div>
 

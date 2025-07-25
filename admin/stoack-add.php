@@ -1,4 +1,4 @@
-<?php 
+<?php
 $pageTitle = "Add Stock";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
@@ -18,25 +18,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Update existing stock
             $stockData = mysqli_fetch_assoc($existingStock);
             $newStock = $stockData['current_stock'] + $initialStock;
-            
-            $DB->update('stock', 
-                ['current_stock'], 
-                [$newStock], 
-                'product_id', 
+
+            $DB->update(
+                'stock',
+                ['current_stock'],
+                [$newStock],
+                'product_id',
                 $productId
             );
-            
+
             $_SESSION['message'] = "Stock updated successfully!";
         } else {
             // Create new stock record
-            $DB->create('stock', 
-                ['product_id', 'current_stock'], 
+            $DB->create(
+                'stock',
+                ['product_id', 'current_stock'],
                 [$productId, $initialStock]
             );
-            
+
             $_SESSION['message'] = "Stock added successfully!";
         }
-        
+
         header("Location: stoack-add.php?success=1");
         exit;
     } else {
@@ -79,7 +81,7 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
 
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger">
-                    <?= htmlspecialchars($error) ?>
+                    <?= $error ?>
                 </div>
             <?php endif; ?>
 
@@ -91,7 +93,7 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
                             <option value="">Select a product</option>
                             <?php foreach ($products as $product): ?>
                                 <option value="<?= $product['id'] ?>">
-                                    <?= htmlspecialchars($product['name']) ?>
+                                    <?= $product['name'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -101,9 +103,9 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Initial Stock</label>
-                        <input type="number" class="form-control" name="initial_stock" 
-                               placeholder="Enter initial stock quantity" 
-                               min="0" required>
+                        <input type="number" class="form-control" name="initial_stock"
+                            placeholder="Enter initial stock quantity"
+                            min="0" required>
                     </div>
                 </div>
 

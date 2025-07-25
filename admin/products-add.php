@@ -88,7 +88,7 @@ if (isset($_POST['save'])) {
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
             $uploadedImagePath = '../images/images/' . $uniqueName;
-            
+
             // Delete old image if it exists and we're updating
             if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
                 unlink($product['image']);
@@ -143,16 +143,17 @@ if (isset($_POST['save'])) {
 
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])): ?>
-<div class="alert alert-success alert-dismissible fade show">
-    <?= $_SESSION['message'] ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php unset($_SESSION['message']); endif; ?>
+    <div class="alert alert-success alert-dismissible fade show">
+        <?= $_SESSION['message'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php unset($_SESSION['message']);
+endif; ?>
 
 <?php if (isset($error)): ?>
-<div class="alert alert-danger">
-    Error: <?= htmlspecialchars($error) ?>
-</div>
+    <div class="alert alert-danger">
+        Error: <?= $error ?>
+    </div>
 <?php endif; ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
@@ -214,8 +215,8 @@ if (isset($_POST['save'])) {
                             <select name="category" class="form-select" <?= $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= htmlspecialchars($cat['tag']) ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($cat['tag']) ?>
+                                    <option value="<?= $cat['tag'] ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?= $cat['tag'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

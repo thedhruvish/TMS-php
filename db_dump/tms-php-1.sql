@@ -41,7 +41,7 @@ CREATE TABLE `users` (
   `password` TEXT NOT NULL,
   `mobile_no` BIGINT DEFAULT NULL,
   `role` TEXT NOT NULL DEFAULT 'staff',
-  `profile_picture` TEXT DEFAULT NULL,
+  `profile_picture` TEXT DEFAULT DEFAULT "../images/profile/avatar.png",
   `auth_provider` TEXT NOT NULL DEFAULT 'local',
   `two_step_auth` TINYINT(1) NOT NULL DEFAULT 0,
   `created_by` INT(11) NOT NULL,
