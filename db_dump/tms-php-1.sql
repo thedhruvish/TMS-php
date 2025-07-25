@@ -181,6 +181,8 @@ CREATE TABLE `weblink` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
+
 --  category
 
 CREATE TABLE category (
@@ -189,3 +191,26 @@ CREATE TABLE category (
   image VARCHAR(255),
   tag VARCHAR(100)
 );
+
+
+-- -stock table
+
+
+CREATE TABLE `stock` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `product_id` INT NOT NULL,
+  `current_stock` INT NOT NULL DEFAULT 0,
+  `sold_stock` INT NULL DEFAULT NULL,
+  `dead_stock` INT NULL DEFAULT NULL,
+  `pending_stock` INT NULL DEFAULT NULL,
+  `last_updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) 
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `chk_stock_values` CHECK (
+    `current_stock` >= 0 AND
+    (`sold_stock` IS NULL OR `sold_stock` >= 0) AND
+    (`dead_stock` IS NULL OR `dead_stock` >= 0) AND
+    (`pending_stock` IS NULL OR `pending_stock` >= 0)
+  )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
