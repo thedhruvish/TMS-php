@@ -27,23 +27,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
-  `title` text NOT NULL,
-  `description` longtext NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `cost_price` int(11) NOT NULL,
-  `stock_quantity` int(11) NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  `tags` longtext NOT NULL,
-  `status` text NOT NULL DEFAULT 'draft',
-  `image_url` mediumtext DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `created_by` int(11) NOT NULL,
-  `discount` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -136,3 +119,58 @@ ALTER TABLE `products`
   ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
+
+
+-- Invoices (main header)
+CREATE TABLE  `invoices` (
+  `id`              INT AUTO_INCREMENT PRIMARY KEY,
+  `invoice_label`   VARCHAR(255) DEFAULT 'Invoice',
+  `client_name`     VARCHAR(255) NOT NULL,
+  `client_email`    VARCHAR(255) DEFAULT NULL,
+  `client_address`  TEXT         DEFAULT NULL,
+  `client_phone`    VARCHAR(50)  DEFAULT NULL,
+  `invoice_number`  VARCHAR(50)  NOT NULL,
+  `invoice_date`    DATE         DEFAULT NULL,
+  `due_date`        DATE         DEFAULT NULL,
+  `account_number`  VARCHAR(50)  DEFAULT NULL,
+  `bank_name`       VARCHAR(100) DEFAULT NULL,
+  `swift_code`      VARCHAR(50)  DEFAULT NULL,
+  `notes`           TEXT         DEFAULT NULL,
+  `subtotal`        DECIMAL(12,2) DEFAULT 0.00,
+  `discount`        DECIMAL(12,2) DEFAULT 0.00,
+  `tax`             DECIMAL(12,2) DEFAULT 0.00,
+  `total`           DECIMAL(12,2) DEFAULT 0.00,
+  `created_at`      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Invoice line items
+CREATE TABLE `invoice_items` (
+  `id`                 INT AUTO_INCREMENT PRIMARY KEY,
+  `invoice_id`         INT NOT NULL,
+  `description`        VARCHAR(255) NOT NULL,
+  `additional_details` TEXT DEFAULT NULL,
+  `rate`               DECIMAL(12,2) DEFAULT 0.00,
+  `quantity`           INT           DEFAULT 1,
+  `amount`             DECIMAL(12,2) DEFAULT 0.00,
+  `taxable`            TINYINT(1)    DEFAULT 0,
+  CONSTRAINT `fk_items_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- weblink
+-- 1. Make sure the `users` table exists first.
+-- 2. Run this block in the SQL tab of phpMyAdmin.
+
+CREATE TABLE `weblink` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `createby`   INT NOT NULL,
+    `createat`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `productIds` JSON,
+
+    CONSTRAINT `fk_weblink_createby`
+        FOREIGN KEY (`createby`) REFERENCES `users`(`id`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
