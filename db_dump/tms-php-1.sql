@@ -111,9 +111,11 @@ CREATE TABLE IF NOT EXISTS `user_log` (
 
 -- attendance table
 
+
 CREATE TABLE attendance (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  user_id INT,
-  date DATE
-  status CHAR(1) CHECK (status IN ('p','a'))
-)
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  user_id     INT          NOT NULL,
+  att_date    DATE         NOT NULL,
+  status      ENUM('P','A') NOT NULL,
+  UNIQUE KEY  uniq_user_date (user_id, att_date)
+);
