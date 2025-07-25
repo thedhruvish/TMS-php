@@ -41,7 +41,7 @@ $(document).ready(function() {
   $('#btn-add-contact').on('click', function(event) {
     $('#addContactModal #btn-add').show();
     $('#addContactModal #btn-edit').hide();
-    $('#addContactModal').modal('show');
+    
   })
 
 function deleteContact() {
