@@ -5,7 +5,7 @@ require_once "config.php";
 class Database
 {
 
-  private $conn;
+  public $conn;
 
   // Connect to DB
   public function __construct()
