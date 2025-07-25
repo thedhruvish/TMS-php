@@ -214,3 +214,23 @@ CREATE TABLE `stock` (
     (`pending_stock` IS NULL OR `pending_stock` >= 0)
   )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `first_name` text DEFAULT NULL,
+  `last_name` text DEFAULT NULL,
+  `email` text DEFAULT NULL,
+  `phone` text DEFAULT NULL,
+  `dob` text DEFAULT NULL,
+  `gender` text DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `city` text DEFAULT NULL,
+  `state` text DEFAULT NULL,
+  `zip` text DEFAULT NULL,
+  `country` text DEFAULT NULL,
+  `reference_name` text DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `profile_image` text DEFAULT NULL,
+  `total_amount` text DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
