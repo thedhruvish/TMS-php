@@ -165,7 +165,7 @@ CREATE TABLE `weblink` (
     `id`         INT AUTO_INCREMENT PRIMARY KEY,
     `createby`   INT NOT NULL,
     `createat`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `productIds` JSON,
+    `productIds` TEXT,
 
     CONSTRAINT `fk_weblink_createby`
         FOREIGN KEY (`createby`) REFERENCES `users`(`id`)
