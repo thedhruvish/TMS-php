@@ -3,6 +3,7 @@ ob_start();
 require_once "../Database.php";
 if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'admin')) {
   session_destroy();
+
   header("location: ../login.php?error=login Required");
 }
 ?>

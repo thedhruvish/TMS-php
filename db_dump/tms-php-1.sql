@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `products`
 --
 
-
 -- --------------------------------------------------------
 
 --
@@ -167,6 +166,7 @@ CREATE TABLE `invoice_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+-- weblink
 
 CREATE TABLE `weblink` (
     `id`         INT AUTO_INCREMENT PRIMARY KEY,
@@ -181,3 +181,11 @@ CREATE TABLE `weblink` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+--  category
+
+CREATE TABLE category (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description TEXT,
+  image VARCHAR(255),
+  tag VARCHAR(100)
+);

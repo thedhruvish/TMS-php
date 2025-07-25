@@ -1,343 +1,277 @@
-<?php 
-$pageTitle = "Add Product";
+<?php
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 ?>
 
-    <style>
-        /* Main Layout */
-        .layout-px-spacing {
-            padding: 0 15px;
-        }
-        .middle-content {
-            padding: 0 15px;
-        }
-        
-        /* Form Section Styling */
-        .ecommerce-create-section {
-            padding: 20px;
-            background: #fff;
-            border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        /* Form Input Styling with consistent left spacing */
-        .form-group {
-            margin-bottom: 20px;
-            padding-left: 10px; /* Added left spacing */
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #444;
-            padding-left: 5px; /* Added for alignment */
-        }
-        
-        /* Text Editor */
-        .editor-container {
-            margin-bottom: 20px;
-            padding-left: 10px; /* Added left spacing */
-        }
-        #description-editor {
-            min-height: 150px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 0 0 4px 4px;
-            outline: none;
-        }
-        
-        /* Editor Toolbar */
-        .editor-toolbar {
-            background: #f5f5f5;
-            padding: 8px 10px;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-            display: flex;
-            gap: 5px;
-        }
-        .toolbar-btn {
-            background: none;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .toolbar-btn:hover {
-            background: #e0e0e0;
-        }
-        .toolbar-btn.active {
-            background: #4361ee;
-            color: white;
-        }
-        
-        /* Upload Section */
-        .upload-container {
-            margin-bottom: 25px;
-            padding-left: 10px; /* Added left spacing */
-        }
-        .upload-area {
-            border: 2px dashed #ccc;
-            padding: 30px;
-            text-align: center;
-            border-radius: 6px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .upload-area:hover {
-            border-color: #4361ee;
-        }
-        .upload-text {
-            margin-bottom: 15px;
-            color: #666;
-        }
-        .browse-btn {
-            background-color: #4361ee;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 4px;
-            display: inline-block;
-            font-size: 14px;
-        }
-        #file-upload {
-            display: none;
-        }
-        
-        /* Right Sidebar */
-        .sidebar-section {
-            padding-left: 15px;
-        }
-        .sidebar-section .widget-content {
-            padding: 20px;
-            background: #fff;
-            border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .switch-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-left: 5px; /* Consistent with main content */
-        }
-        
-        /* Button Styling */
-        .btn-success {
-            background-color: #4361ee;
-            border: none;
-            padding: 10px 20px;
-            font-size: 15px;
-            width: 100%;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn-success:hover {
-            background-color: #3a56d4;
-        }
-    </style>
-</head>
-<body>
+<link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+<link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
 
-    <div class="layout-px-spacing">
-        <div class="middle-content container-xxl p-0">
-            <div class="row mb-4 layout-spacing layout-top-spacing">
-                
-                <!-- Main Content Column -->
-                <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div class="widget-content widget-content-area ecommerce-create-section">
-                        <!-- Product Name Field -->
-                        <div class="form-group">
-                            <label for="product-name">Product Name</label>
-                            <input type="text" class="form-control" id="product-name" placeholder="Enter product name">
-                        </div>
+<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+<link rel="stylesheet" href="../src/plugins/src/filepond/filepond.min.css">
+<link rel="stylesheet" href="../src/plugins/src/filepond/FilePondPluginImagePreview.min.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/src/tagify/tagify.css">
 
-                        <!-- Description Editor -->
-                        <div class="editor-container">
-                            <label>Description</label>
-                            <div class="editor-toolbar">
-                                <button type="button" class="toolbar-btn" data-command="bold" title="Bold">
-                                    <strong>B</strong>
-                                </button>
-                                <button type="button" class="toolbar-btn" data-command="italic" title="Italic">
-                                    <em>I</em>
-                                </button>
-                                <button type="button" class="toolbar-btn" data-command="underline" title="Underline">
-                                    <u>U</u>
-                                </button>
-                            </div>
-                            <div id="description-editor" contenteditable="true" placeholder="Write product description..."></div>
-                        </div>
+<link rel="stylesheet" type="text/css" href="../src/assets/css/light/forms/switches.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/editors/quill/quill.snow.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/tagify/custom-tagify.css">
+<link href="../src/plugins/css/light/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
 
-                        <!-- Upload Section -->
-                        <div class="upload-container">
-                            <label>Upload Images</label>
-                            <div class="upload-area" id="upload-area">
-                                <p class="upload-text">Drag & Drop your files or <span class="browse-btn">Browse</span></p>
-                                <input type="file" id="file-upload" multiple>
-                            </div>
-                        </div>
+<link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/editors/quill/quill.snow.css">
+<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/tagify/custom-tagify.css">
+<link href="../src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+<!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
-                        <!-- Display Publicly Toggle -->
-                        <div class="form-group text-center">
-                            <div class="switch-container">
-                                <input class="switch-input" type="checkbox" id="showPublicly" checked>
-                                <label for="showPublicly">Display publicly</label>
-                            </div>
-                        </div>
-                    </div>
+<!--  BEGIN CUSTOM STYLE FILE  -->
+<link rel="stylesheet" href="../src/assets/css/light/apps/ecommerce-create.css">
+<link rel="stylesheet" href="../src/assets/css/dark/apps/ecommerce-create.css">
+<!--  END CUSTOM STYLE FILE  -->
+
+<?php
+
+$product = [
+    'name' => '',
+    'description' => '',
+    'product_code' => '',
+    'category' => '',
+    'tags' => '',
+    'regular_price' => '',
+    'sale_price' => '',
+    'includes_tax' => 0,
+    'in_stock' => 0,
+    'show_publicly' => 1,
+];
+
+$readonly = false;
+$isUpdate = false;
+$updateId = null;
+$uploadedImagePath = null;
+
+// Get all categories from database
+$categories = [];
+$categoriesRes = $DB->read("category");
+if ($categoriesRes && mysqli_num_rows($categoriesRes) > 0) {
+    $categories = mysqli_fetch_all($categoriesRes, MYSQLI_ASSOC);
+}
+
+// View mode
+if (isset($_GET['id'])) {
+    $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['id']]]]);
+    if ($res && mysqli_num_rows($res) > 0) {
+        $product = mysqli_fetch_assoc($res);
+        $readonly = true;
+    }
+}
+
+// Update mode
+if (isset($_GET['u_id'])) {
+    $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
+    if ($res && mysqli_num_rows($res) > 0) {
+        $product = mysqli_fetch_assoc($res);
+        $uploadedImagePath = $product['image'];
+        $isUpdate = true;
+        $updateId = $_GET['u_id'];
+    }
+}
+
+// Handle Form Submission
+if (isset($_POST['save'])) {
+    if (isset($_FILES['image'])) {
+        $uploadDir = '../images/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $originalName = basename($_FILES['image']['name']);
+        $uniqueName = time() . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
+        $targetPath = $uploadDir . $uniqueName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            $uploadedImagePath = '../images/' . $uniqueName;
+            
+            // Delete old image if it exists and we're updating
+            if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
+                unlink($product['image']);
+            }
+        }
+    } elseif ($isUpdate && !empty($product['image'])) {
+        // Keep existing image if no new image was uploaded
+        $uploadedImagePath = $product['image'];
+    }
+
+    $data = [
+        $_POST['name'],
+        $_POST['description'],
+        $_POST['product_code'],
+        $_POST['category'],
+        $_POST['tags'],
+        $_POST['regular_price'],
+        $_POST['sale_price'],
+        isset($_POST['includes_tax']) ? 1 : 0,
+        isset($_POST['in_stock']) ? 1 : 0,
+        isset($_POST['show_publicly']) ? 1 : 0,
+        $uploadedImagePath
+    ];
+
+    $columns = [
+        'name',
+        'description',
+        'product_code',
+        'category',
+        'tags',
+        'regular_price',
+        'sale_price',
+        'includes_tax',
+        'in_stock',
+        'show_publicly',
+        'image'
+    ];
+
+    if ($isUpdate && $updateId !== null) {
+        $DB->update('products', $columns, $data, 'id', $updateId);
+        $_SESSION['message'] = "Product updated successfully";
+    } else {
+        $DB->create('products', $columns, $data);
+        $_SESSION['message'] = "Product added successfully";
+    }
+
+    header("Location: products.php?success=1");
+    exit;
+}
+
+?>
+
+<!-- Messages -->
+<?php if (isset($_SESSION['message'])): ?>
+<div class="alert alert-success alert-dismissible fade show">
+    <?= $_SESSION['message'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php unset($_SESSION['message']); endif; ?>
+
+<?php if (isset($error)): ?>
+<div class="alert alert-danger">
+    Error: <?= htmlspecialchars($error) ?>
+</div>
+<?php endif; ?>
+
+<form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
+    <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="widget-content widget-content-area ecommerce-create-section">
+            <div class="row mb-4">
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" name="name" value="<?= $product['name'] ?>" placeholder="Product Name" <?= $readonly ? 'readonly' : '' ?>>
                 </div>
+            </div>
 
-                <!-- Right Sidebar Column -->
-                <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 sidebar-section">
-                    <div class="widget-content widget-content-area ecommerce-create-section">
-                        <div class="switch-container">
-                            <input class="switch-input" type="checkbox" id="in-stock">
-                            <label for="in-stock">In Stock</label>
+            <div class="row mb-4">
+                <div class="col-sm-12">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" <?= $readonly ? 'readonly' : '' ?>><?= $product['description'] ?></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label>Upload Images</label>
+                    <input type="file" class="form-control" name="image" <?= $readonly ? 'disabled' : '' ?>>
+                    <?php if ($isUpdate && !empty($product['image'])): ?>
+                        <div class="mt-2">
+                            <img src="<?= $product['image'] ?>" alt="Current Product Image" style="max-height: 100px;">
+                            <p class="text-muted small mt-1">Current image</p>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="proCode">Product Code</label>
-                            <input type="text" class="form-control" id="proCode">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="proSKU">Product SKU</label>
-                            <input type="text" class="form-control" id="proSKU">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="stock-quantity">Stock Quantity (in meters)</label>
-                            <input type="number" class="form-control" id="stock-quantity">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select class="form-control" id="gender">
-                                <option value="">Choose...</option>
-                                <option value="men">Men</option>
-                                <option value="women">Women</option>
-                                <option value="kids">Kids</option>
-                                <option value="unisex">Unisex</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <select class="form-control" id="category">
-                                <option value="">Choose...</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="clothing">Clothing</option>
-                                <option value="organic">Organic</option>
-                                <option value="apparel">Apparel</option>
-                                <option value="accessories">Accessories</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tags">Tags</label>
-                            <input type="text" class="form-control" id="tags">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="regular-price">Regular Price</label>
-                            <input type="text" class="form-control" id="regular-price">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="sale-price">Sale Price</label>
-                            <input type="text" class="form-control" id="sale-price">
-                        </div>
-                        
-                        <div class="switch-container">
-                            <input class="switch-input" type="checkbox" id="pricing-includes-taxes">
-                            <label for="pricing-includes-taxes">Price includes taxes</label>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-success">Add Product</button>
-                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" name="show_publicly" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <label class="form-check-label">Display publicly</label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Rich Text Editor Functionality
-            const editor = document.getElementById('description-editor');
-            const toolbarBtns = document.querySelectorAll('.toolbar-btn');
-            
-            toolbarBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const command = this.dataset.command;
-                    document.execCommand(command, false, null);
-                    
-                    // Toggle active state
-                    toolbarBtns.forEach(b => b.classList.remove('active'));
-                    if (document.queryCommandState(command)) {
-                        this.classList.add('active');
-                    }
-                });
-            });
-            
-            // File upload functionality
-            const uploadArea = document.getElementById('upload-area');
-            const fileInput = document.getElementById('file-upload');
-            const browseBtn = document.querySelector('.browse-btn');
-            
-            // Handle browse button click
-            browseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                fileInput.click();
-            });
-            
-            // Handle drag and drop
-            ['dragover', 'dragleave', 'drop'].forEach(event => {
-                uploadArea.addEventListener(event, function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            });
-            
-            uploadArea.addEventListener('dragover', function() {
-                this.style.borderColor = '#4361ee';
-                this.style.backgroundColor = '#f0f4ff';
-            });
-            
-            uploadArea.addEventListener('dragleave', function() {
-                this.style.borderColor = '#ccc';
-                this.style.backgroundColor = '#f9f9f9';
-            });
-            
-            uploadArea.addEventListener('drop', function(e) {
-                this.style.borderColor = '#ccc';
-                this.style.backgroundColor = '#f9f9f9';
-                
-                if(e.dataTransfer.files.length) {
-                    fileInput.files = e.dataTransfer.files;
-                    console.log(fileInput.files.length + ' file(s) selected');
-                }
-            });
-            
-            // Handle file selection
-            fileInput.addEventListener('change', function() {
-                if(this.files.length) {
-                    console.log(this.files.length + ' file(s) selected');
-                }
-            });
-        });
-    </script>
+    <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="row">
+            <div class="col-xxl-12 col-xl-8 col-lg-8 col-md-7 mt-xxl-0 mt-4">
+                <div class="widget-content widget-content-area ecommerce-create-section">
+                    <div class="row">
+                        <div class="col-xxl-12 mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="in_stock" <?= $product['in_stock'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                                <label class="form-check-label">In Stock</label>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-6 mb-4">
+                            <label>Product Code</label>
+                            <input type="text" class="form-control" name="product_code" value="<?= $product['product_code'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-6 mb-4">
+                            <label>Category</label>
+                            <select name="category" class="form-select" <?= $readonly ? 'disabled' : '' ?>>
+                                <option value="">Choose...</option>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat['tag']) ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($cat['tag']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-xxl-12 col-lg-6 col-md-12">
+                            <label>Tags</label>
+                            <input type="text" class="form-control" name="tags" value="<?= $product['tags'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-12 col-xl-4 col-lg-4 col-md-5 mt-4">
+                <div class="widget-content widget-content-area ecommerce-create-section">
+                    <div class="row">
+                        <div class="col-sm-12 mb-4">
+                            <label>Regular Price</label>
+                            <input type="text" class="form-control" name="regular_price" value="<?= $product['regular_price'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                        </div>
+                        <div class="col-sm-12 mb-4">
+                            <label>Sale Price</label>
+                            <input type="text" class="form-control" name="sale_price" value="<?= $product['sale_price'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                        </div>
+                        <div class="col-sm-12 mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="includes_tax" <?= $product['includes_tax'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                                <label class="form-check-label">Price includes taxes</label>
+                            </div>
+                        </div>
+                        <?php if (!$readonly): ?>
+                            <div class="col-sm-12">
+                                <button type="submit" name="save" class="btn btn-success w-100"><?= $isUpdate ? 'Update' : 'Add' ?> Product</button>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../src/plugins/src/editors/quill/quill.js"></script>
+<script src="../src/plugins/src/filepond/filepond.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImageCrop.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImageResize.min.js"></script>
+<script src="../src/plugins/src/filepond/FilePondPluginImageTransform.min.js"></script>
+<script src="../src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+<script src="../src/plugins/src/tagify/tagify.min.js"></script>
+
+<script src="../src/assets/js/apps/ecommerce-create.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
 
 <?php require_once './include/footer-admin.php'; ?>
