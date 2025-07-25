@@ -87,7 +87,7 @@ if (isset($_POST['save'])) {
         $targetPath = $uploadDir . $uniqueName;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = '../images/' . $uniqueName;
+            $uploadedImagePath = '../images/images/' . $uniqueName;
             
             // Delete old image if it exists and we're updating
             if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
