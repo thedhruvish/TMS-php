@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {                                            // CREATE
         $DB->create('invoices', array_keys($invoice_data), array_values($invoice_data));
         $invoice_id = $DB->conn->insert_id;
-
     }
 
     // Save items
@@ -62,9 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    header("Location: invoice-add.php?u_id=$invoice_id");
+    header("Location: invoice.php");
     exit;
 }
+
+/** delete */
+if (isset($_GET['d_id'])) {
+    $d_id = $_GET['d_id'];
+    $DB->delete('invoice_items', 'invoice_id', $d_id);
+    $DB->delete("invoices", "id", $d_id);
+
+    header("Location: invoice.php");
+}
+
 
 /* ---------- Determine mode & fetch data ---------- */
 if (isset($_GET['id'])) {
@@ -202,16 +211,18 @@ if (isset($_GET['id'])) {
                                                             <textarea name="items[<?= $idx ?>][additional_details]" class="form-control" placeholder="Additional Details" <?= $view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($it['additional_details'] ?? '') ?></textarea>
                                                         </td>
                                                         <td class="rate">
-                                                            <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm" placeholder="0.00"
+                                                            <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
                                                                 value="<?= htmlspecialchars($it['rate'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                         </td>
+
                                                         <td class="qty">
-                                                            <input type="number" name="items[<?= $idx ?>][quantity]" class="form-control form-control-sm" placeholder="0"
+                                                            <input type="number" name="items[<?= $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
                                                                 value="<?= htmlspecialchars($it['quantity'] ?? '') ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                         </td>
+
                                                         <td class="text-right amount">
-                                                            $<span class="item-amount"><?= number_format($it['amount'] ?? 0, 2) ?></span>
-                                                            <input type="hidden" name="items[<?= $idx ?>][amount]" value="<?= $it['amount'] ?? 0 ?>">
+                                                            $<span class="item-amount"><?= number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?></span>
+                                                            <input type="hidden" name="items[<?= $idx ?>][amount]" class="amount-input" value="<?= ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
                                                         </td>
                                                         <td class="text-center tax">
                                                             <input type="checkbox" name="items[<?= $idx ?>][taxable]" <?= (!empty($it['taxable']) ? 'checked' : '') ?> <?= $view_mode ? 'disabled' : '' ?>>
@@ -321,6 +332,90 @@ if (isset($_GET['id'])) {
     </div>
 </div>
 
+<script>
+    /* recalc amount = rate * qty  (live) */
+    function recalcAmount(row) {
+        const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
+        const qty = parseInt(row.querySelector('.qty-input').value) || 0;
+        const amount = (rate * qty).toFixed(2);
+
+        row.querySelector('.item-amount').textContent = amount;
+        row.querySelector('.amount-input').value = amount; // now the POST picks it up
+    }
+
+    /* attach listeners to every row, both existing and new ones */
+    function bindCalc(row) {
+        ['input', 'change'].forEach(evt => ['.rate-input', '.qty-input'].forEach(sel =>
+            row.querySelector(sel)?.addEventListener(evt, () => recalcAmount(row))
+        ));
+    }
+
+    /* existing rows on page load */
+    document.querySelectorAll('#item-rows tr').forEach(bindCalc);
+
+    /* new rows created by “Add Item” */
+    document.addEventListener('click', e => {
+        if (e.target && e.target.classList.contains('additem')) {
+            setTimeout(() => { // wait for DOM insertion
+                const newRow = document.querySelector('#item-rows tr:last-child');
+                bindCalc(newRow);
+                recalcAmount(newRow);
+            }, 0);
+        }
+    });
+
+    // remove item
+    document.addEventListener('click', e => {
+        if (e.target.matches('.delete-item')) {
+            e.preventDefault();
+            const tr = e.target.closest('tr');
+            if (tr) tr.remove();
+        }
+    });
+</script>
+
+<script>
+    /*  Recalculate sub-totals whenever an item row changes  */
+    function recalcTotals() {
+        let subtotal = 0;
+        document.querySelectorAll('#item-rows tr').forEach(row => {
+            const amount = parseFloat(row.querySelector('.amount-input')?.value || 0);
+            subtotal += amount;
+        });
+
+        const discount = parseFloat(document.getElementById('discount-input')?.value || 0);
+        const taxRate = parseFloat(document.getElementById('tax-input')?.value || 0);
+
+        const tax = (subtotal - discount) * (taxRate / 100);
+        const total = subtotal - discount + tax;
+
+        /* display + hidden */
+        document.getElementById('subtotal-display').textContent = subtotal.toFixed(2);
+        document.getElementById('subtotal-input').value = subtotal.toFixed(2);
+
+        document.getElementById('discount-display').textContent = discount.toFixed(2);
+
+        document.getElementById('tax-display').textContent = taxRate.toFixed(2);
+        // if you want the dollar value instead of percentage:
+        // document.getElementById('tax-display').textContent = tax.toFixed(2);
+
+        document.getElementById('total-display').textContent = total.toFixed(2);
+        document.getElementById('total-input').value = total.toFixed(2);
+    }
+
+    /* run on every change in any item row */
+    document.addEventListener('input', e => {
+        if (e.target.matches('.rate-input, .qty-input')) {
+            const row = e.target.closest('tr');
+            recalcAmount(row); // rate * qty
+            recalcTotals(); // subtotal / total
+        }
+    });
+
+    /* also run once on page load */
+    document.addEventListener('DOMContentLoaded', recalcTotals);
+</script>
+
 <!-- Optional JS for dynamic rows & calculations -->
 <script>
     /* Simple dynamic row adder (keep for edit mode) */
@@ -329,15 +424,25 @@ if (isset($_GET['id'])) {
             const tbody = document.getElementById('item-rows');
             const idx = tbody.rows.length;
             const tr = document.createElement('tr');
+
             tr.innerHTML = `
         <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
-        <td><input type="text" name="items[${idx}][description]" class="form-control form-control-sm" placeholder="Item Description">
-            <textarea name="items[${idx}][additional_details]" class="form-control" placeholder="Additional Details"></textarea></td>
-        <td><input type="number" step="0.01" name="items[${idx}][rate]" class="form-control form-control-sm"></td>
-        <td><input type="number" name="items[${idx}][quantity]" class="form-control form-control-sm"></td>
-        <td class="text-right">$<span class="item-amount">0.00</span><input type="hidden" name="items[${idx}][amount]"></td>
+        <td>
+            <input type="text" name="items[${idx}][description]" class="form-control form-control-sm" placeholder="Item Description">
+            <textarea name="items[${idx}][additional_details]" class="form-control" placeholder="Additional Details"></textarea>
+        </td>
+        <td><input type="number" step="0.01" name="items[${idx}][rate]"  class="form-control form-control-sm rate-input"></td>
+        <td><input type="number" name="items[${idx}][quantity]" class="form-control form-control-sm qty-input"></td>
+        <td class="text-right">
+            $<span class="item-amount">0.00</span>
+            <input type="hidden" name="items[${idx}][amount]" class="amount-input">
+        </td>
         <td><input type="checkbox" name="items[${idx}][taxable]"></td>`;
+
             tbody.appendChild(tr);
+
+            /* ---- NEW: bind the calc to the fresh row ---- */
+            bindCalc(tr);
         });
     <?php endif; ?>
 </script>
