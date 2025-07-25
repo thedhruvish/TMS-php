@@ -6,42 +6,53 @@ require_once './include/sidebar-admin.php';
 
 $editData = null;
 if (isset($_GET['u_id'])) {
-    $res = $DB->read("customer", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
-    $editData = mysqli_fetch_assoc($res);
+  $res = $DB->read("customer", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
+  $editData = mysqli_fetch_assoc($res);
 }
 
 if (isset($_POST['submit'])) {
-    $fields = [
-        'first_name', 'last_name', 'email', 'phone', 'dob', 'gender',
-        'address', 'city', 'state', 'zip', 'country', 'reference_name',
-        'notes', 'profile_image'
-    ];
+  $fields = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone',
+    'dob',
+    'gender',
+    'address',
+    'city',
+    'state',
+    'zip',
+    'country',
+    'reference_name',
+    'notes',
+    'profile_image'
+  ];
 
-    $data = [];
-    foreach ($fields as $field) {
-        $data[$field] = $_POST[$field] ?? '';
+  $data = [];
+  foreach ($fields as $field) {
+    $data[$field] = $_POST[$field] ?? '';
+  }
+
+  if (!empty($_FILES['profile_image']['name'])) {
+    $filename = time() . '_' . basename($_FILES['profile_image']['name']);
+    $targetDirectory = '../images/profile';
+    $targetFile = $targetDirectory . $filename;
+
+    if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
+      $data['profile_image'] = $filename;
     }
+  } else if ($editData != null) {
+    $data['profile_image'] = $editData['profile_image'];
+  }
 
-    if (!empty($_FILES['profile_image']['name'])) {
-        $filename = time() . '_' . basename($_FILES['profile_image']['name']);
-        $targetDirectory = '../images/';
-        $targetFile = $targetDirectory . $filename;
-
-        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
-            $data['profile_image'] = $filename;
-        }
-    }else if($editData!=null){
-      $data['profile_image']=$editData['profile_image'];
-    }
-
-    if (isset($_GET['u_id'])) {
-        $DB->update("customer", array_keys($data), array_values($data), 'id', $_GET['u_id']);
-        header("Location: customer.php");
-    } else {
-        // Insert new
-        $DB->create("customer", array_keys($data), array_values($data));
-        header("Location: customer.php");
-    }
+  if (isset($_GET['u_id'])) {
+    $DB->update("customer", array_keys($data), array_values($data), 'id', $_GET['u_id']);
+    header("Location: customer.php");
+  } else {
+    // Insert new
+    $DB->create("customer", array_keys($data), array_values($data));
+    header("Location: customer.php");
+  }
 }
 
 ?>
