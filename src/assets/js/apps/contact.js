@@ -38,11 +38,11 @@ $(document).ready(function() {
     $(this).parents('.searchable-container').find('.searchable-items').addClass('list');
   });
 
-  // $('#btn-add-contact').on('click', function(event) {
-  //   $('#addContactModal #btn-add').show();
-  //   $('#addContactModal #btn-edit').hide();
-  //   $('#addContactModal').modal('show');
-  // })
+  $('#btn-add-contact').on('click', function(event) {
+    $('#addContactModal #btn-add').show();
+    $('#addContactModal #btn-edit').hide();
+    
+  })
 
 function deleteContact() {
   $(".delete").on('click', function(event) {

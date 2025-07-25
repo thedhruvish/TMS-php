@@ -50,9 +50,9 @@
   <!-- END PAGE LEVEL SCRIPTS -->
   <script src="../src/assets/js/scrollspyNav.js"></script>
 
-<!-- user page -->
-    <script src="../src/plugins/src/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../src/assets/js/apps/contact.js"></script>
+  <!-- user page -->
+  <script src="../src/plugins/src/jquery-ui/jquery-ui.min.js"></script>
+  <script src="../src/assets/js/apps/contact.js"></script>
   <!-- user page -->
   <script src="../src/plugins/src/jquery-ui/jquery-ui.min.js"></script>
   <script src="../src/assets/js/apps/contact.js"></script>
@@ -60,16 +60,16 @@
   <script src="../src/assets/js/apps/invoice-list.js"></script>
 
 
-    <script src="../src/plugins/src/filepond/filepond.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginImageCrop.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginImageResize.min.js"></script>
-    <script src="../src/plugins/src/filepond/FilePondPluginImageTransform.min.js"></script>
-    <script src="../src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
-    <script src="../src/plugins/src/flatpickr/flatpickr.js"></script>
-    <script src="../src/assets/js/apps/invoice-add.js"></script>
+  <script src="../src/plugins/src/filepond/filepond.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginImageCrop.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginImageResize.min.js"></script>
+  <script src="../src/plugins/src/filepond/FilePondPluginImageTransform.min.js"></script>
+  <script src="../src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
+  <script src="../src/plugins/src/flatpickr/flatpickr.js"></script>
+  <script src="../src/assets/js/apps/invoice-add.js"></script>
   <script src="../src/plugins/src/filepond/filepond.min.js"></script>
   <script src="../src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
   <script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
