@@ -1,6 +1,49 @@
-<?php $pageTitle = "add customer";
+<?php
+
+$pageTitle = "add customer";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
+$editData = null;
+if (isset($_GET['u_id'])) {
+    $res = $DB->read("customer", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
+    $editData = mysqli_fetch_assoc($res);
+}
+
+if (isset($_POST['submit'])) {
+    $fields = [
+        'first_name', 'last_name', 'email', 'phone', 'dob', 'gender',
+        'address', 'city', 'state', 'zip', 'country', 'reference_name',
+        'notes', 'profile_image'
+    ];
+
+    $data = [];
+    foreach ($fields as $field) {
+        $data[$field] = $_POST[$field] ?? '';
+    }
+
+    if (!empty($_FILES['profile_image']['name'])) {
+        $filename = time() . '_' . basename($_FILES['profile_image']['name']);
+        $targetDirectory = '../images/';
+        $targetFile = $targetDirectory . $filename;
+
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
+            $data['profile_image'] = $filename;
+        }
+    }else if($editData!=null){
+      $data['profile_image']=$editData['profile_image'];
+    }
+
+    if (isset($_GET['u_id'])) {
+        $DB->update("customer", array_keys($data), array_values($data), 'id', $_GET['u_id']);
+        header("Location: customer.php");
+    } else {
+        // Insert new
+        $DB->create("customer", array_keys($data), array_values($data));
+        header("Location: customer.php");
+    }
+}
+
 ?>
 
 
@@ -26,7 +69,7 @@ require_once './include/sidebar-admin.php';
 
 
 <div class="container my-5">
-  <form>
+  <form method="post" action="" enctype="multipart/form-data">
     <div class="row g-4">
 
       <!-- Main Section -->
@@ -37,34 +80,34 @@ require_once './include/sidebar-admin.php';
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label for="first-name" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="first-name" placeholder="e.g., John">
+              <input name="first_name" value="<?= $editData['first_name'] ?? '' ?>" type="text" class="form-control" id="first-name" placeholder="e.g., John">
             </div>
             <div class="col-md-6">
               <label for="last-name" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="last-name" placeholder="e.g., Doe">
+              <input name="last_name" value="<?= $editData['last_name'] ?? '' ?>" type="text" class="form-control" id="last-name" placeholder="e.g., Doe">
             </div>
 
             <div class="col-md-6">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="e.g., john@example.com">
+              <input name="email" value="<?= $editData['email'] ?? '' ?>" type="email" class="form-control" id="email" placeholder="e.g., john@example.com">
             </div>
             <div class="col-md-6">
               <label for="phone" class="form-label">Phone</label>
-              <input type="tel" class="form-control" id="phone" placeholder="e.g., +91 9876543210">
+              <input name="phone" value="<?= $editData['phone'] ?? '' ?>" type="tel" class="form-control" id="phone" placeholder="e.g., +91 9876543210">
             </div>
 
             <div class="col-md-6">
               <label for="dob" class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" id="dob">
+              <input name="dob" value="<?= $editData['dob'] ?? '' ?>" type="date" class="form-control" id="dob">
             </div>
 
             <div class="col-md-6">
               <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender">
-                <option selected disabled>Choose gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
+              <select class="form-select" id="gender" name="gender">
+                <option disabled <?= !isset($editData['gender']) ? 'selected' : '' ?>>Choose gender</option>
+                <option <?= (isset($editData['gender']) && $editData['gender'] == 'Male') ? 'selected' : '' ?>>Male</option>
+                <option <?= (isset($editData['gender']) && $editData['gender'] == 'Female') ? 'selected' : '' ?>>Female</option>
+                <option <?= (isset($editData['gender']) && $editData['gender'] == 'Other') ? 'selected' : '' ?>>Other</option>
               </select>
             </div>
           </div>
@@ -76,31 +119,31 @@ require_once './include/sidebar-admin.php';
 
           <div class="mb-3">
             <label for="address" class="form-label">Street Address</label>
-            <textarea class="form-control" id="address" rows="2" placeholder="House number, Street, Area..."></textarea>
+            <textarea name="address" class="form-control" id="address" rows="2"><?= $editData['address'] ?? '' ?></textarea>
           </div>
 
           <div class="row g-3">
             <div class="col-md-4">
               <label for="city" class="form-label">City</label>
-              <input type="text" class="form-control" id="city">
+              <input name="city" value="<?= $editData['city'] ?? '' ?>" type="text" class="form-control" id="city">
             </div>
             <div class="col-md-4">
               <label for="state" class="form-label">State</label>
-              <input type="text" class="form-control" id="state">
+              <input name="state" value="<?= $editData['state'] ?? '' ?>" type="text" class="form-control" id="state">
             </div>
             <div class="col-md-4">
               <label for="zip" class="form-label">Zip Code</label>
-              <input type="text" class="form-control" id="zip">
+              <input name="zip" value="<?= $editData['zip'] ?? '' ?>" type="text" class="form-control" id="zip">
             </div>
             <div class="col-md-6">
               <label for="country" class="form-label">Country</label>
-              <select class="form-select" id="country">
-                <option selected disabled>Select country</option>
-                <option>India</option>
-                <option>USA</option>
-                <option>UK</option>
-                <option>Australia</option>
-                <option>Other</option>
+              <select class="form-select" id="country" name="country">
+                <option disabled <?= !isset($editData['country']) ? 'selected' : '' ?>>Select country</option>
+                <option <?= (isset($editData['country']) && $editData['country'] == 'India') ? 'selected' : '' ?>>India</option>
+                <option <?= (isset($editData['country']) && $editData['country'] == 'USA') ? 'selected' : '' ?>>USA</option>
+                <option <?= (isset($editData['country']) && $editData['country'] == 'UK') ? 'selected' : '' ?>>UK</option>
+                <option <?= (isset($editData['country']) && $editData['country'] == 'Australia') ? 'selected' : '' ?>>Australia</option>
+                <option <?= (isset($editData['country']) && $editData['country'] == 'Other') ? 'selected' : '' ?>>Other</option>
               </select>
             </div>
           </div>
@@ -112,34 +155,34 @@ require_once './include/sidebar-admin.php';
 
           <div class="mb-3">
             <label for="reference" class="form-label">Reference Name</label>
-            <input type="text" class="form-control" id="reference" placeholder="e.g., referred by someone?">
+            <input name="reference_name" value="<?= $editData['reference_name'] ?? '' ?>" type="text" class="form-control" id="reference" placeholder="e.g., referred by someone?">
           </div>
 
           <div class="mb-3">
             <label for="notes" class="form-label">Notes</label>
-            <textarea class="form-control" id="notes" rows="3" placeholder="Any special notes or instructions"></textarea>
+            <textarea name="notes" class="form-control" id="notes" rows="3" placeholder="Any special notes or instructions"><?= $editData['notes'] ?? '' ?></textarea>
           </div>
 
           <div class="mb-3">
             <label for="profile-image" class="form-label">Profile Image</label>
-            <input class="form-control" type="file" id="profile-image">
+            <input name="profile_image" type="file" value="<?= $editData['profile_image'] ?? '' ?>" class="form-control" type="text" id="profile-image" placeholder="image name or path">
           </div>
+
         </div>
       </div>
 
       <!-- Button Section -->
       <div class="col-xxl-3">
         <div class="p-4 border rounded bg-light h-100 d-flex flex-column justify-content-between">
-          <div class="mb-3">
-            <!-- Optional extra content or preview -->
-          </div>
-          <button type="submit" class="btn btn-success w-100">Submit</button>
+          <div class="mb-3"></div>
+          <button type="submit" name="submit" class="btn btn-success w-100">Submit</button>
         </div>
       </div>
 
     </div>
   </form>
 </div>
+
 
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->

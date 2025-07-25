@@ -15,7 +15,7 @@ class Database
         die("Connection failed: " . mysqli_connect_error());
     }
   
-  }
+  } 
 
   // Escape input
   private function escape($value)
