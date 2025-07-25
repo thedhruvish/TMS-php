@@ -1,6 +1,20 @@
-<?php $pageTitle = "User";
+<?php 
+ob_start();
+$pageTitle = "User";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
+require_once '../Database.php';
+$DB = new Database();
+
+$users = $DB->read("users");
+
+if(isset($_GET['d_id'])){
+    $DB->delete("users", "id", $_GET['d_id']);
+    header("Location: user.php");
+    exit();
+}
+
 ?>
 
 
@@ -104,9 +118,9 @@ require_once './include/sidebar-admin.php';
                     <div class="item-content">
                         <div class="d-inline-flex">
                             <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
+                                <!-- <div class="form-check form-check-primary me-0 mb-0">
                                     <input class="form-check-input inbox-chkbox" id="contact-check-all" type="checkbox">
-                                </div>
+                                </div> -->
                             </div>
                             <h4>Name</h4>
                         </div>
@@ -114,287 +128,72 @@ require_once './include/sidebar-admin.php';
                             <h4>Email</h4>
                         </div>
                         <div class="user-location">
-                            <h4 style="margin-left: 0;">Location</h4>
+                            <h4 style="margin-left: 0;">Login Type</h4>
                         </div>
                         <div class="user-phone">
                             <h4 style="margin-left: 3px;">Phone</h4>
                         </div>
-                        <div class="action-btn">
+                        <div class="user-phone">
+                            <h4 style="margin-left: 3px;">Action</h4>
+                        </div>
+                        <!-- <div class="action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2  delete-multiple"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
-                <div class="items">
+                <?php
+
+
+if ($users && mysqli_num_rows($users) > 0) {
+    while ($row = mysqli_fetch_assoc($users)) {
+        ?>
+        <div class="items">
                     <div class="item-content">
                         <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
+                            <!-- <div class="n-chk align-self-center text-center">
                                 <div class="form-check form-check-primary me-0 mb-0">
                                     <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
                                 </div>
-                            </div>
-                            <img src="../src/assets/img/profile-5.jpeg" alt="avatar">
+                            </div> -->
+                            <img src="<?php echo ($row['profile_picture'] == null) ? '../images/profile_picture.jpg' : '../images/' . $row['profile_picture']; ?>" alt="avatar">
                             <div class="user-meta-info">
-                                <p class="user-name" data-name="Alan Green">Alan Green</p>
-                                <p class="user-work" data-occupation="Web Developer">Web Developer</p>
-                            </div>
+                                <p class="user-name" data-name="Alan Green"><?php echo $row['name']; ?></p>
+                                <p class="user-work" data-occupation="Web Developer"><?php echo $row['role']; ?></p>
+                            </div> 
                         </div>
                         <div class="user-email">
                             <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="alan@mail.com">alan@mail.com</p>
+                            <p class="usr-email-addr" data-email="alan@mail.com"><?php echo $row['email']; ?></p>
                         </div>
                         <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Boston, USA">Boston, USA</p>
+                            <p class="info-title">Login Type</p>
+                            <p class="usr-location" data-location="Boston, USA"><?php echo $row['auth_provider']; ?></p>
                         </div>
                         <div class="user-phone">
                             <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
+                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567"><?php echo $row['mobile_no']; ?></p>
                         </div>
                         <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                            <a href="user-add.php?u_id=<?php echo $row['id']; ?>" onclick="event.stopPropagation();">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                            </a>
+                            <a href="user.php?d_id=<?php echo $row['id']; ?>" onclick="event.stopPropagation(); if(confirm('Are you sure you want to delete this user?')) { window.location.href=this.href; } return false;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                             </a>       
                         </div>
                     </div>
                 </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-11.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Linda Nelson">Linda Nelson</p>
-                                <p class="user-work" data-occupation="Web Designer">Web Designer</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="linda@mail.com">linda@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Sydney, Australia">Sydney, Australia</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-12.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Lila Perry">Lila Perry</p>
-                                <p class="user-work" data-occupation="UX/UI Designer">UX/UI Designer</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="lila@mail.com">lila@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Miami, USA">Miami, USA</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-3.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Andy King">Andy King</p>
-                                <p class="user-work" data-occupation="Web Developer">Project Lead</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="andy@mail.com">andy@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Tokyo, Japan">Tokyo, Japan</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-15.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Jesse Cory">Jesse Cory</p>
-                                <p class="user-work" data-occupation="Web Developer">Web Developer</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="jesse@mail.com">jesse@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Edinburgh, UK">Edinburgh, UK</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-7.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Xavier">Xavier</p>
-                                <p class="user-work" data-occupation="UX/UI Designer">UX/UI Designer</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="xavier@mail.com">xavier@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="New York, USA">New York, USA</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-18.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Susan">Susan</p>
-                                <p class="user-work" data-occupation="Project Manager">Project Manager</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="susan@mail.com">susan@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Miami, USA">Miami, USA</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="items">
-                    <div class="item-content">
-                        <div class="user-profile">
-                            <div class="n-chk align-self-center text-center">
-                                <div class="form-check form-check-primary me-0 mb-0">
-                                    <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                                </div>
-                            </div>
-                            <img src="../src/assets/img/profile-29.jpeg" alt="avatar">
-                            <div class="user-meta-info">
-                                <p class="user-name" data-name="Traci Lopez">Traci Lopez</p>
-                                <p class="user-work" data-occupation="Web Developer">Web Developer</p>
-                            </div>
-                        </div>
-                        <div class="user-email">
-                            <p class="info-title">Email: </p>
-                            <p class="usr-email-addr" data-email="traci@mail.com">traci@mail.com</p>
-                        </div>
-                        <div class="user-location">
-                            <p class="info-title">Location: </p>
-                            <p class="usr-location" data-location="Edinburgh, UK">Edinburgh, UK</p>
-                        </div>
-                        <div class="user-phone">
-                            <p class="info-title">Phone: </p>
-                            <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                        </div>
-                        <div class="action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 edit"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus delete"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                        </div>
-                    </div>
-                </div>
+        <?php
+    }
+} else {
+    echo "<p class='text-center mt-3'>No users found.</p>";
+}
+?>
             </div>
 
         </div>
