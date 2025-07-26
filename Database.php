@@ -17,11 +17,6 @@ class Database
   
   } 
 
-  // Escape input
-  private function escape($value)
-  {
-    return mysqli_real_escape_string($this->conn, $value);
-  }
 
   public function check_connection()  {    
     print_r($this->conn);
