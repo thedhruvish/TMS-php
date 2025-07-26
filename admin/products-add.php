@@ -77,7 +77,7 @@ if (isset($_GET['u_id'])) {
 // Handle Form Submission
 if (isset($_POST['save'])) {
     if (isset($_FILES['image'])) {
-        $uploadDir = '../images/';
+        $uploadDir = '../images/product/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -87,7 +87,7 @@ if (isset($_POST['save'])) {
         $targetPath = $uploadDir . $uniqueName;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = '../images/images/' . $uniqueName;
+            $uploadedImagePath = '../images/product/' . $uniqueName;
 
             // Delete old image if it exists and we're updating
             if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
@@ -98,7 +98,7 @@ if (isset($_POST['save'])) {
         // Keep existing image if no new image was uploaded
         $uploadedImagePath = $product['image'];
     }
-
+ 
     $data = [
         $_POST['name'],
         $_POST['description'],

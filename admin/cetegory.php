@@ -157,7 +157,7 @@ try {
                       <div class="text-center">
                         <img alt="category-image" class="img-thumbnail"
                           src="../<?= $category['image'] ?>"
-                          style="max-width: 120px; max-height: 120px; object-fit: contain;">ss
+                          style="max-width: 120px; max-height: 120px; object-fit: contain;">
                       </div>
                     <?php else: ?>
                       <span class="text-muted">No image</span>
