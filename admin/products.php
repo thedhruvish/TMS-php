@@ -3,6 +3,17 @@ $pageTitle = "Products";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
+
+// share product link genrate
+
+if (isset($_GET['share']) && !empty($_GET['products'])) {
+  $raw = $_GET['products'];
+  $ids = array_filter(array_map('intval', explode(',', $raw)));
+  $productCsv = implode(',', $ids);
+  $DB->create("weblink", ['productIds', "createby"], [$productCsv, $_SESSION['user_id']]);
+  header("Location: weblink.php");
+}
+
 // Handle delete action
 if (isset($_GET['delete_id'])) {
   try {
@@ -125,7 +136,9 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         </div>
 
         <!-- Share Selected -->
-        <button type="button" class="btn btn-secondary" onclick="shareSelectedProducts()">Share Selected</button>
+
+        <button type="button" class="btn btn-secondary" onclick="shareSelectedProducts()">
+          Share Selected</button>
       </div>
     </form>
   </div>
@@ -144,16 +157,18 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
   }
 
   function shareSelectedProducts() {
-    const selected = Array.from(document.querySelectorAll('.product-check:checked'))
+    // collect checked product ids
+    const ids = [...document.querySelectorAll('.product-check:checked')]
       .map(cb => cb.value);
-    if (selected.length === 0) {
-      alert("No products selected.");
+
+    if (!ids.length) {
+      alert('No products selected.');
       return;
     }
-    const shareLink = "https://yourdomain.com/share?products=" + selected.join(',');
-    navigator.clipboard.writeText(shareLink)
-      .then(() => alert("Link copied: " + shareLink))
-      .catch(() => alert("Failed to copy link."));
+
+
+    const url = './products.php?share=true&products=' + ids.join(',');
+    location.href = url;
   }
 </script>
 

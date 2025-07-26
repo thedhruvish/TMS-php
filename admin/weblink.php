@@ -5,10 +5,16 @@ if (isset($_GET['d_id'])) {
     $DB->delete("weblink", "id", $_GET['d_id']);
     header("Location: weblink.php");
 }
+// get all the weblink and join query to show the username
+$result_web_link = mysqli_query(
+    $DB->conn,
+    "SELECT w.*, u.name AS creator_name
+     FROM weblink w
+     JOIN users u ON w.createby = u.id
+     ORDER BY w.id DESC"
+);
 
-$result_web_link = $DB->read("weblink");
 ?>
-
 
 <div class="row">
     <div class="seperator-header layout-top-spacing">
@@ -32,7 +38,7 @@ $result_web_link = $DB->read("weblink");
                         <?php while ($row = mysqli_fetch_assoc($result_web_link)) { ?>
                             <tr>
                                 <td><?php echo $row['id']; ?></td>
-                                <td><?php echo $row['createby']; ?></td>
+                                <td><?php echo $row['creator_name']; ?></td>
                                 <td><?php echo $row['createat']; ?></td>
                                 <td><?php echo $row['productIds']; ?></td>
                                 <td><a href="../weblink/index.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-primary">Open</a></td>
