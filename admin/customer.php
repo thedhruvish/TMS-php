@@ -55,7 +55,7 @@ if(isset($_GET['d_id'])){
               <td>
                 <div class="d-flex">
                   <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == "") ? '../images/profile_picture.jpg' : '../images/'.$row['profile_image']; ?>">
+                    <img alt="avatar" class="img-fluid rounded-circle" src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == "") ? '../images/profile/avatar.png' : '../images/profile/'.$row['profile_image']; ?>">
                   </div>
                 </div>
               </td>

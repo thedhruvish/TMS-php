@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 
   if (!empty($_FILES['profile_image']['name'])) {
     $filename = time() . '_' . basename($_FILES['profile_image']['name']);
-    $targetDirectory = '../images/profile';
+    $targetDirectory = '../images/profile/';
     $targetFile = $targetDirectory . $filename;
 
     if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {

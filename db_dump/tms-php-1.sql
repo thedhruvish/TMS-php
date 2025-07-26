@@ -231,6 +231,6 @@ CREATE TABLE `customer` (
   `country` text DEFAULT NULL,
   `reference_name` text DEFAULT NULL,
   `notes` text DEFAULT NULL,
-  `profile_image` text DEFAULT NULL,
+  `profile_image` text DEFAULT "f",
   `total_amount` text DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
