@@ -431,7 +431,7 @@ $user = mysqli_fetch_assoc($data);
         </li>
 
         <!-- Inquiry  navbar -->
-        <!-- <li class="menu">
+        <li class="menu">
           <a href="#inquiry" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
@@ -454,7 +454,7 @@ $user = mysqli_fetch_assoc($data);
               <a href="./inquiry-add.php"> add Inquiry </a>
             </li>
           </ul>
-        </li> -->
+        </li>
 
         <!-- User -->
         <li class="menu">
@@ -483,7 +483,7 @@ $user = mysqli_fetch_assoc($data);
         </li>
 
         <!-- payment -->
-        <!-- <li class="menu">
+        <li class="menu">
           <a href="#payment" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
@@ -506,7 +506,7 @@ $user = mysqli_fetch_assoc($data);
               <a href="./payment-add.php"> add payment </a>
             </li>
           </ul>
-        </li> -->
+        </li>
 
         <!-- Attendant -->
         <li class="menu">

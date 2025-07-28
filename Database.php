@@ -12,13 +12,13 @@ class Database
   {
     $this->conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if (!$this->conn) {
-        die("Connection failed: " . mysqli_connect_error());
+      die("Connection failed: " . mysqli_connect_error());
     }
-  
-  } 
+  }
 
 
-  public function check_connection()  {    
+  public function check_connection()
+  {
     print_r($this->conn);
   }
 
@@ -108,10 +108,13 @@ class Database
   {
     mysqli_close($this->conn);
   }
+
+  // custom query
+  public function custom_query($sql)
+  {
+    return mysqli_query($this->conn, $sql);
+  }
 }
 session_start();
 
 $DB  =  new Database();
-
-
-?>
