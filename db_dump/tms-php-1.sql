@@ -234,3 +234,30 @@ CREATE TABLE `customer` (
   `profile_image` text DEFAULT "f",
   `total_amount` text DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- payment
+
+CREATE TABLE payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  invoice_id INT NOT NULL,
+  payment_date DATE DEFAULT CURRENT_DATE,
+  amount_paid DECIMAL(12,2) NOT NULL,
+  payment_method ENUM('cash', 'card', 'bank_transfer', 'upi', 'paypal') DEFAULT 'cash',
+  reference_number VARCHAR(100), -- e.g., transaction ID
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (invoice_id) REFERENCES invoices(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- inquiry
+
+CREATE TABLE `inquiry` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `phone` VARCHAR(20),
+  `message` TEXT NOT NULL,
+  `status` ENUM('new', 'in_progress', 'resolved', 'closed') DEFAULT 'new',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

@@ -1,125 +1,99 @@
 <?php $pageTitle = "category create";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
+$editData = null;
+if (isset($_GET['u_id'])) {
+  $res = $DB->read("inquiry", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
+  $editData = mysqli_fetch_assoc($res);
+}
+
+if (isset($_POST['submit'])) {
+  $columns = ['name', 'email', 'phone', 'message', 'status'];
+  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], $_POST['status'] ?? 'new'];
+
+  if (isset($_GET['u_id'])) {
+    $result = $DB->update("inquiry", $columns, $values, 'id', $_GET['u_id']);
+    if ($result) {
+      header("Location:inquiry.php");
+    } else {
+      echo "<div class='alert alert-danger'>Failed to update inquiry.</div>";
+    }
+  } else {
+    $result = $DB->create('inquiry', $columns, $values);
+    header("Location: customer.php");
+    if ($result) {
+      header("Location:inquiry.php");
+    } else {
+      echo "<div class='alert alert-danger'>Failed to submit inquiry.</div>";
+    }
+  }
+}
+
 ?>
 
-
-<link href="../layouts/vertical-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
-<link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
-
-
-<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-<link rel="stylesheet" type="text/css" href="../src/plugins/src/tagify/tagify.css">
-
-
-<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/editors/quill/quill.snow.css">
-<link rel="stylesheet" type="text/css" href="../src/plugins/css/light/tagify/custom-tagify.css">
-
-<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/editors/quill/quill.snow.css">
-<link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/tagify/custom-tagify.css">
-<!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-
-<!--  BEGIN CUSTOM STYLE FILE  -->
-<link rel="stylesheet" href="../src/assets/css/light/apps/blog-create.css">
-<link rel="stylesheet" href="../src/assets/css/dark/apps/blog-create.css">
-<!--  END CUSTOM STYLE FILE  -->
-
-
-<div class="row mb-4 layout-spacing layout-top-spacing">
-
-  <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-
-    <div class="widget-content widget-content-area blog-create-section">
-
-      <div class="row mb-4">
-        <div class="col-sm-12">
-          <label>Content</label>
-          <input type="text" class="form-control" id="post-title" placeholder="Post Title">
-        </div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-sm-12">
-          <label>Content</label>
-          <div id="blog-description"></div>
-        </div>
-      </div>
-
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><?= isset($_GET['u_id']) ? 'Edit' : 'Add' ?> Inquiry</h5>
     </div>
 
-    <div class="widget-content widget-content-area blog-create-section mt-4">
+    <div class="card-body">
+      <form method="POST" action="">
 
-      <h5 class="mb-4">SEO Settings</h5>
-
-      <div class="row mb-4">
-        <div class="col-xxl-12 mb-4">
-          <input type="text" class="form-control" id="post-meta-title" placeholder="Meta Title">
-        </div>
-        <div class="col-xxl-12">
-          <label for="post-meta-description">Meta Description</label>
-          <textarea name="post-meta-description" class="form-control" id="post-meta-description" cols="10" rows="5"></textarea>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
-    <div class="widget-content widget-content-area blog-create-section">
-      <div class="row">
-        <div class="col-xxl-12 mb-4">
-          <div class="switch form-switch-custom switch-inline form-switch-primary">
-            <input class="switch-input" type="checkbox" role="switch" id="showPublicly" checked>
-            <label class="switch-label" for="showPublicly">Publish</label>
+        <!-- Row 1 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name"
+              value="<?= htmlspecialchars($editData['name'] ?? '') ?>" required>
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email"
+              value="<?= htmlspecialchars($editData['email'] ?? '') ?>" required>
           </div>
         </div>
-        <div class="col-xxl-12 mb-4">
-          <div class="switch form-switch-custom switch-inline form-switch-primary">
-            <input class="switch-input" type="checkbox" role="switch" id="enableComment" checked>
-            <label class="switch-label" for="enableComment">Enable Comments</label>
+
+        <!-- Row 2 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone"
+              value="<?= htmlspecialchars($editData['phone'] ?? '') ?>">
+          </div>
+
+          <div class="col-md-6">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status">
+              <?php
+              $opts = ['new', 'in_progress', 'resolved', 'closed'];
+              foreach ($opts as $opt) {
+                $sel = ($editData['status'] ?? 'new') === $opt ? 'selected' : '';
+                echo "<option $sel value=\"$opt\">" . ucwords(str_replace('_', ' ', $opt)) . "</option>";
+              }
+              ?>
+            </select>
           </div>
         </div>
-        <div class="col-xxl-12 col-md-12 mb-4">
-          <label for="tags">Tags</label>
-          <input id="tags" class="blog-tags" value="">
+
+        <!-- Row 3 -->
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="4"
+            placeholder="Enter your message"><?=
+                                              htmlspecialchars($editData['message'] ?? '')
+                                              ?></textarea>
         </div>
 
-        <div class="col-xxl-12 col-md-12 mb-4">
-          <label for="category">Category</label>
-          <input id="category" name="category" placeholder="Choose...">
-        </div>
-
-        <div class="col-xxl-12 col-md-12 mb-4">
-
-
-
-        </div>
-
-        <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
-          <button class="btn btn-success w-100">Create Post</button>
-        </div>
-
-      </div>
+        <button type="submit" name="submit" class="btn btn-success w-100">
+          Submit
+        </button>
+      </form>
     </div>
   </div>
-
 </div>
 
-
-
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../src/plugins/src/editors/quill/quill.js"></script>
-<script src="../src/plugins/src/filepond/filepond.min.js"></script>
-<script src="../src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
-<script src="../src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
-<script src="../src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
-
-<script src="../src/plugins/src/tagify/tagify.min.js"></script>
-
-<script src="../src/assets/js/apps/blog-create.js"></script>
-
-<!-- END PAGE LEVEL SCRIPTS -->
 
 
 
