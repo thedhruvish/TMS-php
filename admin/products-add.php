@@ -40,7 +40,6 @@ $product = [
     'includes_tax' => 0,
     'in_stock' => 0,
     'show_publicly' => 1,
-    'disabled' => 0, // Add disabled status
     'images' => ''
 ];
 
@@ -84,61 +83,59 @@ if (isset($_GET['u_id'])) {
 // Handle Form Submission
 if (isset($_POST['save'])) {
     $uploadedImagePaths = [];
-    
+
     // Handle multiple file uploads
     if (!empty($_FILES['images']['name'][0])) {
         $uploadDir = '../images/products/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
-        
+
         foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
             if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
                 $originalName = basename($_FILES['images']['name'][$key]);
                 $uniqueName = time() . '_' . $key . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
                 $targetPath = $uploadDir . $uniqueName;
-                
+
                 if (move_uploaded_file($tmpName, $targetPath)) {
-                    $uploadedImagePaths[] = '../images/products/' . $uniqueName;
+                    $uploadedImagePaths[] =  $uniqueName;
                 }
             }
         }
     }
-    
+
     // If no new images uploaded but in update mode, keep existing images
     if ($isUpdate && empty($uploadedImagePaths) && !empty($product['images'])) {
         $uploadedImagePaths = json_decode($product['images'], true);
     }
-    
-    $data = [
-    $_POST['name'],
-    $_POST['description'],
-    $_POST['product_code'],
-    $_POST['category'],
-    $_POST['tags'],
-    $_POST['regular_price'],
-    $_POST['sale_price'],
-    isset($_POST['includes_tax']) ? 1 : 0,
-    $product['in_stock'], // Keep existing stock status
-    isset($_POST['show_publicly']) ? 1 : 0,
-    isset($_POST['disabled']) ? 1 : 0, // Add disabled status
-    json_encode($uploadedImagePaths)
-];
 
-$columns = [
-    'name',
-    'description',
-    'product_code',
-    'category',
-    'tags',
-    'regular_price',
-    'sale_price',
-    'includes_tax',
-    'in_stock',
-    'show_publicly',
-    'disabled', // Add disabled column
-    'images'
-];
+    $data = [
+        $_POST['name'],
+        $_POST['description'],
+        $_POST['product_code'],
+        $_POST['category'],
+        $_POST['tags'],
+        $_POST['regular_price'],
+        $_POST['sale_price'],
+        isset($_POST['includes_tax']) ? 1 : 0,
+        $product['in_stock'], // Keep existing stock status
+        isset($_POST['show_publicly']) ? 1 : 0,
+        json_encode($uploadedImagePaths)
+    ];
+
+    $columns = [
+        'name',
+        'description',
+        'product_code',
+        'category',
+        'tags',
+        'regular_price',
+        'sale_price',
+        'includes_tax',
+        'in_stock',
+        'show_publicly',
+        'images'
+    ];
 
     if ($isUpdate && $updateId !== null) {
         $DB->update('products', $columns, $data, 'id', $updateId);
@@ -156,16 +153,17 @@ $columns = [
 
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])): ?>
-<div class="alert alert-success alert-dismissible fade show">
-    <?= $_SESSION['message'] ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php unset($_SESSION['message']); endif; ?>
+    <div class="alert alert-success alert-dismissible fade show">
+        <?= $_SESSION['message'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php unset($_SESSION['message']);
+endif; ?>
 
 <?php if (isset($error)): ?>
-<div class="alert alert-danger">
-    Error: <?= htmlspecialchars($error) ?>
-</div>
+    <div class="alert alert-danger">
+        Error: <?= htmlspecialchars($error) ?>
+    </div>
 <?php endif; ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
@@ -188,17 +186,17 @@ $columns = [
                 <div class="col-md-8">
                     <label>Upload Images</label>
                     <input type="file" class="form-control" name="images[]" multiple <?= $readonly ? 'disabled' : '' ?>>
-                    
+
                     <?php if (!empty($uploadedImages)): ?>
                         <div class="mt-3">
                             <div class="image-preview-container">
                                 <div class="main-image-container">
-                                    <img src="<?= $uploadedImages[0] ?>" alt="Product Image" class="main-product-image" style="max-height: 200px;">
+                                    <img src="../images/products/<?php echo $uploadedImages[0] ?>" alt="Product Image" class="main-product-image" style="max-height: 200px;">
                                 </div>
                                 <div class="thumbnail-container d-flex mt-2">
                                     <?php foreach ($uploadedImages as $index => $image): ?>
                                         <div class="thumbnail-wrapper me-2">
-                                            <img src="<?= $image ?>" alt="Thumbnail <?= $index ?>" class="thumbnail-image <?= $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?= $image ?>')">
+                                            <img src="../images/products/<?= $image ?>" alt="Thumbnail <?= $index ?>" class="thumbnail-image <?= $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?= $image ?>')">
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -213,7 +211,7 @@ $columns = [
                         <label class="form-check-label">Display publicly</label>
                     </div>
                     <div class="form-check form-switch mt-4">
-                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['disabled'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
                         <label class="form-check-label">Disable Product</label>
                     </div>
                 </div>
@@ -284,7 +282,7 @@ $columns = [
     function changeMainImage(element, imageSrc) {
         // Update main image
         document.querySelector('.main-product-image').src = imageSrc;
-        
+
         // Update active thumbnail
         document.querySelectorAll('.thumbnail-image').forEach(img => {
             img.classList.remove('active');
