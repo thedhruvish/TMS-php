@@ -145,3 +145,6 @@ CREATE TABLE `stock` (
     (`pending_stock` IS NULL OR `pending_stock` >= 0)
   )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Add a new column to the products table
+ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_publicly`;
