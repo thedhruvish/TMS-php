@@ -89,9 +89,6 @@ try {
   <div class="row mb-4 align-items-center justify-content-between">
     <div class="col-lg-6 d-flex align-items-center">
       <form method="get" class="d-flex flex-grow-1 gap-2">
-        <input type="text" name="search" class="form-control" style="max-width: 300px;"
-          placeholder="Search categories..." value="<?= $searchTerm ?>">
-        <button type="submit" class="btn btn-primary px-3">Search</button>
         <?php if (!empty($searchTerm) || !empty($filterCategory)): ?>
           <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
         <?php endif; ?>
