@@ -6,27 +6,59 @@ require_once './include/sidebar-admin.php';
 // Get all stock records with product information
 $stockData = [];
 $result = $DB->read("stock", array(
-    'order_by' => 'product_id ASC'
+    'order_by' => 'COALESCE(product_id, 999999) ASC' // Puts NULL product_ids last
 ));
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($stock = mysqli_fetch_assoc($result)) {
-        // Get product name for each stock record
-        $productRes = $DB->read("products", array(
-            'where' => array('id' => array('=' => $stock['product_id']))
-        ));
+        $productExists = false;
+        $productDisabled = false;
+        $productName = $stock['product_name'] ?? 'Deleted Product';
+        
+        // Only check products table if product_id exists
+        if (!empty($stock['product_id'])) {
+            $productRes = $DB->read("products", array(
+                'where' => array('id' => array('=' => $stock['product_id']))
+            ));
 
-        if ($productRes && mysqli_num_rows($productRes) > 0) {
-            $product = mysqli_fetch_assoc($productRes);
-            $stock['product_name'] = $product['name'];
-
-            // Calculate pending stock (current - sold - dead)
-            $sold = $stock['sold_stock'] ?? 0;
-            $dead = $stock['dead_stock'] ?? 0;
-            $stock['pending_stock'] = $stock['current_stock'] - $sold - $dead;
-
-            $stockData[] = $stock;
+            if ($productRes && mysqli_num_rows($productRes) > 0) {
+                $product = mysqli_fetch_assoc($productRes);
+                $productExists = true;
+                $productDisabled = $product['disabled'] ?? false;
+                
+                // Update product name if different from stored name
+                if (($stock['product_name'] ?? '') !== $product['name']) {
+                    $DB->update(
+                        'stock', 
+                        array('product_name'),  // columns array
+                        array($product['name']),  // values array
+                        'id',  // where column
+                        $stock['id']  // where value
+                    );
+                    $productName = $product['name'];
+                } else {
+                    $productName = $stock['product_name'];
+                }
+            }
         }
+
+        // Calculate pending stock (current - sold - dead)
+        $sold = $stock['sold_stock'] ?? 0;
+        $dead = $stock['dead_stock'] ?? 0;
+        $pendingStock = $stock['current_stock'] - $sold - $dead;
+
+        $stockData[] = array(
+            'id' => $stock['id'],
+            'product_id' => $stock['product_id'],
+            'product_name' => $productName,
+            'product_exists' => $productExists,
+            'product_disabled' => $productDisabled,
+            'current_stock' => $stock['current_stock'],
+            'sold_stock' => $stock['sold_stock'] ?? 0,
+            'dead_stock' => $stock['dead_stock'] ?? 0,
+            'pending_stock' => $pendingStock > 0 ? $pendingStock : 0,
+            'last_updated' => $stock['last_updated']
+        );
     }
 }
 
@@ -59,10 +91,6 @@ if (isset($_GET['delete_id'])) {
     <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-content widget-content-area">
-                <div class="mb-4">
-                    <!-- <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a> -->
-                </div>
-
                 <table id="html5-extension" class="table dt-table-hover" style="width:100%">
                     <thead>
                         <tr>
@@ -78,12 +106,19 @@ if (isset($_GET['delete_id'])) {
                     </thead>
                     <tbody>
                         <?php foreach ($stockData as $stock): ?>
-                            <tr>
-                                <td><?= $stock['product_name'] ?></td>
+                            <tr class="<?= !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
+                                <td>
+                                    <?= htmlspecialchars($stock['product_name']) ?>
+                                    <?php if (!$stock['product_exists']): ?>
+                                        <span class="badge bg-danger">(Product Deleted)</span>
+                                    <?php elseif ($stock['product_disabled']): ?>
+                                        <span class="badge bg-warning text-dark">(Product Discontinued)</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= $stock['current_stock'] ?></td>
-                                <td><?= $stock['sold_stock'] ?? '0' ?></td>
-                                <td><?= $stock['dead_stock'] ?? '0' ?></td>
-                                <td><?= max(0, $stock['pending_stock']) ?></td>
+                                <td><?= $stock['sold_stock'] ?></td>
+                                <td><?= $stock['dead_stock'] ?></td>
+                                <td><?= $stock['pending_stock'] ?></td>
                                 <td><?= date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
                                 <td>
                                     <a href="stoack-edit.php?id=<?= $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>

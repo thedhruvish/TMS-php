@@ -264,3 +264,17 @@ CREATE TABLE `inquiry` (
 
 ------------------add field to products table-------------------
 ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_publicly`;
+
+----------------------alter stock table for discontinue stock and delete product although stock exsist-------------------
+ALTER TABLE `stock` 
+DROP FOREIGN KEY `stock_ibfk_1`;
+
+ALTER TABLE `stock` 
+ADD CONSTRAINT `stock_ibfk_1` 
+FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) 
+ON DELETE SET NULL 
+ON UPDATE CASCADE;
+
+---------------------------
+ALTER TABLE `stock` 
+ADD COLUMN `product_name` VARCHAR(255) NULL AFTER `product_id`;
