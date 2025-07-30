@@ -40,12 +40,13 @@ $product = [
     'includes_tax' => 0,
     'in_stock' => 0,
     'show_publicly' => 1,
+    'images' => ''
 ];
 
 $readonly = false;
 $isUpdate = false;
 $updateId = null;
-$uploadedImagePath = null;
+$uploadedImages = [];
 
 // Get all categories from database
 $categories = [];
@@ -60,6 +61,9 @@ if (isset($_GET['id'])) {
     if ($res && mysqli_num_rows($res) > 0) {
         $product = mysqli_fetch_assoc($res);
         $readonly = true;
+        if (!empty($product['images'])) {
+            $uploadedImages = json_decode($product['images'], true);
+        }
     }
 }
 
@@ -68,7 +72,9 @@ if (isset($_GET['u_id'])) {
     $res = $DB->read("products", ['where' => ['id' => ['=' => $_GET['u_id']]]]);
     if ($res && mysqli_num_rows($res) > 0) {
         $product = mysqli_fetch_assoc($res);
-        $uploadedImagePath = $product['image'];
+        if (!empty($product['images'])) {
+            $uploadedImages = json_decode($product['images'], true);
+        }
         $isUpdate = true;
         $updateId = $_GET['u_id'];
     }
@@ -76,19 +82,24 @@ if (isset($_GET['u_id'])) {
 
 // Handle Form Submission
 if (isset($_POST['save'])) {
-    if (isset($_FILES['image'])) {
-        $uploadDir = '../images/product/';
+    $uploadedImagePaths = [];
+
+    // Handle multiple file uploads
+    if (!empty($_FILES['images']['name'][0])) {
+        $uploadDir = '../images/products/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
 
-        $originalName = basename($_FILES['image']['name']);
-        $uniqueName = time() . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
-        $targetPath = $uploadDir . $uniqueName;
+        foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
+            if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                $originalName = basename($_FILES['images']['name'][$key]);
+                $uniqueName = time() . '_' . $key . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
+                $targetPath = $uploadDir . $uniqueName;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = '../images/product/' . $uniqueName;
-
+            $uploadedImagePath = '../images/' . $uniqueName;
+            
             // Delete old image if it exists and we're updating
             if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
                 unlink($product['image']);
@@ -108,9 +119,9 @@ if (isset($_POST['save'])) {
         $_POST['regular_price'],
         $_POST['sale_price'],
         isset($_POST['includes_tax']) ? 1 : 0,
-        isset($_POST['in_stock']) ? 1 : 0,
+        $product['in_stock'], // Keep existing stock status
         isset($_POST['show_publicly']) ? 1 : 0,
-        $uploadedImagePath
+        json_encode($uploadedImagePaths)
     ];
 
     $columns = [
@@ -124,7 +135,7 @@ if (isset($_POST['save'])) {
         'includes_tax',
         'in_stock',
         'show_publicly',
-        'image'
+        'images'
     ];
 
     if ($isUpdate && $updateId !== null) {
@@ -151,9 +162,9 @@ if (isset($_POST['save'])) {
 endif; ?>
 
 <?php if (isset($error)): ?>
-    <div class="alert alert-danger">
-        Error: <?= $error ?>
-    </div>
+<div class="alert alert-danger">
+    Error: <?= htmlspecialchars($error) ?>
+</div>
 <?php endif; ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
@@ -175,11 +186,23 @@ endif; ?>
             <div class="row">
                 <div class="col-md-8">
                     <label>Upload Images</label>
-                    <input type="file" class="form-control" name="image" <?= $readonly ? 'disabled' : '' ?>>
-                    <?php if ($isUpdate && !empty($product['image'])): ?>
-                        <div class="mt-2">
-                            <img src="<?= $product['image'] ?>" alt="Current Product Image" style="max-height: 100px;">
-                            <p class="text-muted small mt-1">Current image</p>
+                    <input type="file" class="form-control" name="images[]" multiple <?= $readonly ? 'disabled' : '' ?>>
+
+                    <?php if (!empty($uploadedImages)): ?>
+                        <div class="mt-3">
+                            <div class="image-preview-container">
+                                <div class="main-image-container">
+                                    <img src="../images/products/<?php echo $uploadedImages[0] ?>" alt="Product Image" class="main-product-image" style="max-height: 200px;">
+                                </div>
+                                <div class="thumbnail-container d-flex mt-2">
+                                    <?php foreach ($uploadedImages as $index => $image): ?>
+                                        <div class="thumbnail-wrapper me-2">
+                                            <img src="../images/products/<?= $image ?>" alt="Thumbnail <?= $index ?>" class="thumbnail-image <?= $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?= $image ?>')">
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <p class="text-muted small mt-1">Click thumbnails to view</p>
+                            </div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -187,6 +210,10 @@ endif; ?>
                     <div class="form-check form-switch mt-4">
                         <input class="form-check-input" type="checkbox" name="show_publicly" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
                         <label class="form-check-label">Display publicly</label>
+                    </div>
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <label class="form-check-label">Disable Product</label>
                     </div>
                 </div>
             </div>
@@ -198,13 +225,6 @@ endif; ?>
             <div class="col-xxl-12 col-xl-8 col-lg-8 col-md-7 mt-xxl-0 mt-4">
                 <div class="widget-content widget-content-area ecommerce-create-section">
                     <div class="row">
-                        <div class="col-xxl-12 mb-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="in_stock" <?= $product['in_stock'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
-                                <label class="form-check-label">In Stock</label>
-                            </div>
-                        </div>
-
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Product Code</label>
                             <input type="text" class="form-control" name="product_code" value="<?= $product['product_code'] ?>" <?= $readonly ? 'readonly' : '' ?>>
@@ -258,6 +278,19 @@ endif; ?>
         </div>
     </div>
 </form>
+
+<script>
+    function changeMainImage(element, imageSrc) {
+        // Update main image
+        document.querySelector('.main-product-image').src = imageSrc;
+
+        // Update active thumbnail
+        document.querySelectorAll('.thumbnail-image').forEach(img => {
+            img.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+</script>
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../src/plugins/src/editors/quill/quill.js"></script>
