@@ -40,6 +40,7 @@ $product = [
     'includes_tax' => 0,
     'in_stock' => 0,
     'show_publicly' => 1,
+    'disabled' => 0,
     'images' => ''
 ];
 
@@ -120,6 +121,7 @@ if (isset($_POST['save'])) {
         isset($_POST['includes_tax']) ? 1 : 0,
         $product['in_stock'], // Keep existing stock status
         isset($_POST['show_publicly']) ? 1 : 0,
+        isset($_POST['disabled']) ? 1 : 0,
         json_encode($uploadedImagePaths)
     ];
 
@@ -134,6 +136,7 @@ if (isset($_POST['save'])) {
         'includes_tax',
         'in_stock',
         'show_publicly',
+        'disabled',
         'images'
     ];
 
@@ -211,7 +214,7 @@ endif; ?>
                         <label class="form-check-label">Display publicly</label>
                     </div>
                     <div class="form-check form-switch mt-4">
-                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['disabled'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
                         <label class="form-check-label">Disable Product</label>
                     </div>
                 </div>

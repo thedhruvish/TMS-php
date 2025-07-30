@@ -52,6 +52,12 @@ try {
                 $product['images'] = ['../images/placeholder.jpg'];
             }
 
+            
+            // Skip stock calculation for disabled products
+            if ($product['disabled']) {
+                continue;
+            }
+
             $stockRes = $DB->read("stock", [
                 'where' => ['product_id' => ['=' => $product['id']]]
             ]);
@@ -244,12 +250,16 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Stock Badge -->
-                            <div class="mb-2">
+                        <!-- Stock Badge -->
+                        <div class="mb-2">
+                            <?php if ($product['disabled']): ?>
+                                <span class="badge bg-secondary">DISABLED</span>
+                            <?php else: ?>
                                 <span class="badge <?= $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
                                     <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
-                                </span>
-                            </div>
+                            </span>
+                        <?php endif; ?>
+                        </div>
 
                             <!-- Edit and Delete Buttons -->
                             <div class="d-flex justify-content-between">

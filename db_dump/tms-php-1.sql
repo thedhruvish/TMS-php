@@ -261,3 +261,6 @@ CREATE TABLE `inquiry` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+------------------add field to products table-------------------
+ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_publicly`;
