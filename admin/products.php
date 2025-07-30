@@ -12,32 +12,21 @@ require_once './include/sidebar-admin.php';
 
 <?php
 
-
-// share product link genrate
-
-if (isset($_GET['share']) && !empty($_GET['products'])) {
-  $raw = $_GET['products'];
-  $ids = array_filter(array_map('intval', explode(',', $raw)));
-  $productCsv = implode(',', $ids);
-  $DB->create("weblink", ['productIds', "createby"], [$productCsv, $_SESSION['user_id']]);
-  header("Location: weblink.php");
-}
-
 // Handle delete action
 if (isset($_GET['delete_id'])) {
-  try {
-    $deleteId = (int)$_GET['delete_id'];
-    $result = $DB->delete("products", "id", $deleteId);
-    if ($result) {
-      $_SESSION['message'] = "Product deleted successfully";
-    } else {
-      $_SESSION['message'] = "Error deleting product";
+    try {
+        $deleteId = (int)$_GET['delete_id'];
+        $result = $DB->delete("products", "id", $deleteId);
+        if ($result) {
+            $_SESSION['message'] = "Product deleted successfully";
+        } else {
+            $_SESSION['message'] = "Error deleting product";
+        }
+        header("Location: products.php");
+        exit();
+    } catch (Exception $e) {
+        $error = "Error deleting product: " . $e->getMessage();
     }
-    header("Location: products.php");
-    exit();
-  } catch (Exception $e) {
-    $error = "Error deleting product: " . $e->getMessage();
-  }
 }
 
 // Database connection and data fetching
@@ -79,7 +68,7 @@ try {
         unset($product);
     }
 } catch (Exception $e) {
-  $error = $e->getMessage();
+    $error = $e->getMessage();
 }
 
 // Handle filters

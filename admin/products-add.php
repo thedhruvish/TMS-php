@@ -97,19 +97,18 @@ if (isset($_POST['save'])) {
                 $uniqueName = time() . '_' . $key . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
                 $targetPath = $uploadDir . $uniqueName;
 
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = '../images/' . $uniqueName;
-            
-            // Delete old image if it exists and we're updating
-            if ($isUpdate && !empty($product['image']) && file_exists($product['image'])) {
-                unlink($product['image']);
+                if (move_uploaded_file($tmpName, $targetPath)) {
+                    $uploadedImagePaths[] =  $uniqueName;
+                }
             }
         }
-    } elseif ($isUpdate && !empty($product['image'])) {
-        // Keep existing image if no new image was uploaded
-        $uploadedImagePath = $product['image'];
     }
- 
+
+    // If no new images uploaded but in update mode, keep existing images
+    if ($isUpdate && empty($uploadedImagePaths) && !empty($product['images'])) {
+        $uploadedImagePaths = json_decode($product['images'], true);
+    }
+
     $data = [
         $_POST['name'],
         $_POST['description'],
@@ -162,9 +161,9 @@ if (isset($_POST['save'])) {
 endif; ?>
 
 <?php if (isset($error)): ?>
-<div class="alert alert-danger">
-    Error: <?= htmlspecialchars($error) ?>
-</div>
+    <div class="alert alert-danger">
+        Error: <?= htmlspecialchars($error) ?>
+    </div>
 <?php endif; ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
@@ -235,8 +234,8 @@ endif; ?>
                             <select name="category" class="form-select" <?= $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= $cat['tag'] ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
-                                        <?= $cat['tag'] ?>
+                                    <option value="<?= htmlspecialchars($cat['tag']) ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($cat['tag']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
