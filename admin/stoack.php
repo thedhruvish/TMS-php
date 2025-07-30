@@ -43,6 +43,7 @@ if (isset($_GET['delete_id'])) {
 <div class="row">
     <div class="seperator-header layout-top-spacing">
         <h4 class="">Stock Management</h4>
+        <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
     </div>
 
     <?php if (isset($_SESSION['message'])): ?>
@@ -59,7 +60,7 @@ if (isset($_GET['delete_id'])) {
         <div class="statbox widget box box-shadow">
             <div class="widget-content widget-content-area">
                 <div class="mb-4">
-                    <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
+                    <!-- <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a> -->
                 </div>
 
                 <table id="html5-extension" class="table dt-table-hover" style="width:100%">

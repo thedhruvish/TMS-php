@@ -10,6 +10,9 @@ require_once './include/sidebar-admin.php';
 <link href="../src/assets/css/dark/scrollspyNav.css" rel="stylesheet" type="text/css" />
 <link href="../src/assets/css/dark/components/carousel.css" rel="stylesheet" type="text/css" />
 
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
 <?php
 
 // Handle delete action
@@ -52,7 +55,6 @@ try {
                 $product['images'] = ['../images/placeholder.jpg'];
             }
 
-            
             // Skip stock calculation for disabled products
             if ($product['disabled']) {
                 continue;
@@ -114,9 +116,11 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 });
 ?>
 
+    <div class="seperator-header layout-top-spacing">
+         <h4 class="mb-0">Products </h4>
+              <a href="products-add.php" class="btn btn-primary">Add New Product</a>
+     </div>
 
-
-<div class="container-fluid">
     <!-- Search and Filter UI -->
     <div class="row mb-4 align-items-center justify-content-between">
         <div class="col-lg-6 d-flex align-items-center">
@@ -125,7 +129,6 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                     placeholder="Search products..." value="<?= htmlspecialchars($searchTerm) ?>">
                 <button type="submit" class="btn btn-primary px-3">Search</button>
             </form>
-            <a href="products-add.php" class="btn btn-success ms-2">Add New Product</a>
         </div>
 
         <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
@@ -257,8 +260,8 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                             <?php else: ?>
                                 <span class="badge <?= $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
                                     <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
-                            </span>
-                        <?php endif; ?>
+                                </span>
+                            <?php endif; ?>
                         </div>
 
                             <!-- Edit and Delete Buttons -->
@@ -314,4 +317,4 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
 <script src="../src/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<?php include_once './include/footer-admin.php'; ?>
+<?php include_once './include/footer-admin.php'; ?> 
