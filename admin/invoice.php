@@ -2,20 +2,29 @@
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 $invoices = null;
-if (isset($_GET['search'])) {
-  $search = $_GET['search'];
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-  $invoices = $DB->read('invoices', [
-    'or_where' => [
-      'client_email' => ['LIKE' => "%$search%"],
-      'client_name' => ['LIKE' => "%$search%"],
-      'total'        => ['LIKE' => "%$search%"],
-    ],
-    'order' => 'id DESC'
-  ]);
-} else {
-  $invoices = $DB->read('invoices', ['order' => 'id DESC']);
+$sql = "
+    SELECT
+        i.*,
+        CONCAT(c.first_name,' ',c.last_name) AS client_name,
+        c.email                              AS client_email
+    FROM invoices i
+    JOIN customer  c ON c.id = i.customer_id
+";
+
+if ($search !== '') {;
+    $sql .= " WHERE (
+                c.email      LIKE '%$search%' OR
+                c.first_name LIKE '%$search%' OR
+                c.last_name  LIKE '%$search%' OR
+                i.total      LIKE '%$search%'
+            )";
 }
+$sql .= " ORDER BY i.id DESC";
+
+$invoices = $DB->custom_query($sql);
+
 ?>
 
 <div class="row">
@@ -29,10 +38,10 @@ if (isset($_GET['search'])) {
     <div class="col-lg-6 d-flex align-items-center">
       <form method="get" class="d-flex flex-grow-1 gap-2">
         <input type="text" name="search" class="form-control" style="max-width: 300px;"
-          placeholder="Search Email..." value="<?= @$searchTerm ?>">
+          placeholder="Search Email..." value="<?= @$search ?>">
         <button type="submit" class="btn btn-primary px-3">Search</button>
-        <?php if (!empty($searchTerm) || !empty($filterCategory)): ?>
-          <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
+        <?php if (!empty($search) ): ?>
+          <a href="invoice.php" class="btn btn-outline-secondary">Clear</a>
         <?php endif; ?>
       </form>
     </div>

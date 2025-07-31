@@ -7,15 +7,12 @@ $invoice = [];
 $items   = [];
 $edit_mode = false;
 $view_mode = false;
-
+$customersRes = $DB->read("customer");
 /* ---------- POST handler (insert / update) ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invoice_data = [
         'invoice_label'   => $_POST['invoice_label']   ?? '',
-        'client_name'     => $_POST['client_name']     ?? '',
-        'client_email'    => $_POST['client_email']    ?? '',
-        'client_address'  => $_POST['client_address']  ?? '',
-        'client_phone'    => $_POST['client_phone']    ?? '',
+        'customer_id'     => $_POST['customer_id']     ?? '',
         'invoice_number'  => $_POST['invoice_number']  ?? '',
         'invoice_date'    => $_POST['invoice_date']    ?? '',
         'due_date'        => $_POST['due_date']        ?: null,
@@ -75,6 +72,8 @@ if (isset($_GET['d_id'])) {
 }
 
 
+
+
 /* ---------- Determine mode & fetch data ---------- */
 if (isset($_GET['id'])) {
     $view_mode = true;
@@ -128,31 +127,17 @@ if (isset($_GET['id'])) {
                                             <h4>Bill To:-</h4>
                                             <div class="invoice-address-client-fields">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label-sm">Name</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" name="client_name" class="form-control form-control-sm" placeholder="Client Name"
-                                                            value="<?= $invoice['client_name'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" name="client_email" class="form-control form-control-sm" placeholder="name@company.com"
-                                                            value="<?= $invoice['client_email'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label-sm">Address</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" name="client_address" class="form-control form-control-sm" placeholder="XYZ Street"
-                                                            value="<?= $invoice['client_address'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label-sm">Phone</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" name="client_phone" class="form-control form-control-sm" placeholder="(123) 456 789"
-                                                            value="<?= $invoice['client_phone'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                     <select name="customer_id" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                                                        <option value="">Choose customer…</option>
+                                                        <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
+                                                            <option value="<?= $row['id'] ?>"
+                                                                <?= isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
+                                                                <?= $row['email'] ?>
+                                                            </option>
+                                                        <?php endwhile; ?>
+                                                    </select>
                                                     </div>
                                                 </div>
                                             </div>

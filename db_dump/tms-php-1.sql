@@ -134,10 +134,7 @@ COMMIT;
 CREATE TABLE  `invoices` (
   `id`              INT AUTO_INCREMENT PRIMARY KEY,
   `invoice_label`   VARCHAR(255) DEFAULT 'Invoice',
-  `client_name`     VARCHAR(255) NOT NULL,
-  `client_email`    VARCHAR(255) DEFAULT NULL,
-  `client_address`  TEXT         DEFAULT NULL,
-  `client_phone`    VARCHAR(50)  DEFAULT NULL,
+  `customer_id`     varchar(100) DEFAULT NULL,
   `invoice_number`  VARCHAR(50)  NOT NULL,
   `invoice_date`    DATE         DEFAULT NULL,
   `due_date`        DATE         DEFAULT NULL,
