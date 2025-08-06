@@ -7,13 +7,16 @@ $invoice = [];
 $items   = [];
 $edit_mode = false;
 $view_mode = false;
+
+/* ---------- fetch products for the drop-down ---------- */
+$productsRes = $DB->read("products", ['where' => ['show_publicly' => ['=' => 1]]]);
+
 $customersRes = $DB->read("customer");
 /* ---------- POST handler (insert / update) ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invoice_data = [
         'invoice_label'   => $_POST['invoice_label']   ?? '',
         'customer_id'     => $_POST['customer_id']     ?? '',
-        'invoice_number'  => $_POST['invoice_number']  ?? '',
         'invoice_date'    => $_POST['invoice_date']    ?? '',
         'due_date'        => $_POST['due_date']        ?: null,
         'account_number'  => $_POST['account_number']  ?: null,
@@ -129,15 +132,15 @@ if (isset($_GET['id'])) {
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
-                                                     <select name="customer_id" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
-                                                        <option value="">Choose customer…</option>
-                                                        <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
-                                                            <option value="<?= $row['id'] ?>"
-                                                                <?= isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
-                                                                <?= $row['email'] ?>
-                                                            </option>
-                                                        <?php endwhile; ?>
-                                                    </select>
+                                                        <select name="customer_id" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                                                            <option value="">Choose customer…</option>
+                                                            <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
+                                                                <option value="<?= $row['id'] ?>"
+                                                                    <?= isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
+                                                                    <?= $row['email'] ?>
+                                                                </option>
+                                                            <?php endwhile; ?>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,11 +151,6 @@ if (isset($_GET['id'])) {
                                 <!-- Dates -->
                                 <div class="invoice-detail-terms">
                                     <div class="row justify-content-between">
-                                        <div class="col-md-3">
-                                            <label>Invoice Number</label>
-                                            <input type="text" name="invoice_number" class="form-control form-control-sm" placeholder="#0001"
-                                                value="<?= $invoice['invoice_number'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                        </div>
                                         <div class="col-md-3">
                                             <label>Invoice Date</label>
                                             <input type="date" name="invoice_date" class="form-control form-control-sm"
@@ -173,7 +171,7 @@ if (isset($_GET['id'])) {
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>Description</th>
+                                                    <th>Title</th>
                                                     <th>Rate</th>
                                                     <th>Qty</th>
                                                     <th class="text-right">Amount</th>
@@ -191,13 +189,21 @@ if (isset($_GET['id'])) {
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="description">
-                                                            <input type="text" name="items[<?= $idx ?>][description]" class="form-control form-control-sm" placeholder="Item Description"
-                                                                value="<?= $it['description'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
-                                                            <textarea name="items[<?= $idx ?>][additional_details]" class="form-control" placeholder="Additional Details" <?= $view_mode ? 'readonly' : '' ?>><?= $it['additional_details'] ?? '' ?></textarea>
+                                                            <select name="items[<?= $idx ?>][product_id]" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                                                                <option value="">Choose product…</option>
+                                                                <?php
+                                                                mysqli_data_seek($productsRes, 0);   // rewind
+                                                                while ($p = mysqli_fetch_assoc($productsRes)): ?>
+                                                                    <option value="<?= $p['id'] ?>"
+                                                                        <?= isset($it['product_id']) && $it['product_id'] == $p['id'] ? 'selected' : '' ?>>
+                                                                        <?= htmlspecialchars($p['name']) ?>
+                                                                    </option>
+                                                                <?php endwhile; ?>
+                                                            </select>
                                                         </td>
                                                         <td class="rate">
                                                             <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
-                                                                value="<?= $it['rate'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                                value="<?= $it['rate'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?> disabled>
                                                         </td>
 
                                                         <td class="qty">
@@ -316,6 +322,29 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 </div>
+<script>
+    /* map id → price (use sale_price if present, else regular_price) */
+    const productPriceMap = {
+        <?php
+        mysqli_data_seek($productsRes, 0);
+        while ($p = mysqli_fetch_assoc($productsRes)) {
+            $price = !empty($p['sale_price']) ? $p['sale_price'] : $p['regular_price'];
+            echo "{$p['id']}: " . (float)$price . ",\n";
+        }
+        ?>
+    }
+    /* auto-fill rate when product is picked */
+    document.addEventListener('change', e => {
+        if (!e.target.matches('select[name$="[product_id]"]')) return;
+        const row = e.target.closest('tr');
+        const price = productPriceMap[e.target.value] || 0;
+        const rateInput = row.querySelector('.rate-input');
+        if (rateInput) {
+            rateInput.value = price.toFixed(2);
+            rateInput.dispatchEvent(new Event('input')); // trigger recalc
+        }
+    });
+</script>
 
 <script>
     /* recalc amount = rate * qty  (live) */
@@ -412,11 +441,20 @@ if (isset($_GET['id'])) {
 
             tr.innerHTML = `
         <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
-        <td>
-            <input type="text" name="items[${idx}][description]" class="form-control form-control-sm" placeholder="Item Description">
-            <textarea name="items[${idx}][additional_details]" class="form-control" placeholder="Additional Details"></textarea>
+        <td class="description">
+            <select name="items[<?= $idx ?>][product_id]" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                <option value="">Choose product…</option>
+                <?php
+                mysqli_data_seek($productsRes, 0);   // rewind
+                while ($p = mysqli_fetch_assoc($productsRes)): ?>
+                    <option value="<?= $p['id'] ?>"
+                        <?= isset($it['product_id']) && $it['product_id'] == $p['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($p['name']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
         </td>
-        <td><input type="number" step="0.01" name="items[${idx}][rate]"  class="form-control form-control-sm rate-input"></td>
+        <td><input type="number" step="0.01" name="items[${idx}][rate]"   class="form-control form-control-sm rate-input" disabled></td>
         <td><input type="number" name="items[${idx}][quantity]" class="form-control form-control-sm qty-input"></td>
         <td class="text-right">
             $<span class="item-amount">0.00</span>

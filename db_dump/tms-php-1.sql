@@ -135,7 +135,6 @@ CREATE TABLE  `invoices` (
   `id`              INT AUTO_INCREMENT PRIMARY KEY,
   `invoice_label`   VARCHAR(255) DEFAULT 'Invoice',
   `customer_id`     varchar(100) DEFAULT NULL,
-  `invoice_number`  VARCHAR(50)  NOT NULL,
   `invoice_date`    DATE         DEFAULT NULL,
   `due_date`        DATE         DEFAULT NULL,
   `account_number`  VARCHAR(50)  DEFAULT NULL,
