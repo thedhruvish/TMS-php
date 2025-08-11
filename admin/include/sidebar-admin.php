@@ -24,7 +24,7 @@ $user = mysqli_fetch_assoc($data);
       </li>
     </ul>
 
-    <div class="search-animated toggle-search">
+    <!-- <div class="search-animated toggle-search">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -39,7 +39,7 @@ $user = mysqli_fetch_assoc($data);
         </div>
       </form>
       <span class="badge badge-secondary">Ctrl + /</span>
-    </div>
+    </div> -->
 
     <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
 
@@ -62,7 +62,7 @@ $user = mysqli_fetch_assoc($data);
         </a>
       </li>
 
-      <li class="nav-item dropdown notification-dropdown">
+      <!-- <li class="nav-item dropdown notification-dropdown">
         <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
@@ -209,13 +209,13 @@ $user = mysqli_fetch_assoc($data);
           </div>
         </div>
 
-      </li>
+      </li> -->
 
       <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
         <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div class="avatar-container">
             <div class="avatar avatar-sm avatar-indicators avatar-online">
-              <img alt="avatar" src="<?php echo "../images/profile/".$user['profile_picture']; ?>" class="rounded-circle">
+              <img alt="avatar" src="<?php echo "../images/profile/" . $user['profile_picture']; ?>" class="rounded-circle">
             </div>
           </div>
         </a>
@@ -605,22 +605,7 @@ $user = mysqli_fetch_assoc($data);
                   <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
               </a>
-              <div class="d-flex breadcrumb-content">
-                <div class="page-header">
 
-                  <div class="page-title">
-                  </div>
-
-                  <!-- <nav class="breadcrumb-style-one" aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                          <li class="breadcrumb-item"><a href="#">App</a></li>
-                          <li class="breadcrumb-item"><a href="#">Invoice</a></li>
-                          <li class="breadcrumb-item active" aria-current="page">List</li>
-                        </ol>
-                      </nav> -->
-
-                </div>
-              </div>
               <!-- <ul class="navbar-nav flex-row ms-auto breadcrumb-action-dropdown">
                     <li class="nav-item more-dropdown">
                       <div class="dropdown  custom-dropdown-icon">
