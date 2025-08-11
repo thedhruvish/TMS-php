@@ -3,7 +3,7 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
 
-$select_query = "SELECT payments.*, invoices.invoice_number FROM payments LEFT JOIN invoices ON payments.invoice_id = invoices.id";
+$select_query = "SELECT payments.*, invoices.id as invoice_id FROM payments LEFT JOIN invoices ON payments.invoice_id = invoices.id";
 $payment_data = $DB->custom_query($select_query);
 
 ?>
@@ -35,7 +35,7 @@ $payment_data = $DB->custom_query($select_query);
             <?php while ($row = mysqli_fetch_assoc($payment_data)) { ?>
               <tr>
                 <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['invoice_number']; ?></td>
+                <td><?php echo $row['invoice_id']; ?></td>
                 <td><?php echo $row['payment_date']; ?></td>
                 <td><?php echo $row['amount_paid']; ?></td>
                 <td><?php echo $row['payment_method']; ?></td>

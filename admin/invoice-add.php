@@ -10,6 +10,47 @@ $view_mode = false;
 
 /* ---------- fetch products for the drop-down ---------- */
 $productsRes = $DB->read("products", ['where' => ['show_publicly' => ['=' => 1]]]);
+if (mysqli_num_rows($productsRes) > 0) {
+    $products = mysqli_fetch_all($productsRes, MYSQLI_ASSOC);
+
+    $filteredProducts = []; // store only in-stock products
+
+    foreach ($products as &$product) {
+        // Decode images
+        if (!empty($product['images'])) {
+            $product['images'] = json_decode($product['images'], true);
+        } else {
+            $product['images'] = ['../images/placeholder.jpg'];
+        }
+
+        // Skip stock calculation for disabled products
+        if ($product['disabled']) {
+            continue;
+        }
+
+        $stockRes = $DB->read("stock", [
+            'where' => ['product_id' => ['=' => $product['id']]]
+        ]);
+
+        if ($stockRes && mysqli_num_rows($stockRes) > 0) {
+            $stock = mysqli_fetch_assoc($stockRes);
+            $sold = $stock['sold_stock'] ?? 0;
+            $dead = $stock['dead_stock'] ?? 0;
+            $product['in_stock'] = ($stock['current_stock'] - $sold - $dead) > 0 ? 1 : 0;
+        } else {
+            $product['in_stock'] = 0;
+        }
+
+        // Add only if in stock
+        if ($product['in_stock'] == 1) {
+            $filteredProducts[] = $product;
+        }
+    }
+    unset($product);
+
+    // Replace products with filtered array
+    $products = $filteredProducts;
+}
 
 $customersRes = $DB->read("customer");
 /* ---------- POST handler (insert / update) ---------- */
@@ -25,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'notes'           => $_POST['notes']           ?: null,
         'subtotal'        => (float)($_POST['subtotal'] ?? 0),
         'discount'        => (float)($_POST['discount'] ?? 0),
-        'tax'             => (float)($_POST['tax']      ?? 0),
         'total'           => (float)($_POST['total']    ?? 0),
     ];
 
@@ -41,23 +81,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Save items
     if (!empty($_POST['items'])) {
         foreach ($_POST['items'] as $row) {
+            $product_id = (int)($row['product_id'] ?? 0);
+            $qty        = (int)($row['quantity']   ?? 0);
             $DB->create('invoice_items', [
                 'invoice_id',
-                'description',
-                'additional_details',
+                'product_id',
                 'rate',
                 'quantity',
-                'amount',
-                'taxable'
+                'amount'
             ], [
                 $invoice_id,
-                $row['description']        ?? '',
-                $row['additional_details'] ?: null,
+                $product_id,
                 (float)($row['rate']  ?? 0),
-                (int)($row['quantity'] ?? 0),
-                (float)($row['amount'] ?? 0),
-                isset($row['taxable']) ? 1 : 0
+                $qty,
+                (float)($row['amount'] ?? 0)
             ]);
+            $DB->update("stock", ["sold_stock"], [$qty], "product_id", $product_id);
         }
     }
 
@@ -73,10 +112,6 @@ if (isset($_GET['d_id'])) {
 
     header("Location: invoice.php");
 }
-
-
-
-
 /* ---------- Determine mode & fetch data ---------- */
 if (isset($_GET['id'])) {
     $view_mode = true;
@@ -175,7 +210,6 @@ if (isset($_GET['id'])) {
                                                     <th>Rate</th>
                                                     <th>Qty</th>
                                                     <th class="text-right">Amount</th>
-                                                    <th class="text-center">Tax</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="item-rows">
@@ -192,31 +226,24 @@ if (isset($_GET['id'])) {
                                                             <select name="items[<?= $idx ?>][product_id]" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
                                                                 <option value="">Choose product…</option>
                                                                 <?php
-                                                                mysqli_data_seek($productsRes, 0);   // rewind
-                                                                while ($p = mysqli_fetch_assoc($productsRes)): ?>
-                                                                    <option value="<?= $p['id'] ?>"
-                                                                        <?= isset($it['product_id']) && $it['product_id'] == $p['id'] ? 'selected' : '' ?>>
-                                                                        <?= htmlspecialchars($p['name']) ?>
+                                                                foreach ($products as $product) {  ?>
+                                                                    <option value="<?= $product['id'] ?>">
+                                                                        <?= htmlspecialchars($product['name']) ?>
                                                                     </option>
-                                                                <?php endwhile; ?>
+                                                                <?php } ?>
                                                             </select>
                                                         </td>
                                                         <td class="rate">
                                                             <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
                                                                 value="<?= $it['rate'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?> disabled>
                                                         </td>
-
                                                         <td class="qty">
                                                             <input type="number" name="items[<?= $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
                                                                 value="<?= $it['quantity'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                                         </td>
-
                                                         <td class="text-right amount">
                                                             $<span class="item-amount"><?= number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?></span>
                                                             <input type="hidden" name="items[<?= $idx ?>][amount]" class="amount-input" value="<?= ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
-                                                        </td>
-                                                        <td class="text-center tax">
-                                                            <input type="checkbox" name="items[<?= $idx ?>][taxable]" <?= (!empty($it['taxable']) ? 'checked' : '') ?> <?= $view_mode ? 'disabled' : '' ?>>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -272,13 +299,6 @@ if (isset($_GET['id'])) {
                                                     </div>
                                                 </div>
                                                 <div class="invoice-totals-row">
-                                                    <div class="invoice-summary-label">Tax</div>
-                                                    <div class="invoice-summary-value">
-                                                        <span id="tax-display"><?= number_format($invoice['tax'] ?? 0, 2) ?></span>%
-                                                        <input type="hidden" name="tax" id="tax-input" value="<?= $invoice['tax'] ?? 0 ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="invoice-totals-row">
                                                     <div class="invoice-summary-label">Total</div>
                                                     <div class="invoice-summary-value">
                                                         $<span id="total-display"><?= number_format($invoice['total'] ?? 0, 2) ?></span>
@@ -305,9 +325,6 @@ if (isset($_GET['id'])) {
                                                 <button type="submit" class="btn btn-success w-100">Save Invoice</button>
                                             </div>
                                         <?php endif; ?>
-                                        <!-- <div class="col-md-4 mb-2">
-                                            <a href="./app-invoice-preview.html" class="btn btn-secondary w-100">Preview</a>
-                                        </div> -->
                                         <div class="col-md-4 mb-2">
                                             <a href="./invoice.php" class="btn btn-outline-dark w-100">Back</a>
                                         </div>
@@ -322,8 +339,9 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 </div>
+
 <script>
-    /* map id → price (use sale_price if present, else regular_price) */
+    /* map id → price */
     const productPriceMap = {
         <?php
         mysqli_data_seek($productsRes, 0);
@@ -333,7 +351,7 @@ if (isset($_GET['id'])) {
         }
         ?>
     }
-    /* auto-fill rate when product is picked */
+
     document.addEventListener('change', e => {
         if (!e.target.matches('select[name$="[product_id]"]')) return;
         const row = e.target.closest('tr');
@@ -341,36 +359,33 @@ if (isset($_GET['id'])) {
         const rateInput = row.querySelector('.rate-input');
         if (rateInput) {
             rateInput.value = price.toFixed(2);
-            rateInput.dispatchEvent(new Event('input')); // trigger recalc
+            rateInput.dispatchEvent(new Event('input'));
         }
     });
 </script>
 
 <script>
-    /* recalc amount = rate * qty  (live) */
+    /* recalc amount = rate * qty */
     function recalcAmount(row) {
         const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
         const qty = parseInt(row.querySelector('.qty-input').value) || 0;
         const amount = (rate * qty).toFixed(2);
 
         row.querySelector('.item-amount').textContent = amount;
-        row.querySelector('.amount-input').value = amount; // now the POST picks it up
+        row.querySelector('.amount-input').value = amount;
     }
 
-    /* attach listeners to every row, both existing and new ones */
     function bindCalc(row) {
         ['input', 'change'].forEach(evt => ['.rate-input', '.qty-input'].forEach(sel =>
             row.querySelector(sel)?.addEventListener(evt, () => recalcAmount(row))
         ));
     }
 
-    /* existing rows on page load */
     document.querySelectorAll('#item-rows tr').forEach(bindCalc);
 
-    /* new rows created by “Add Item” */
     document.addEventListener('click', e => {
         if (e.target && e.target.classList.contains('additem')) {
-            setTimeout(() => { // wait for DOM insertion
+            setTimeout(() => {
                 const newRow = document.querySelector('#item-rows tr:last-child');
                 bindCalc(newRow);
                 recalcAmount(newRow);
@@ -378,7 +393,6 @@ if (isset($_GET['id'])) {
         }
     });
 
-    // remove item
     document.addEventListener('click', e => {
         if (e.target.matches('.delete-item')) {
             e.preventDefault();
@@ -389,50 +403,39 @@ if (isset($_GET['id'])) {
 </script>
 
 <script>
-    /*  Recalculate sub-totals whenever an item row changes  */
+    /* Recalculate totals without tax */
     function recalcTotals() {
         let subtotal = 0;
         document.querySelectorAll('#item-rows tr').forEach(row => {
-            const amount = parseFloat(row.querySelector('.amount-input')?.value || 0);
-            subtotal += amount;
+            subtotal += parseFloat(row.querySelector('.amount-input')?.value || 0);
         });
 
         const discount = parseFloat(document.getElementById('discount-input')?.value || 0);
-        const taxRate = parseFloat(document.getElementById('tax-input')?.value || 0);
+        const total = subtotal - discount;
 
-        const tax = (subtotal - discount) * (taxRate / 100);
-        const total = subtotal - discount + tax;
-
-        /* display + hidden */
         document.getElementById('subtotal-display').textContent = subtotal.toFixed(2);
         document.getElementById('subtotal-input').value = subtotal.toFixed(2);
 
         document.getElementById('discount-display').textContent = discount.toFixed(2);
 
-        document.getElementById('tax-display').textContent = taxRate.toFixed(2);
-        // if you want the dollar value instead of percentage:
-        // document.getElementById('tax-display').textContent = tax.toFixed(2);
-
         document.getElementById('total-display').textContent = total.toFixed(2);
         document.getElementById('total-input').value = total.toFixed(2);
     }
 
-    /* run on every change in any item row */
     document.addEventListener('input', e => {
-        if (e.target.matches('.rate-input, .qty-input')) {
-            const row = e.target.closest('tr');
-            recalcAmount(row); // rate * qty
-            recalcTotals(); // subtotal / total
+        if (e.target.matches('.rate-input, .qty-input, #discount-input')) {
+            if (e.target.matches('.rate-input, .qty-input')) {
+                const row = e.target.closest('tr');
+                recalcAmount(row);
+            }
+            recalcTotals();
         }
     });
 
-    /* also run once on page load */
     document.addEventListener('DOMContentLoaded', recalcTotals);
 </script>
 
-<!-- Optional JS for dynamic rows & calculations -->
 <script>
-    /* Simple dynamic row adder (keep for edit mode) */
     <?php if (!$view_mode): ?>
         document.querySelector('.additem')?.addEventListener('click', () => {
             const tbody = document.getElementById('item-rows');
@@ -442,29 +445,23 @@ if (isset($_GET['id'])) {
             tr.innerHTML = `
         <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
         <td class="description">
-            <select name="items[<?= $idx ?>][product_id]" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+            <select name="items[${idx}][product_id]" class="form-select">
                 <option value="">Choose product…</option>
                 <?php
-                mysqli_data_seek($productsRes, 0);   // rewind
+                mysqli_data_seek($productsRes, 0);
                 while ($p = mysqli_fetch_assoc($productsRes)): ?>
-                    <option value="<?= $p['id'] ?>"
-                        <?= isset($it['product_id']) && $it['product_id'] == $p['id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($p['name']) ?>
-                    </option>
+                    <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['name']) ?></option>
                 <?php endwhile; ?>
             </select>
         </td>
-        <td><input type="number" step="0.01" name="items[${idx}][rate]"   class="form-control form-control-sm rate-input" disabled></td>
+        <td><input type="number" step="0.01" name="items[${idx}][rate]" class="form-control form-control-sm rate-input" disabled></td>
         <td><input type="number" name="items[${idx}][quantity]" class="form-control form-control-sm qty-input"></td>
         <td class="text-right">
             $<span class="item-amount">0.00</span>
             <input type="hidden" name="items[${idx}][amount]" class="amount-input">
-        </td>
-        <td><input type="checkbox" name="items[${idx}][taxable]"></td>`;
+        </td>`;
 
             tbody.appendChild(tr);
-
-            /* ---- NEW: bind the calc to the fresh row ---- */
             bindCalc(tr);
         });
     <?php endif; ?>

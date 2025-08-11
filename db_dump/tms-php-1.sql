@@ -152,8 +152,7 @@ CREATE TABLE  `invoices` (
 CREATE TABLE `invoice_items` (
   `id`                 INT AUTO_INCREMENT PRIMARY KEY,
   `invoice_id`         INT NOT NULL,
-  `description`        VARCHAR(255) NOT NULL,
-  `additional_details` TEXT DEFAULT NULL,
+  `product_id`         VARCHAR(255) ,
   `rate`               DECIMAL(12,2) DEFAULT 0.00,
   `quantity`           INT           DEFAULT 1,
   `amount`             DECIMAL(12,2) DEFAULT 0.00,
@@ -194,14 +193,16 @@ CREATE TABLE category (
 
 CREATE TABLE `stock` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `product_id` INT NOT NULL,
+  `product_id` INT NULL,
+  `product_name` VARCHAR(255) NULL,
   `current_stock` INT NOT NULL DEFAULT 0,
   `sold_stock` INT NULL DEFAULT NULL,
   `dead_stock` INT NULL DEFAULT NULL,
   `pending_stock` INT NULL DEFAULT NULL,
   `last_updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) 
-    ON DELETE RESTRICT
+  CONSTRAINT `fk_stock_product`
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) 
+    ON DELETE SET NULL
     ON UPDATE CASCADE,
   CONSTRAINT `chk_stock_values` CHECK (
     `current_stock` >= 0 AND
@@ -210,6 +211,7 @@ CREATE TABLE `stock` (
     (`pending_stock` IS NULL OR `pending_stock` >= 0)
   )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 CREATE TABLE `customer` (
@@ -258,19 +260,5 @@ CREATE TABLE `inquiry` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-------------------add field to products table-------------------
 ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_publicly`;
 
-----------------------alter stock table for discontinue stock and delete product although stock exsist-------------------
-ALTER TABLE `stock` 
-DROP FOREIGN KEY `stock_ibfk_1`;
-
-ALTER TABLE `stock` 
-ADD CONSTRAINT `stock_ibfk_1` 
-FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) 
-ON DELETE SET NULL 
-ON UPDATE CASCADE;
-
----------------------------
-ALTER TABLE `stock` 
-ADD COLUMN `product_name` VARCHAR(255) NULL AFTER `product_id`;
