@@ -2,6 +2,8 @@
 
 require_once "config.php";
 
+include_once "send_tg_msg.php";
+
 class Database
 {
 

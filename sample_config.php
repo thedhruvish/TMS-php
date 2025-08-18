@@ -19,4 +19,8 @@ define("USERNAME","resend");
 define("PASSWORD","re_91LHp8xK_Lr43N6tvULhJPtYotPJ4hCqV");
 define("HOST","smtp.resend.com");
 
+define("IS_ALTER_ACTIVE",true);
+// telegram bot setup
+define("BOT_TOKEN","7806630382:AAFVt9XXc6N4s-_pzI4uQzx-Dfq4qUVkN9g");
+define("CHAT_ID","6712546524");
 ?>
