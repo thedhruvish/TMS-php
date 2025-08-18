@@ -189,8 +189,9 @@ if (isset($_GET['id'])) {
                                         <div class="col-md-3">
                                             <label>Invoice Date</label>
                                             <input type="date" name="invoice_date" class="form-control form-control-sm"
-                                                value="<?= $invoice['invoice_date'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?= $invoice['invoice_date'] ?? date('Y-m-d') ?>" <?= $view_mode ? 'readonly' : '' ?>>
                                         </div>
+
                                         <div class="col-md-3">
                                             <label>Due Date</label>
                                             <input type="date" name="due_date" class="form-control form-control-sm"

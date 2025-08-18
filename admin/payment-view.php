@@ -11,11 +11,20 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $payment_id = $_GET['id'];
 
 $query = "
-    SELECT payments.*, invoices.*, invoices.notes AS invoice_notes
-    FROM payments 
+    SELECT 
+        payments.*, 
+        invoices.*, 
+        invoices.notes AS invoice_notes,
+        CONCAT(customer.first_name,' ',customer.last_name) AS client_name,
+        customer.email AS client_email,
+        customer.phone AS client_phone
+
+    FROM payments
     LEFT JOIN invoices ON payments.invoice_id = invoices.id
+    LEFT JOIN customer ON invoices.customer_id = customer.id
     WHERE payments.id = $payment_id
 ";
+
 
 $result = $DB->custom_query($query);
 
@@ -28,8 +37,8 @@ if (mysqli_num_rows($result) == 0) {
 $data = mysqli_fetch_assoc($result);
 ?>
 
-<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-  <div class="card shadow-lg w-100" style="max-width: 900px;">
+<div class="container d-flex align-items-center justify-content-center pt-5" style="min-height: 100vh;">
+  <div class="card shadow-lg w-100">
     <div class="card-body">
       <h3 class="text-center mb-4">Payment Details</h3>
 
@@ -41,7 +50,7 @@ $data = mysqli_fetch_assoc($result);
         </tr>
         <tr>
           <th>Invoice Number</th>
-          <td><?php echo $data['invoice_number']; ?></td>
+          <td><?php echo $data['invoice_id']; ?></td>
         </tr>
         <tr>
           <th>Payment Date</th>
@@ -84,10 +93,6 @@ $data = mysqli_fetch_assoc($result);
           <td><?php echo $data['client_email']; ?></td>
         </tr>
         <tr>
-          <th>Client Address</th>
-          <td><?php echo $data['client_address']; ?></td>
-        </tr>
-        <tr>
           <th>Client Phone</th>
           <td><?php echo $data['client_phone']; ?></td>
         </tr>
@@ -122,10 +127,6 @@ $data = mysqli_fetch_assoc($result);
         <tr>
           <th>Discount</th>
           <td><?php echo $data['discount']; ?></td>
-        </tr>
-        <tr>
-          <th>Tax</th>
-          <td><?php echo $data['tax']; ?></td>
         </tr>
         <tr>
           <th>Total</th>

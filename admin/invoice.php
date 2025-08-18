@@ -8,13 +8,17 @@ $sql = "
     SELECT
         i.*,
         CONCAT(c.first_name,' ',c.last_name) AS client_name,
-        c.email                              AS client_email
+        c.email AS client_email,
+        SUM(p.amount_paid) AS paid_amount
     FROM invoices i
-    JOIN customer  c ON c.id = i.customer_id
+    JOIN customer c ON c.id = i.customer_id
+    LEFT JOIN payments p ON p.invoice_id = i.id
+    GROUP BY i.id, c.first_name, c.last_name, c.email
 ";
 
+
 if ($search !== '') {;
-    $sql .= " WHERE (
+  $sql .= " WHERE (
                 c.email      LIKE '%$search%' OR
                 c.first_name LIKE '%$search%' OR
                 c.last_name  LIKE '%$search%' OR
@@ -40,7 +44,7 @@ $invoices = $DB->custom_query($sql);
         <input type="text" name="search" class="form-control" style="max-width: 300px;"
           placeholder="Search Email..." value="<?= @$search ?>">
         <button type="submit" class="btn btn-primary px-3">Search</button>
-        <?php if (!empty($search) ): ?>
+        <?php if (!empty($search)): ?>
           <a href="invoice.php" class="btn btn-outline-secondary">Clear</a>
         <?php endif; ?>
       </form>
@@ -52,11 +56,12 @@ $invoices = $DB->custom_query($sql);
       <table class="table dt-table-hover" style="width:100%">
         <thead>
           <tr>
-            <th class="checkbox-column"> Record no. </th>
             <th>Invoice Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Amount</th>
+            <th>Total Amount</th>
+            <th>Paid Amount</th>
+            <th>Panding Amount</th>
             <th>Date</th>
             <th>Actions</th>
           </tr>
@@ -64,24 +69,34 @@ $invoices = $DB->custom_query($sql);
         <tbody>
           <?php while ($row = mysqli_fetch_assoc($invoices)) { ?>
             <tr>
-              <td class="checkbox-column"> <?php echo $row['id']; ?></td>
+
               <td><a href="./invoice-add.php"><span class="inv-number"><?php echo $row['id']; ?></span></a></td>
               <td>
                 <div class="d-flex">
-
                   <p class="align-self-center mb-0 user-name"><?php echo $row['client_name']; ?></p>
                 </div>
               </td>
               <td><?php echo $row['client_email']; ?></td>
               <td><span class="inv-amount">$<?php echo $row['total']; ?></span></td>
-              <td><span class="inv-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+              <td><span class="inv-amount">$<?php echo $row['paid_amount']; ?></span></td>
+              <td><span class="inv-amount">$<?php echo $row['total'] - $row['paid_amount']; ?></span></td>
+              <td>
+                <span class="inv-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                     <line x1="16" y1="2" x2="16" y2="6"></line>
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg> <?php echo $row['created_at']; ?> </span></td>
+                  </svg> <?php echo $row['created_at']; ?> </span>
+              </td>
               <td>
-                <a class="badge badge-light-primary text-start me-2 action-edit" href="./invoice-add.php?u_id=<?php echo $row['id']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3">
+                <a class="badge badge-light-primary text-start action-view" href="./invoice-preview.php?id=<?php echo $row['id']; ?>" target="_blank" rel="noopener noreferrer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                </a>
+                <a class="badge badge-light-primary text-start action-edit" href="./invoice-add.php?u_id=<?php echo $row['id']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3">
                     <path d="M12 20h9"></path>
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                   </svg></a>
@@ -89,7 +104,9 @@ $invoices = $DB->custom_query($sql);
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg></a>
+
               </td>
+
             </tr>
           <?php } ?>
 

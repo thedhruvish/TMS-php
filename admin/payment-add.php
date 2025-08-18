@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
                                                     <select class="form-select mb-3" name="invoice_id" id="invoice_id" required>
                                                         <option value="">Select Invoice ID</option>
                                                         <?php while ($row = mysqli_fetch_assoc($invoice_data)) { ?>
-                                                            <option value="<?php echo $row['id'] ?>"><?php echo $row['invoice_number'] ?></option>
+                                                            <option value="<?php echo $row['id'] ?>"><?php echo $row['id'] ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="payment_date">Payment Date</label>
-                                                    <input type="date" class="form-control mb-3" name="payment_date" id="payment_date" required>
+                                                    <input type="date" class="form-control mb-3" name="payment_date" id="payment_date" value="<?php echo date('Y-m-d'); ?>" required>
                                                 </div>
                                             </div>
 

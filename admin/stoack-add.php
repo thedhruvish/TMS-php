@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['message'] = "Stock added successfully!";
         }
 
-        header("Location: stoack-add.php?success=1");
+        header("Location: stoack.php");
         exit;
     } else {
         $error = "Invalid product or stock quantity";
