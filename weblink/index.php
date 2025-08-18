@@ -109,35 +109,35 @@ if (!empty($categoryFilter)) {
 
                 <!-- Checkbox -->
                 <div class="position-absolute top-0 start-0 m-2">
-                <input type="checkbox" class="form-check-input product-check" value="<?= $product['id'] ?>">
+                <input type="checkbox" class="form-check-input product-check" value="<?php echo $product['id'] ?>">
                 </div>
 
                 <!-- Category Badge -->
                 <?php if (!empty($product['category'])): ?>
                 <span class="badge bg-primary position-absolute top-0 end-0 m-2">
-                    <?= htmlspecialchars($product['category']) ?>
+                    <?php echo htmlspecialchars($product['category']) ?>
                 </span>
                 <?php endif; ?>
 
                 <!-- Product Image -->
-                <img src="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>"
-                class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>"
+                <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../images/placeholder.jpg' ?>"
+                class="card-img-top" alt="<?php echo htmlspecialchars($product['name']) ?>"
                 style="height: 180px; object-fit: cover;">
 
                 <!-- Product Info -->
                 <div class="card-body">
-                <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
+                <h6 class="card-title"><?php echo htmlspecialchars($product['name']) ?></h6>
                 <div>
                     <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']): ?>
                     <span class="text-muted text-decoration-line-through me-2">
-                        $<?= number_format($product['regular_price'], 2) ?>
+                        $<?php echo number_format($product['regular_price'], 2) ?>
                     </span>
                     <span class="text-success fw-bold">
-                        $<?= number_format($product['sale_price'], 2) ?>
+                        $<?php echo number_format($product['sale_price'], 2) ?>
                     </span>
                     <?php else: ?>
                     <span class="text-success fw-bold">
-                        $<?= number_format($product['regular_price'], 2) ?>
+                        $<?php echo number_format($product['regular_price'], 2) ?>
                     </span>
                     <?php endif; ?>
                 </div>
@@ -145,8 +145,8 @@ if (!empty($categoryFilter)) {
 
                 <!-- Stock Badge -->
                 <div class="card-footer bg-transparent border-0">
-                <span class="badge <?= $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
-                    <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
+                <span class="badge <?php echo $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
+                    <?php echo $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
                 </span>
                 </div>
             </div>

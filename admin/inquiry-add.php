@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 <div class="container mt-4">
   <div class="card shadow">
     <div class="card-header bg-primary text-white">
-      <h5 class="mb-0"><?= isset($_GET['u_id']) ? 'Edit' : 'Add' ?> Inquiry</h5>
+      <h5 class="mb-0"><?php echo isset($_GET['u_id']) ? 'Edit' : 'Add' ?> Inquiry</h5>
     </div>
 
     <div class="card-body">
@@ -46,12 +46,12 @@ if (isset($_POST['submit'])) {
           <div class="col-md-6">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name"
-              value="<?= htmlspecialchars($editData['name'] ?? '') ?>" required>
+              value="<?php echo htmlspecialchars($editData['name'] ?? '') ?>" required>
           </div>
           <div class="col-md-6">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email"
-              value="<?= htmlspecialchars($editData['email'] ?? '') ?>" required>
+              value="<?php echo htmlspecialchars($editData['email'] ?? '') ?>" required>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
           <div class="col-md-6">
             <label for="phone" class="form-label">Phone</label>
             <input type="text" class="form-control" id="phone" name="phone"
-              value="<?= htmlspecialchars($editData['phone'] ?? '') ?>">
+              value="<?php echo htmlspecialchars($editData['phone'] ?? '') ?>">
           </div>
 
           <div class="col-md-6">
@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
         <div class="mb-3">
           <label for="message" class="form-label">Message</label>
           <textarea class="form-control" id="message" name="message" rows="4"
-            placeholder="Enter your message"><?=
+            placeholder="Enter your message"><?php echo
                                               htmlspecialchars($editData['message'] ?? '')
                                               ?></textarea>
         </div>

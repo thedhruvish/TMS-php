@@ -73,7 +73,7 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
         <div class="widget-content widget-content-area blog-create-section">
             <?php if (isset($_SESSION['message'])): ?>
                 <div class="alert alert-success alert-dismissible fade show">
-                    <?= $_SESSION['message'] ?>
+                    <?php echo $_SESSION['message'] ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <?php unset($_SESSION['message']); ?>
@@ -81,7 +81,7 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
 
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger">
-                    <?= $error ?>
+                    <?php echo $error ?>
                 </div>
             <?php endif; ?>
 
@@ -92,8 +92,8 @@ if ($productsRes && mysqli_num_rows($productsRes) > 0) {
                         <select name="product_id" class="form-control" required>
                             <option value="">Select a product</option>
                             <?php foreach ($products as $product): ?>
-                                <option value="<?= $product['id'] ?>">
-                                    <?= $product['name'] ?>
+                                <option value="<?php echo $product['id'] ?>">
+                                    <?php echo $product['name'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

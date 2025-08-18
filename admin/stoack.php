@@ -81,7 +81,7 @@ if (isset($_GET['delete_id'])) {
     <?php if (isset($_SESSION['message'])): ?>
         <div class="col-12">
             <div class="alert alert-success alert-dismissible fade show">
-                <?= $_SESSION['message'] ?>
+                <?php echo $_SESSION['message'] ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
@@ -106,25 +106,25 @@ if (isset($_GET['delete_id'])) {
                     </thead>
                     <tbody>
                         <?php foreach ($stockData as $stock): ?>
-                            <tr class="<?= !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
+                            <tr class="<?php echo !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
                                 <td>
-                                    <?= htmlspecialchars($stock['product_name']) ?>
+                                    <?php echo htmlspecialchars($stock['product_name']) ?>
                                     <?php if (!$stock['product_exists']): ?>
                                         <span class="badge bg-danger">(Product Deleted)</span>
                                     <?php elseif ($stock['product_disabled']): ?>
                                         <span class="badge bg-warning text-dark">(Product Discontinued)</span>
                                     <?php endif; ?>
                                 </td>
-                                <td><?= $stock['current_stock'] ?></td>
-                                <td><?= $stock['sold_stock'] ?></td>
-                                <td><?= $stock['dead_stock'] ?></td>
-                                <td><?= $stock['pending_stock'] ?></td>
-                                <td><?= date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
+                                <td><?php echo $stock['current_stock'] ?></td>
+                                <td><?php echo $stock['sold_stock'] ?></td>
+                                <td><?php echo $stock['dead_stock'] ?></td>
+                                <td><?php echo $stock['pending_stock'] ?></td>
+                                <td><?php echo date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
                                 <td>
-                                    <a href="stoack-edit.php?id=<?= $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="stoack-edit.php?id=<?php echo $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
                                 </td>
                                 <td>
-                                    <button onclick="confirmDelete(<?= $stock['id'] ?>)" class="btn btn-danger btn-sm">Delete</button>
+                                    <button onclick="confirmDelete(<?php echo $stock['id'] ?>)" class="btn btn-danger btn-sm">Delete</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

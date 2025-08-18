@@ -118,7 +118,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
     <div class="col-lg-10 m-4">
         <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><?= $isEditMode ? 'Edit User' : ($isViewMode ? 'User Details' : 'Create New User') ?></h5>
+                <h5 class="mb-0"><?php echo $isEditMode ? 'Edit User' : ($isViewMode ? 'User Details' : 'Create New User') ?></h5>
                 <a href="user.php" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-arrow-left me-1"></i>Back
                 </a>
@@ -133,8 +133,8 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="name" name="name"
                                     placeholder="Full Name"
-                                    value="<?= htmlspecialchars($_POST['name'] ?? $userData['name'] ?? '') ?>"
-                                    required <?= $disabledAttr ?>>
+                                    value="<?php echo htmlspecialchars($_POST['name'] ?? $userData['name'] ?? '') ?>"
+                                    required <?php echo $disabledAttr ?>>
                                 <label for="name">Full Name *</label>
                             </div>
                         </div>
@@ -144,8 +144,8 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="Email"
-                                    value="<?= htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '') ?>"
-                                    required <?= $disabledAttr ?>>
+                                    value="<?php echo htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '') ?>"
+                                    required <?php echo $disabledAttr ?>>
                                 <label for="email">Email *</label>
                             </div>
                         </div>
@@ -155,14 +155,14 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="Password"
-                                    value="<?= htmlspecialchars($_POST['password'] ?? $userData['password'] ?? '') ?>"
+                                    value="<?php echo htmlspecialchars($_POST['password'] ?? $userData['password'] ?? '') ?>"
                                     <?php
                                     if (!empty($userData['auth_provider']) && $userData['auth_provider'] === 'google') {
                                         echo 'readonly disabled';
                                     } else {
                                         echo 'required';
                                     }
-                                    ?> <?= $disabledAttr ?>>
+                                    ?> <?php echo $disabledAttr ?>>
                                 <label for="password">Password *</label>
                             </div>
                         </div>
@@ -172,8 +172,8 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="mobile_no" name="mobile_no"
                                     placeholder="Mobile"
-                                    value="<?= htmlspecialchars($_POST['mobile_no'] ?? $userData['mobile_no'] ?? '') ?>"
-                                    <?= $disabledAttr ?>>
+                                    value="<?php echo htmlspecialchars($_POST['mobile_no'] ?? $userData['mobile_no'] ?? '') ?>"
+                                    <?php echo $disabledAttr ?>>
                                 <label for="mobile_no">Mobile Number</label>
                             </div>
                         </div>
@@ -181,10 +181,10 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Role -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="role" name="role" required <?= $selectDisabled ?>>
+                                <select class="form-select" id="role" name="role" required <?php echo $selectDisabled ?>>
                                     <option value="">Select Role</option>
-                                    <option value="admin" <?= (($_POST['role'] ?? $userData['role'] ?? '') === 'admin')  ? 'selected' : '' ?>>Admin</option>
-                                    <option value="staff" <?= (($_POST['role'] ?? $userData['role'] ?? '') === 'staff')  ? 'selected' : '' ?>>Staff</option>
+                                    <option value="admin" <?php echo (($_POST['role'] ?? $userData['role'] ?? '') === 'admin')  ? 'selected' : '' ?>>Admin</option>
+                                    <option value="staff" <?php echo (($_POST['role'] ?? $userData['role'] ?? '') === 'staff')  ? 'selected' : '' ?>>Staff</option>
                                 </select>
                                 <label for="role">Role *</label>
                             </div>
@@ -193,9 +193,9 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Auth Provider -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="auth_provider" name="auth_provider" required <?= $selectDisabled ?>>
-                                    <option value="local" <?= (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'local')  ? 'selected' : '' ?>>Local</option>
-                                    <option value="google" <?= (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'google') ? 'selected' : '' ?>>Google</option>
+                                <select class="form-select" id="auth_provider" name="auth_provider" required <?php echo $selectDisabled ?>>
+                                    <option value="local" <?php echo (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'local')  ? 'selected' : '' ?>>Local</option>
+                                    <option value="google" <?php echo (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'google') ? 'selected' : '' ?>>Google</option>
                                 </select>
                                 <label for="auth_provider">Auth Provider *</label>
                             </div>
@@ -204,9 +204,9 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Two-step -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="two_step_auth" name="two_step_auth" <?= $selectDisabled ?>>
-                                    <option value="0" <?= (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '0') ? 'selected' : '' ?>>Disabled</option>
-                                    <option value="1" <?= (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '1') ? 'selected' : '' ?>>Enabled</option>
+                                <select class="form-select" id="two_step_auth" name="two_step_auth" <?php echo $selectDisabled ?>>
+                                    <option value="0" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '0') ? 'selected' : '' ?>>Disabled</option>
+                                    <option value="1" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '1') ? 'selected' : '' ?>>Enabled</option>
                                 </select>
                                 <label for="two_step_auth">Two-Step Auth</label>
                             </div>
@@ -215,9 +215,9 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Verified -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="is_verified" name="is_verified" <?= $selectDisabled ?>>
-                                    <option value="0" <?= (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '0') ? 'selected' : '' ?>>No</option>
-                                    <option value="1" <?= (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '1') ? 'selected' : '' ?>>Yes</option>
+                                <select class="form-select" id="is_verified" name="is_verified" <?php echo $selectDisabled ?>>
+                                    <option value="0" <?php echo (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '0') ? 'selected' : '' ?>>No</option>
+                                    <option value="1" <?php echo (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '1') ? 'selected' : '' ?>>Yes</option>
                                 </select>
                                 <label for="is_verified">Is Verified</label>
                             </div>
@@ -228,16 +228,16 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <label class="form-label">Profile Picture</label>
                             <?php if ($isViewMode && !empty($userData['profile_picture'])): ?>
                                 <div class="mt-2">
-                                    <img src="../images/profile/<?= $userData['profile_picture'] ?>"
+                                    <img src="../images/profile/<?php echo $userData['profile_picture'] ?>"
                                         alt="Profile" class="rounded" style="max-height: 150px;">
                                 </div>
                             <?php elseif (!$isViewMode): ?>
                                 <input type="file" class="form-control" name="profile_picture"
-                                    accept="image/*" <?= $selectDisabled ?>>
+                                    accept="image/*" <?php echo $selectDisabled ?>>
                                 <?php if (!empty($userData['profile_picture'])): ?>
                                     <div class="mt-2">
                                         <small class="text-muted">Current:</small>
-                                        <img src="../images/profile/<?= $userData['profile_picture'] ?>"
+                                        <img src="../images/profile/<?php echo $userData['profile_picture'] ?>"
                                             alt="Profile" class="rounded ms-2" style="max-height: 80px;">
                                     </div>
                                 <?php endif; ?>
@@ -249,7 +249,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                     <?php if (!$isViewMode): ?>
                         <div class="text-end mt-4">
                             <button type="submit" name="submit-user" class="btn btn-primary px-4">
-                                <?= $isEditMode ? 'Update' : 'Create' ?>
+                                <?php echo $isEditMode ? 'Update' : 'Create' ?>
                             </button>
                         </div>
                     <?php endif; ?>

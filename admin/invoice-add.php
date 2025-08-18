@@ -140,7 +140,7 @@ if (isset($_GET['id'])) {
                     <form method="post" autocomplete="off">
                         <!-- hidden id for update -->
                         <?php if ($edit_mode || $view_mode): ?>
-                            <input type="hidden" name="invoice_id" value="<?= $invoice['id'] ?? '' ?>">
+                            <input type="hidden" name="invoice_id" value="<?php echo $invoice['id'] ?? '' ?>">
                         <?php endif; ?>
 
                         <div class="invoice-content">
@@ -153,8 +153,8 @@ if (isset($_GET['id'])) {
                                             name="invoice_label"
                                             class="form-control"
                                             placeholder="Invoice Label"
-                                            value="<?= $invoice['invoice_label'] ?? 'Invoice' ?>"
-                                            <?= $view_mode ? 'readonly' : '' ?>>
+                                            value="<?php echo $invoice['invoice_label'] ?? 'Invoice' ?>"
+                                            <?php echo $view_mode ? 'readonly' : '' ?>>
                                     </div>
                                 </div>
 
@@ -167,12 +167,12 @@ if (isset($_GET['id'])) {
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
-                                                        <select name="customer_id" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                                                        <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
                                                             <option value="">Choose customer…</option>
                                                             <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
-                                                                <option value="<?= $row['id'] ?>"
-                                                                    <?= isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
-                                                                    <?= $row['email'] ?>
+                                                                <option value="<?php echo $row['id'] ?>"
+                                                                    <?php echo isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
+                                                                    <?php echo $row['email'] ?>
                                                                 </option>
                                                             <?php endwhile; ?>
                                                         </select>
@@ -189,13 +189,13 @@ if (isset($_GET['id'])) {
                                         <div class="col-md-3">
                                             <label>Invoice Date</label>
                                             <input type="date" name="invoice_date" class="form-control form-control-sm"
-                                                value="<?= $invoice['invoice_date'] ?? date('Y-m-d') ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?php echo $invoice['invoice_date'] ?? date('Y-m-d') ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                         </div>
 
                                         <div class="col-md-3">
                                             <label>Due Date</label>
                                             <input type="date" name="due_date" class="form-control form-control-sm"
-                                                value="<?= $invoice['due_date'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                value="<?php echo $invoice['due_date'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                         </div>
                                     </div>
                                 </div>
@@ -224,27 +224,27 @@ if (isset($_GET['id'])) {
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="description">
-                                                            <select name="items[<?= $idx ?>][product_id]" class="form-select" <?= $view_mode ? 'disabled' : '' ?>>
+                                                            <select name="items[<?php echo $idx ?>][product_id]" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
                                                                 <option value="">Choose product…</option>
                                                                 <?php
                                                                 foreach ($products as $product) {  ?>
-                                                                    <option value="<?= $product['id'] ?>">
-                                                                        <?= htmlspecialchars($product['name']) ?>
+                                                                    <option value="<?php echo $product['id'] ?>">
+                                                                        <?php echo htmlspecialchars($product['name']) ?>
                                                                     </option>
                                                                 <?php } ?>
                                                             </select>
                                                         </td>
                                                         <td class="rate">
-                                                            <input type="number" step="0.01" name="items[<?= $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
-                                                                value="<?= $it['rate'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?> disabled>
+                                                            <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
+                                                                value="<?php echo $it['rate'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?> disabled>
                                                         </td>
                                                         <td class="qty">
-                                                            <input type="number" name="items[<?= $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
-                                                                value="<?= $it['quantity'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                            <input type="number" name="items[<?php echo $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
+                                                                value="<?php echo $it['quantity'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                                         </td>
                                                         <td class="text-right amount">
-                                                            $<span class="item-amount"><?= number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?></span>
-                                                            <input type="hidden" name="items[<?= $idx ?>][amount]" class="amount-input" value="<?= ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
+                                                            $<span class="item-amount"><?php echo number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?></span>
+                                                            <input type="hidden" name="items[<?php echo $idx ?>][amount]" class="amount-input" value="<?php echo ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -264,21 +264,21 @@ if (isset($_GET['id'])) {
                                                 <label class="col-sm-3 col-form-label-sm">Account #</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="account_number" class="form-control form-control-sm" placeholder="Bank Account Number"
-                                                        value="<?= $invoice['account_number'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?php echo $invoice['account_number'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label-sm">Bank Name</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="bank_name" class="form-control form-control-sm" placeholder="Insert Bank Name"
-                                                        value="<?= $invoice['bank_name'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?php echo $invoice['bank_name'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label-sm">SWIFT code</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="swift_code" class="form-control form-control-sm" placeholder="Insert Code"
-                                                        value="<?= $invoice['swift_code'] ?? '' ?>" <?= $view_mode ? 'readonly' : '' ?>>
+                                                        value="<?php echo $invoice['swift_code'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                                 </div>
                                             </div>
                                         </div>
@@ -288,22 +288,22 @@ if (isset($_GET['id'])) {
                                                 <div class="invoice-totals-row">
                                                     <div class="invoice-summary-label">Subtotal</div>
                                                     <div class="invoice-summary-value">
-                                                        $<span id="subtotal-display"><?= number_format($invoice['subtotal'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="subtotal" id="subtotal-input" value="<?= $invoice['subtotal'] ?? 0 ?>">
+                                                        $<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span>
+                                                        <input type="hidden" name="subtotal" id="subtotal-input" value="<?php echo $invoice['subtotal'] ?? 0 ?>">
                                                     </div>
                                                 </div>
                                                 <div class="invoice-totals-row">
                                                     <div class="invoice-summary-label">Discount</div>
                                                     <div class="invoice-summary-value">
-                                                        $<span id="discount-display"><?= number_format($invoice['discount'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="discount" id="discount-input" value="<?= $invoice['discount'] ?? 0 ?>">
+                                                        $<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span>
+                                                        <input type="hidden" name="discount" id="discount-input" value="<?php echo $invoice['discount'] ?? 0 ?>">
                                                     </div>
                                                 </div>
                                                 <div class="invoice-totals-row">
                                                     <div class="invoice-summary-label">Total</div>
                                                     <div class="invoice-summary-value">
-                                                        $<span id="total-display"><?= number_format($invoice['total'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="total" id="total-input" value="<?= $invoice['total'] ?? 0 ?>">
+                                                        $<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span>
+                                                        <input type="hidden" name="total" id="total-input" value="<?php echo $invoice['total'] ?? 0 ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,7 +315,7 @@ if (isset($_GET['id'])) {
                                 <div class="invoice-detail-note">
                                     <label>Notes</label>
                                     <textarea name="notes" class="form-control" rows="3" placeholder='Notes - For example, "Thank you for doing business with us"'
-                                        <?= $view_mode ? 'readonly' : '' ?>><?= $invoice['notes'] ?? '' ?></textarea>
+                                        <?php echo $view_mode ? 'readonly' : '' ?>><?php echo $invoice['notes'] ?? '' ?></textarea>
                                 </div>
 
                                 <!-- Save / Preview buttons -->
@@ -451,7 +451,7 @@ if (isset($_GET['id'])) {
                 <?php
                 mysqli_data_seek($productsRes, 0);
                 while ($p = mysqli_fetch_assoc($productsRes)): ?>
-                    <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['name']) ?></option>
+                    <option value="<?php echo $p['id'] ?>"><?php echo htmlspecialchars($p['name']) ?></option>
                 <?php endwhile; ?>
             </select>
         </td>

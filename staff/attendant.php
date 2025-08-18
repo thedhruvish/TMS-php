@@ -21,8 +21,8 @@ $currentMonth = date('m');
         <div class="col-md-3">
             <select class="form-select form-select-sm mb-3" id="monthSelect">
                 <?php for ($m = 1; $m <= 12; $m++): ?>
-                    <option value="<?= $m ?>" <?= $m == $currentMonth ? 'selected' : '' ?>>
-                        <?= date('F', mktime(0, 0, 0, $m, 10)) ?>
+                    <option value="<?php echo $m ?>" <?php echo $m == $currentMonth ? 'selected' : '' ?>>
+                        <?php echo date('F', mktime(0, 0, 0, $m, 10)) ?>
                     </option>
                 <?php endfor; ?>
             </select>
@@ -31,8 +31,8 @@ $currentMonth = date('m');
         <div class="col-md-3">
             <select class="form-select form-select-sm mb-3" id="yearSelect">
                 <?php for ($y = $currentYear - 1; $y <= $currentYear + 1; $y++): ?>
-                    <option value="<?= $y ?>" <?= $y == $currentYear ? 'selected' : '' ?>>
-                        <?= $y ?>
+                    <option value="<?php echo $y ?>" <?php echo $y == $currentYear ? 'selected' : '' ?>>
+                        <?php echo $y ?>
                     </option>
                 <?php endfor; ?>
             </select>
@@ -78,10 +78,10 @@ $currentMonth = date('m');
                                 <div class="usr-img-frame me-2 rounded-circle">
                                     <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
                                 </div>
-                                <p class="align-self-center mb-0 admin-name">Tiger <?= $j ?></p>
+                                <p class="align-self-center mb-0 admin-name">Tiger <?php echo $j ?></p>
                             </div>
                         </td>
-                        <td>admin<?= $j ?>@gmail.com</td>
+                        <td>admin<?php echo $j ?>@gmail.com</td>
                         <!-- JS will inject attendance columns -->
                     </tr>
                 <?php } ?>

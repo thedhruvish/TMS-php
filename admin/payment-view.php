@@ -46,7 +46,7 @@ $data = mysqli_fetch_assoc($result);
       <table class="table table-bordered">
         <tr>
           <th>ID</th>
-          <td><?= $data['id']; ?></td>
+          <td><?php echo $data['id']; ?></td>
         </tr>
         <tr>
           <th>Invoice Number</th>

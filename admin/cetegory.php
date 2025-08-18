@@ -98,12 +98,12 @@ try {
     <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
       <div class="dropdown d-inline-block">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown" aria-expanded="false">
-          <?= !empty($filterCategory) ? $filterCategory : 'Filter by Category' ?>
+          <?php echo !empty($filterCategory) ? $filterCategory : 'Filter by Category' ?>
         </button>
         <ul class="dropdown-menu" aria-labelledby="categoryFilter">
           <li><a class="dropdown-item" href="cetegory.php">All Categories</a></li>
           <?php foreach ($allCategories as $cat): ?>
-            <li><a class="dropdown-item" href="cetegory.php?filter=<?= urlencode($cat) ?>"><?= $cat ?></a></li>
+            <li><a class="dropdown-item" href="cetegory.php?filter=<?php echo urlencode($cat) ?>"><?php echo $cat ?></a></li>
           <?php endforeach; ?>
         </ul>
       </div>
@@ -113,7 +113,7 @@ try {
   <!-- Messages -->
   <?php if (isset($_SESSION['message'])): ?>
     <div class="alert alert-success alert-dismissible fade show">
-      <?= $_SESSION['message'] ?>
+      <?php echo $_SESSION['message'] ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php unset($_SESSION['message']);
@@ -121,7 +121,7 @@ try {
 
   <?php if ($error): ?>
     <div class="alert alert-danger">
-      Error: <?= $error ?>
+      Error: <?php echo $error ?>
     </div>
   <?php endif; ?>
 
@@ -147,25 +147,25 @@ try {
             <?php else: ?>
               <?php foreach ($categories as $category): ?>
                 <tr>
-                  <td><?= $category['tag'] ?? '' ?></td>
-                  <td><?= $category['description'] ?? '' ?></td>
+                  <td><?php echo $category['tag'] ?? '' ?></td>
+                  <td><?php echo $category['description'] ?? '' ?></td>
                   <td>
                     <?php if (!empty($category['image'])): ?>
                       <div class="text-center">
                         <img alt="category-image" class="img-thumbnail"
-                          src="../<?= $category['image'] ?>"
+                          src="../<?php echo $category['image'] ?>"
                           style="max-width: 120px; max-height: 120px; object-fit: contain;">
                       </div>
                     <?php else: ?>
                       <span class="text-muted">No image</span>
                     <?php endif; ?>
                   </td>
-                  <td><?= $category['product_count'] ?? 0 ?></td>
+                  <td><?php echo $category['product_count'] ?? 0 ?></td>
                   <td>
-                    <a href="cetegory-add.php?u_id=<?= $category['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a href="cetegory-add.php?u_id=<?php echo $category['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
                   </td>
                   <td>
-                    <button onclick="confirmDelete(<?= $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
+                    <button onclick="confirmDelete(<?php echo $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
                   </td>
                 </tr>
               <?php endforeach; ?>

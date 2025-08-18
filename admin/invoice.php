@@ -42,7 +42,7 @@ $invoices = $DB->custom_query($sql);
     <div class="col-lg-6 d-flex align-items-center">
       <form method="get" class="d-flex flex-grow-1 gap-2">
         <input type="text" name="search" class="form-control" style="max-width: 300px;"
-          placeholder="Search Email..." value="<?= @$search ?>">
+          placeholder="Search Email..." value="<?php echo @$search ?>">
         <button type="submit" class="btn btn-primary px-3">Search</button>
         <?php if (!empty($search)): ?>
           <a href="invoice.php" class="btn btn-outline-secondary">Clear</a>

@@ -157,7 +157,7 @@ if (isset($_POST['save'])) {
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])): ?>
     <div class="alert alert-success alert-dismissible fade show">
-        <?= $_SESSION['message'] ?>
+        <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php unset($_SESSION['message']);
@@ -165,7 +165,7 @@ endif; ?>
 
 <?php if (isset($error)): ?>
     <div class="alert alert-danger">
-        Error: <?= htmlspecialchars($error) ?>
+        Error: <?php echo htmlspecialchars($error) ?>
     </div>
 <?php endif; ?>
 
@@ -174,21 +174,21 @@ endif; ?>
         <div class="widget-content widget-content-area ecommerce-create-section">
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" name="name" value="<?= $product['name'] ?>" placeholder="Product Name" <?= $readonly ? 'readonly' : '' ?>>
+                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?>>
                 </div>
             </div>
 
             <div class="row mb-4">
                 <div class="col-sm-12">
                     <label>Description</label>
-                    <textarea class="form-control" name="description" <?= $readonly ? 'readonly' : '' ?>><?= $product['description'] ?></textarea>
+                    <textarea class="form-control" name="description" <?php echo $readonly ? 'readonly' : '' ?>><?php echo $product['description'] ?></textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-8">
                     <label>Upload Images</label>
-                    <input type="file" class="form-control" name="images[]" multiple <?= $readonly ? 'disabled' : '' ?>>
+                    <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
 
                     <?php if (!empty($uploadedImages)): ?>
                         <div class="mt-3">
@@ -199,7 +199,7 @@ endif; ?>
                                 <div class="thumbnail-container d-flex mt-2">
                                     <?php foreach ($uploadedImages as $index => $image): ?>
                                         <div class="thumbnail-wrapper me-2">
-                                            <img src="../images/products/<?= $image ?>" alt="Thumbnail <?= $index ?>" class="thumbnail-image <?= $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?= $image ?>')">
+                                            <img src="../images/products/<?php echo $image ?>" alt="Thumbnail <?php echo $index ?>" class="thumbnail-image <?php echo $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?php echo $image ?>')">
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -210,11 +210,11 @@ endif; ?>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="form-check form-switch mt-4">
-                        <input class="form-check-input" type="checkbox" name="show_publicly" <?= $product['show_publicly'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <input class="form-check-input" type="checkbox" name="show_publicly" <?php echo $product['show_publicly'] ? 'checked' : '' ?> <?php echo $readonly ? 'disabled' : '' ?>>
                         <label class="form-check-label">Display publicly</label>
                     </div>
                     <div class="form-check form-switch mt-4">
-                        <input class="form-check-input" type="checkbox" name="disabled" <?= $product['disabled'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                        <input class="form-check-input" type="checkbox" name="disabled" <?php echo $product['disabled'] ? 'checked' : '' ?> <?php echo $readonly ? 'disabled' : '' ?>>
                         <label class="form-check-label">Disable Product</label>
                     </div>
                 </div>
@@ -229,16 +229,16 @@ endif; ?>
                     <div class="row">
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Product Code</label>
-                            <input type="text" class="form-control" name="product_code" value="<?= $product['product_code'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                            <input type="text" class="form-control" name="product_code" value="<?php echo $product['product_code'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
 
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Category</label>
-                            <select name="category" class="form-select" <?= $readonly ? 'disabled' : '' ?>>
+                            <select name="category" class="form-select" <?php echo $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= htmlspecialchars($cat['tag']) ?>" <?= $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($cat['tag']) ?>
+                                    <option value="<?php echo htmlspecialchars($cat['tag']) ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?php echo htmlspecialchars($cat['tag']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -246,7 +246,7 @@ endif; ?>
 
                         <div class="col-xxl-12 col-lg-6 col-md-12">
                             <label>Tags</label>
-                            <input type="text" class="form-control" name="tags" value="<?= $product['tags'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                            <input type="text" class="form-control" name="tags" value="<?php echo $product['tags'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                     </div>
                 </div>
@@ -257,21 +257,21 @@ endif; ?>
                     <div class="row">
                         <div class="col-sm-12 mb-4">
                             <label>Regular Price</label>
-                            <input type="text" class="form-control" name="regular_price" value="<?= $product['regular_price'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                            <input type="text" class="form-control" name="regular_price" value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                         <div class="col-sm-12 mb-4">
                             <label>Sale Price</label>
-                            <input type="text" class="form-control" name="sale_price" value="<?= $product['sale_price'] ?>" <?= $readonly ? 'readonly' : '' ?>>
+                            <input type="text" class="form-control" name="sale_price" value="<?php echo $product['sale_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                         <div class="col-sm-12 mb-4">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="includes_tax" <?= $product['includes_tax'] ? 'checked' : '' ?> <?= $readonly ? 'disabled' : '' ?>>
+                                <input class="form-check-input" type="checkbox" name="includes_tax" <?php echo $product['includes_tax'] ? 'checked' : '' ?> <?php echo $readonly ? 'disabled' : '' ?>>
                                 <label class="form-check-label">Price includes taxes</label>
                             </div>
                         </div>
                         <?php if (!$readonly): ?>
                             <div class="col-sm-12">
-                                <button type="submit" name="save" class="btn btn-success w-100"><?= $isUpdate ? 'Update' : 'Add' ?> Product</button>
+                                <button type="submit" name="save" class="btn btn-success w-100"><?php echo $isUpdate ? 'Update' : 'Add' ?> Product</button>
                             </div>
                         <?php endif; ?>
                     </div>

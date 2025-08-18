@@ -81,12 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="widget-content widget-content-area blog-create-section">
             <form method="POST">
-                <input type="hidden" name="stock_id" value="<?= $stock['id'] ?>">
+                <input type="hidden" name="stock_id" value="<?php echo $stock['id'] ?>">
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Product</label>
-                        <input type="text" class="form-control" value="<?= $stock['product_name'] ?>" readonly>
+                        <input type="text" class="form-control" value="<?php echo $stock['product_name'] ?>" readonly>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-sm-12">
                         <label>Initial Stock</label>
                         <input type="number" class="form-control" name="current_stock"
-                            value="<?= $stock['current_stock'] ?>" required min="0">
+                            value="<?php echo $stock['current_stock'] ?>" required min="0">
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-sm-12">
                         <label>Sold Stock</label>
                         <input type="number" class="form-control" name="sold_stock"
-                            value="<?= $stock['sold_stock'] ?>" min="0">
+                            value="<?php echo $stock['sold_stock'] ?>" min="0">
                     </div>
                 </div>
 
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-sm-12">
                         <label>Dead Stock</label>
                         <input type="number" class="form-control" name="dead_stock"
-                            value="<?= $stock['dead_stock'] ?>" min="0">
+                            value="<?php echo $stock['dead_stock'] ?>" min="0">
                     </div>
                 </div>
 

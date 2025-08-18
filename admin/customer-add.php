@@ -103,43 +103,43 @@ $row = $viewMode ? $viewData : $editData;
             <div class="col-md-6">
               <label class="form-label">First Name</label>
               <input name="first_name" type="text" class="form-control"
-                value="<?= htmlspecialchars($row['first_name'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['first_name'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-6">
               <label class="form-label">Last Name</label>
               <input name="last_name" type="text" class="form-control"
-                value="<?= htmlspecialchars($row['last_name'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['last_name'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Email</label>
               <input name="email" type="email" class="form-control"
-                value="<?= htmlspecialchars($row['email'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['email'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-6">
               <label class="form-label">Phone</label>
               <input name="phone" type="tel" class="form-control"
-                value="<?= htmlspecialchars($row['phone'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['phone'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Date of Birth</label>
               <input name="dob" type="date" class="form-control"
-                value="<?= htmlspecialchars($row['dob'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['dob'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Gender</label>
-              <select name="gender" class="form-select" <?= $viewMode ? 'disabled' : '' ?>>
-                <option disabled <?= !isset($row['gender']) ? 'selected' : '' ?>>Choose gender</option>
-                <option value="Male" <?= (isset($row['gender']) && $row['gender'] == 'Male')   ? 'selected' : '' ?>>Male</option>
-                <option value="Female" <?= (isset($row['gender']) && $row['gender'] == 'Female') ? 'selected' : '' ?>>Female</option>
-                <option value="Other" <?= (isset($row['gender']) && $row['gender'] == 'Other')  ? 'selected' : '' ?>>Other</option>
+              <select name="gender" class="form-select" <?php echo $viewMode ? 'disabled' : '' ?>>
+                <option disabled <?php echo !isset($row['gender']) ? 'selected' : '' ?>>Choose gender</option>
+                <option value="Male" <?php echo (isset($row['gender']) && $row['gender'] == 'Male')   ? 'selected' : '' ?>>Male</option>
+                <option value="Female" <?php echo (isset($row['gender']) && $row['gender'] == 'Female') ? 'selected' : '' ?>>Female</option>
+                <option value="Other" <?php echo (isset($row['gender']) && $row['gender'] == 'Other')  ? 'selected' : '' ?>>Other</option>
               </select>
             </div>
           </div>
@@ -151,38 +151,38 @@ $row = $viewMode ? $viewData : $editData;
           <div class="mb-3">
             <label class="form-label">Street Address</label>
             <textarea name="address" class="form-control" rows="2"
-              <?= $viewMode ? 'readonly' : '' ?>><?= htmlspecialchars($row['address'] ?? '') ?></textarea>
+              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo htmlspecialchars($row['address'] ?? '') ?></textarea>
           </div>
 
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label">City</label>
               <input name="city" type="text" class="form-control"
-                value="<?= htmlspecialchars($row['city'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['city'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-4">
               <label class="form-label">State</label>
               <input name="state" type="text" class="form-control"
-                value="<?= htmlspecialchars($row['state'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['state'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-4">
               <label class="form-label">Zip Code</label>
               <input name="zip" type="text" class="form-control"
-                value="<?= htmlspecialchars($row['zip'] ?? '') ?>"
-                <?= $viewMode ? 'readonly' : '' ?>>
+                value="<?php echo htmlspecialchars($row['zip'] ?? '') ?>"
+                <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Country</label>
-              <select name="country" class="form-select" <?= $viewMode ? 'disabled' : '' ?>>
-                <option disabled <?= !isset($row['country']) ? 'selected' : '' ?>>Select country</option>
-                <option value="India" <?= (isset($row['country']) && $row['country'] == 'India')      ? 'selected' : '' ?>>India</option>
-                <option value="USA" <?= (isset($row['country']) && $row['country'] == 'USA')        ? 'selected' : '' ?>>USA</option>
-                <option value="UK" <?= (isset($row['country']) && $row['country'] == 'UK')         ? 'selected' : '' ?>>UK</option>
-                <option value="Australia" <?= (isset($row['country']) && $row['country'] == 'Australia')  ? 'selected' : '' ?>>Australia</option>
-                <option value="Other" <?= (isset($row['country']) && $row['country'] == 'Other')      ? 'selected' : '' ?>>Other</option>
+              <select name="country" class="form-select" <?php echo $viewMode ? 'disabled' : '' ?>>
+                <option disabled <?php echo !isset($row['country']) ? 'selected' : '' ?>>Select country</option>
+                <option value="India" <?php echo (isset($row['country']) && $row['country'] == 'India')      ? 'selected' : '' ?>>India</option>
+                <option value="USA" <?php echo (isset($row['country']) && $row['country'] == 'USA')        ? 'selected' : '' ?>>USA</option>
+                <option value="UK" <?php echo (isset($row['country']) && $row['country'] == 'UK')         ? 'selected' : '' ?>>UK</option>
+                <option value="Australia" <?php echo (isset($row['country']) && $row['country'] == 'Australia')  ? 'selected' : '' ?>>Australia</option>
+                <option value="Other" <?php echo (isset($row['country']) && $row['country'] == 'Other')      ? 'selected' : '' ?>>Other</option>
               </select>
             </div>
           </div>
@@ -195,14 +195,14 @@ $row = $viewMode ? $viewData : $editData;
           <div class="mb-3">
             <label class="form-label">Reference Name</label>
             <input name="reference_name" type="text" class="form-control"
-              value="<?= htmlspecialchars($row['reference_name'] ?? '') ?>"
-              <?= $viewMode ? 'readonly' : '' ?>>
+              value="<?php echo htmlspecialchars($row['reference_name'] ?? '') ?>"
+              <?php echo $viewMode ? 'readonly' : '' ?>>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Notes</label>
             <textarea name="notes" class="form-control" rows="3"
-              <?= $viewMode ? 'readonly' : '' ?>><?= htmlspecialchars($row['notes'] ?? '') ?></textarea>
+              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo htmlspecialchars($row['notes'] ?? '') ?></textarea>
           </div>
 
           <?php if (!$viewMode): ?>
@@ -211,8 +211,8 @@ $row = $viewMode ? $viewData : $editData;
               <input name="profile_image" type="file" class="form-control">
               <?php if (!empty($row['profile_image'])): ?>
                 <div class="mt-2">
-                  <img src="../images/profile/<?= htmlspecialchars($row['profile_image']) ?>" width="120" class="img-thumbnail">
-                  <input type="hidden" name="profile_image_old" value="<?= htmlspecialchars($row['profile_image']) ?>">
+                  <img src="../images/profile/<?php echo htmlspecialchars($row['profile_image']) ?>" width="120" class="img-thumbnail">
+                  <input type="hidden" name="profile_image_old" value="<?php echo htmlspecialchars($row['profile_image']) ?>">
                 </div>
               <?php endif; ?>
             </div>
@@ -220,7 +220,7 @@ $row = $viewMode ? $viewData : $editData;
             <?php if (!empty($row['profile_image'])): ?>
               <div class="mb-3">
                 <label class="form-label">Profile Image</label><br>
-                <img src="../images/profile/<?= htmlspecialchars($row['profile_image']) ?>" width="150" class="img-thumbnail">
+                <img src="../images/profile/<?php echo htmlspecialchars($row['profile_image']) ?>" width="150" class="img-thumbnail">
               </div>
             <?php endif; ?>
           <?php endif; ?>

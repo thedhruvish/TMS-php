@@ -126,27 +126,27 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         <div class="col-lg-6 d-flex align-items-center">
             <form method="get" class="d-flex flex-grow-1 gap-2">
                 <input type="text" name="search" class="form-control" style="max-width: 300px;"
-                    placeholder="Search products..." value="<?= htmlspecialchars($searchTerm) ?>">
+                    placeholder="Search products..." value="<?php echo htmlspecialchars($searchTerm) ?>">
                 <button type="submit" class="btn btn-primary px-3">Search</button>
             </form>
         </div>
 
         <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
             <form id="filterForm" method="get" class="d-inline-block w-100">
-                <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
-                <input type="hidden" name="category" id="categoryInput" value="<?= htmlspecialchars($categoryFilter) ?>">
-                <input type="hidden" name="sort" id="sortInput" value="<?= htmlspecialchars($sortBy) ?>">
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm) ?>">
+                <input type="hidden" name="category" id="categoryInput" value="<?php echo htmlspecialchars($categoryFilter) ?>">
+                <input type="hidden" name="sort" id="sortInput" value="<?php echo htmlspecialchars($sortBy) ?>">
 
                 <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
                     <!-- Category Dropdown -->
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?= $categoryFilter ?: 'All Categories' ?>
+                            <?php echo $categoryFilter ?: 'All Categories' ?>
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
                             <?php foreach ($categories as $cat): if (!empty($cat)): ?>
-                                    <li><a class="dropdown-item" href="#" onclick="selectCategory('<?= htmlspecialchars($cat) ?>')"><?= htmlspecialchars($cat) ?></a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="selectCategory('<?php echo htmlspecialchars($cat) ?>')"><?php echo htmlspecialchars($cat) ?></a></li>
                             <?php endif;
                             endforeach; ?>
                         </ul>
@@ -177,7 +177,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
     <!-- Messages -->
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert alert-success alert-dismissible fade show">
-            <?= $_SESSION['message'] ?>
+            <?php echo $_SESSION['message'] ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php unset($_SESSION['message']);
@@ -185,7 +185,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
     <?php if ($error): ?>
         <div class="alert alert-danger">
-            Database Error: <?= htmlspecialchars($error) ?>
+            Database Error: <?php echo htmlspecialchars($error) ?>
         </div>
     <?php endif; ?>
 
@@ -213,12 +213,12 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                             <!-- carousel-inner -->
                             <div class="carousel-inner">
                                 <?php foreach ($product['images'] as $k => $image): ?>
-                                    <div class="carousel-item <?= $k == 0 ? 'active' : '' ?>">
+                                    <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
                                         <!-- responsive 4:3 box -->
                                         <div class="ratio ratio-4x3">
                                             <img class="img-fluid object-fit-cover"
-                                                src="../images/products/<?= $image ?>"
-                                                alt="<?= htmlspecialchars($product['name']) ?>">
+                                                src="../images/products/<?php echo $image ?>"
+                                                alt="<?php echo htmlspecialchars($product['name']) ?>">
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -237,18 +237,18 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
                         <!-- Product Info -->
                         <div class="card-body">
-                            <h6 class="card-title"> <a href="products-add.php?id=<?= $product['id'] ?>"><?= htmlspecialchars($product['name']) ?></a></h6>
+                            <h6 class="card-title"> <a href="products-add.php?id=<?php echo $product['id'] ?>"><?php echo htmlspecialchars($product['name']) ?></a></h6>
                             <div class="d-flex align-items-center mb-2">
                                 <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']): ?>
                                     <span class="text-danger text-decoration-line-through me-2">
-                                        $<?= number_format($product['regular_price'], 2) ?>
+                                        $<?php echo number_format($product['regular_price'], 2) ?>
                                     </span>
                                     <span class="text-success fw-bold">
-                                        $<?= number_format($product['sale_price'], 2) ?>
+                                        $<?php echo number_format($product['sale_price'], 2) ?>
                                     </span>
                                 <?php else: ?>
                                     <span class="text-success fw-bold">
-                                        $<?= number_format($product['regular_price'], 2) ?>
+                                        $<?php echo number_format($product['regular_price'], 2) ?>
                                     </span>
                                 <?php endif; ?>
                             </div>
@@ -258,16 +258,16 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                             <?php if ($product['disabled']): ?>
                                 <span class="badge bg-secondary">DISABLED</span>
                             <?php else: ?>
-                                <span class="badge <?= $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
-                                    <?= $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
+                                <span class="badge <?php echo $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
+                                    <?php echo $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
                                 </span>
                             <?php endif; ?>
                         </div>
 
                             <!-- Edit and Delete Buttons -->
                             <div class="d-flex justify-content-between">
-                                <a href="products-add.php?u_id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <button onclick="confirmDelete(<?= $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
+                                <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
                             </div>
                         </div>
                     </div>

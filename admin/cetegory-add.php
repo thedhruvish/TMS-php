@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])): ?>
     <div class="alert alert-success alert-dismissible fade show">
-        <?= $_SESSION['message'] ?>
+        <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php unset($_SESSION['message']);
@@ -102,7 +102,7 @@ endif; ?>
 
 <?php if (isset($error)): ?>
     <div class="alert alert-danger">
-        Error: <?= $error ?>
+        Error: <?php echo $error ?>
     </div>
 <?php endif; ?>
 
@@ -116,7 +116,7 @@ endif; ?>
                     <div class="col-sm-12">
                         <label class="form-label">Category Name (Tag)</label>
                         <input type="text" class="form-control" name="title" placeholder="Category name"
-                            value="<?= $category['tag'] ?>" required>
+                            value="<?php echo $category['tag'] ?>" required>
                         <small class="text-muted">This will be stored as the category tag</small>
                     </div>
                 </div>
@@ -126,7 +126,7 @@ endif; ?>
                     <div class="col-sm-12">
                         <label class="form-label">Description</label>
                         <textarea class="form-control" name="description" rows="4"
-                            placeholder="Enter category description"><?= $category['description'] ?></textarea>
+                            placeholder="Enter category description"><?php echo $category['description'] ?></textarea>
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@ endif; ?>
                         <input type="file" class="form-control" name="image" accept="image/*">
                         <?php if ($isUpdate && !empty($category['image'])): ?>
                             <div class="mt-2">
-                                <img src="../<?= $category['image'] ?>" alt="Current Category Image" style="max-height: 100px;">
+                                <img src="../<?php echo $category['image'] ?>" alt="Current Category Image" style="max-height: 100px;">
                                 <p class="text-muted small mt-1">Current image</p>
                             </div>
                         <?php endif; ?>
@@ -148,7 +148,7 @@ endif; ?>
                 <div class="row mb-4">
                     <div class="col-12">
                         <button type="submit" class="btn btn-success w-100">
-                            <?= $isUpdate ? 'UPDATE CATEGORY' : 'ADD CATEGORY' ?>
+                            <?php echo $isUpdate ? 'UPDATE CATEGORY' : 'ADD CATEGORY' ?>
                         </button>
                     </div>
                 </div>
