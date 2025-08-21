@@ -1,6 +1,6 @@
 <?php $pageTitle = "Weblink";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 if (isset($_GET['d_id'])) {
     $DB->delete("weblink", "id", $_GET['d_id']);
     header("Location: weblink.php");
@@ -53,4 +53,4 @@ $result_web_link = mysqli_query(
 
 </div>
 
-<?php require_once './include/footer-admin.php'; ?>
+<?php require_once './include/footer-staff.php'; ?>

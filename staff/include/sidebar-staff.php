@@ -308,7 +308,7 @@ $user = mysqli_fetch_assoc($data);
 
         <!-- products navbar -->
         <li class="menu">
-          <a href="#products" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <a href="products.php" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -317,25 +317,12 @@ $user = mysqli_fetch_assoc($data);
               </svg>
               <span>Products</span>
             </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
           </a>
-          <ul class="collapse submenu list-unstyled " id="products" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./products.php"> Products </a>
-            </li>
-            <li>
-              <a href="./products-add.php"> Add Products </a>
-            </li>
-          </ul>
         </li>
 
         <!-- cetegory navbar -->
         <li class="menu">
-          <a href="#cetegory" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <a href="cetegory.php" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -345,20 +332,21 @@ $user = mysqli_fetch_assoc($data);
               </svg>
               <span>Cetegory</span>
             </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
+          </a>
+        </li>
+
+        <!-- stoack -->
+        <li class="menu">
+          <a href="stoack.php" aria-expanded="false" class="dropdown-toggle">
+            <div class="">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                <polyline points="2 17 12 22 22 17" />
+                <polyline points="2 12 12 17 22 12" />
               </svg>
+              <span>Stoack</span>
             </div>
           </a>
-          <ul class="collapse submenu list-unstyled " id="cetegory" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./cetegory.php"> Cetegory </a>
-            </li>
-            <li>
-              <a href="./cetegory-add.php"> Add Cetegory </a>
-            </li>
-          </ul>
         </li>
 
         <!-- customer navbar -->
@@ -385,33 +373,6 @@ $user = mysqli_fetch_assoc($data);
             </li>
             <li>
               <a href="./customer-add.php"> Add Customer </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- stoack -->
-        <li class="menu">
-          <a href="#Stoack" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <div class="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
-                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                <polyline points="2 17 12 22 22 17" />
-                <polyline points="2 12 12 17 22 12" />
-              </svg>
-              <span>Stoack</span>
-            </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
-          </a>
-          <ul class="collapse submenu list-unstyled " id="Stoack" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./stoack.php"> Stoack </a>
-            </li>
-            <li>
-              <a href="./Stoack-add.php"> Add Stoack </a>
             </li>
           </ul>
         </li>
@@ -445,57 +406,6 @@ $user = mysqli_fetch_assoc($data);
           </ul>
         </li>
 
-        <!-- payment -->
-        <li class="menu">
-          <a href="#payment" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <div class="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
-                <line x1="12" y1="1" x2="12" y2="23" />
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-              <span>Payment</span>
-            </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
-          </a>
-          <ul class="collapse submenu list-unstyled " id="payment" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./payment.php"> Payment </a>
-            </li>
-            <li>
-              <a href="./payment-add.php"> Add Payment </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- User -->
-        <li class="menu">
-          <a href="#user" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <div class="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              <span>Users</span>
-            </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
-          </a>
-          <ul class="collapse submenu list-unstyled " id="user" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./user.php"> Users </a>
-            </li>
-            <li>
-              <a href="./user-add.php"> Add Users </a>
-            </li>
-          </ul>
-        </li>
         <!-- Inquiry  navbar -->
         <li class="menu">
           <a href="#inquiry" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -524,7 +434,7 @@ $user = mysqli_fetch_assoc($data);
 
         <!-- Attendant -->
         <li class="menu">
-          <a href="#Attendant" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <a href="view-attendant.php?id=<?php echo $user['id']; ?>" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard">
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
@@ -532,21 +442,9 @@ $user = mysqli_fetch_assoc($data);
               </svg>
               <span>Attendant</span>
             </div>
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
           </a>
-          <ul class="collapse submenu list-unstyled " id="Attendant" data-bs-parent="#accordionExample">
-            <li class="active">
-              <a href="./attendant.php"> Attendant </a>
-            </li>
-            <li>
-              <a href="./view-attendant.php"> View Attendant </a>
-            </li>
-          </ul>
         </li>
+
 
         <!-- weblink -->
         <li class="menu">
@@ -562,18 +460,6 @@ $user = mysqli_fetch_assoc($data);
           </a>
         </li>
 
-        <!-- log -->
-        <li class="menu">
-          <a href=" log.php" aria-expanded="false" class="dropdown-toggle">
-            <div class="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <span>Log</span>
-            </div>
-          </a>
-        </li>
 
         <li class="menu menu-heading">
           <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus">

@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Products";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 ?>
 
 <link href="../src/assets/css/light/scrollspyNav.css" rel="stylesheet" type="text/css" />
@@ -116,13 +116,9 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 });
 ?>
 
-<div class="seperator-header layout-top-spacing">
-    <h4 class="mb-0">Products </h4>
-    <a href="products-add.php" class="btn btn-primary">Add New Product</a>
-</div>
 
 <!-- Search and Filter UI -->
-<div class="row mb-4 align-items-center justify-content-between">
+<div class="row mb-4 align-items-center justify-content-between ">
     <div class="col-lg-6 d-flex align-items-center">
         <form method="get" class="d-flex flex-grow-1 gap-2">
             <input type="text" name="search" class="form-control" style="max-width: 300px;"
@@ -318,4 +314,4 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
 <script src="../src/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<?php include_once './include/footer-admin.php'; ?>
+<?php include_once './include/footer-staff.php'; ?>

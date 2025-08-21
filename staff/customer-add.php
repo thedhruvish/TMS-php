@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Add / View Customer";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 /* ---------- MODE DETECTION ---------- */
 $viewMode = false;
@@ -252,4 +252,4 @@ $row = $viewMode ? $viewData : $editData;
 <script src="../src/plugins/src/tagify/tagify.min.js"></script>
 <script src="../src/assets/js/apps/blog-create.js"></script>
 
-<?php include_once './include/footer-admin.php'; ?>
+<?php include_once './include/footer-staff.php'; ?>

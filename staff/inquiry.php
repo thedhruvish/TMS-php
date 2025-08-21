@@ -1,6 +1,6 @@
 <?php $pageTitle = "Invoice";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 $result = $DB->read("inquiry");
 
@@ -69,4 +69,4 @@ if (isset($_GET['d_id'])) {
 
 </div>
 
-<?php require_once './include/footer-admin.php'; ?>
+<?php require_once './include/footer-staff.php'; ?>

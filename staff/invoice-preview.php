@@ -1,6 +1,6 @@
 <?php
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 
 // Check if ID is set
@@ -200,4 +200,4 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
 </div>
 
 <script src="../src/assets/js/apps/invoice-preview.js"></script>
-<?php include './include/footer-admin.php'; ?>
+<?php include './include/footer-staff.php'; ?>

@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Attendance – View Only";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 $currentYear  = date('Y');
 $currentMonth = date('m');
@@ -10,24 +10,45 @@ $selectedYear  = isset($_GET['year'])  ? (int)$_GET['year']  : $currentYear;
 $selectedMonth = isset($_GET['month']) ? (int)$_GET['month'] : $currentMonth;
 $daysInMonth   = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, $selectedYear);
 
+// get userId if passed
+$selectedUserId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
 /* ---- users ---- */
 $users = [];
-$res   = $DB->read("users", ['order_by' => 'name ASC']);
-while ($row = mysqli_fetch_assoc($res)) $users[] = $row;
+$userWhere = [];
 
-/* ---- attendance ---- */
+if ($selectedUserId) {
+  // fetch only that user
+  $userWhere['id'] = ["=" => $selectedUserId];
+}
 
-$res = $DB->read("attendance", [
-  "where" => [
-    "YEAR(att_date)" => ["=" =>  $selectedYear],
-    "MONTH(att_date)" => ["=" => $selectedMonth]
-  ]
+$res = $DB->read("users", [
+  'where'    => $userWhere,
+  'order_by' => 'name ASC'
 ]);
 
+while ($row = mysqli_fetch_assoc($res)) {
+  $users[] = $row;
+}
+
+/* ---- attendance ---- */
+$attendanceWhere = [
+  "YEAR(att_date)"  => ["=" => $selectedYear],
+  "MONTH(att_date)" => ["=" => $selectedMonth],
+];
+
+if ($selectedUserId) {
+  $attendanceWhere["user_id"] = ["=" => $selectedUserId];
+}
+
+$res = $DB->read("attendance", ["where" => $attendanceWhere]);
+
+$attendance = [];
 while ($row = mysqli_fetch_assoc($res)) {
   $attendance[$row['user_id']][$row['att_date']] = $row['status'];
 }
 ?>
+
 
 <!-- BREADCRUMB -->
 <div class="page-meta">
@@ -110,4 +131,4 @@ while ($row = mysqli_fetch_assoc($res)) {
   });
 </script>
 
-<?php require_once './include/footer-admin.php'; ?>
+<?php require_once './include/footer-staff.php'; ?>

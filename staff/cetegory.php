@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Category";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -79,102 +79,97 @@ try {
 }
 ?>
 
-<div class="row">
-  <div class="seperator-header layout-top-spacing">
-    <h4 class="mb-0">Category </h4>
-    <a href="cetegory-add.php" class="btn btn-primary">Add New Category</a>
+
+<!-- Search and Filter Section -->
+<div class="row mb-4 align-items-center justify-content-between">
+  <div class="col-lg-6 d-flex align-items-center">
+    <form method="get" class="d-flex flex-grow-1 gap-2">
+      <?php if (!empty($searchTerm) || !empty($filterCategory)) { ?>
+        <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
+      <?php } ?>
+    </form>
   </div>
 
-  <!-- Search and Filter Section -->
-  <div class="row mb-4 align-items-center justify-content-between">
-    <div class="col-lg-6 d-flex align-items-center">
-      <form method="get" class="d-flex flex-grow-1 gap-2">
-        <?php if (!empty($searchTerm) || !empty($filterCategory)) { ?>
-          <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
-        <?php } ?>
-      </form>
-    </div>
-
-    <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
-      <div class="dropdown d-inline-block">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown" aria-expanded="false">
-          <?php echo !empty($filterCategory) ? $filterCategory : 'Filter by Category' ?>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="categoryFilter">
-          <li><a class="dropdown-item" href="cetegory.php">All Categories</a></li>
-          <?php foreach ($allCategories as $cat) { ?>
-            <li><a class="dropdown-item" href="cetegory.php?filter=<?php echo urlencode($cat) ?>"><?php echo $cat ?></a></li>
-          <?php }; ?>
-        </ul>
-      </div>
+  <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
+    <div class="dropdown d-inline-block">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown" aria-expanded="false">
+        <?php echo !empty($filterCategory) ? $filterCategory : 'Filter by Category' ?>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="categoryFilter">
+        <li><a class="dropdown-item" href="cetegory.php">All Categories</a></li>
+        <?php foreach ($allCategories as $cat) { ?>
+          <li><a class="dropdown-item" href="cetegory.php?filter=<?php echo urlencode($cat) ?>"><?php echo $cat ?></a></li>
+        <?php }; ?>
+      </ul>
     </div>
   </div>
+</div>
 
-  <!-- Messages -->
-  <?php if (isset($_SESSION['message'])) { ?>
-    <div class="alert alert-success alert-dismissible fade show">
-      <?php echo $_SESSION['message'] ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php unset($_SESSION['message']);
-  } ?>
+<!-- Messages -->
+<?php if (isset($_SESSION['message'])) { ?>
+  <div class="alert alert-success alert-dismissible fade show">
+    <?php echo $_SESSION['message'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<?php unset($_SESSION['message']);
+} ?>
 
-  <?php if ($error) { ?>
-    <div class="alert alert-danger">
-      Error: <?php echo $error ?>
-    </div>
-  <?php } ?>
+<?php if ($error) { ?>
+  <div class="alert alert-danger">
+    Error: <?php echo $error ?>
+  </div>
+<?php } ?>
 
-  <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-    <div class="statbox widget box box-shadow">
-      <div class="widget-content widget-content-area">
-        <table id="html5-extension" class="table dt-table-hover" style="width:100%">
-          <thead>
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+  <div class="statbox widget box box-shadow">
+    <div class="widget-content widget-content-area">
+      <table id="html5-extension" class="table dt-table-hover" style="width:100%">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Total Product</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (empty($categories)) { ?>
             <tr>
-              <th>Category</th>
-              <th>Description</th>
-              <th>Image</th>
-              <th>Total Product</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <td colspan="6" class="text-center">No categories found</td>
             </tr>
-          </thead>
-          <tbody>
-            <?php if (empty($categories)) { ?>
+          <?php } else { ?>
+            <?php foreach ($categories as $category) { ?>
               <tr>
-                <td colspan="6" class="text-center">No categories found</td>
+                <td><?php echo $category['tag'] ?? '' ?></td>
+                <td><?php echo $category['description'] ?? '' ?></td>
+                <td>
+                  <?php if (!empty($category['image'])) { ?>
+                    <div class="text-center">
+                      <img alt="category-image" class="img-thumbnail"
+                        src="../<?php echo $category['image'] ?>"
+                        style="max-width: 120px; max-height: 120px; object-fit: contain;">
+                    </div>
+                  <?php } else { ?>
+                    <span class="text-muted">No image</span>
+                  <?php } ?>
+                </td>
+                <td><?php echo $category['product_count'] ?? 0 ?></td>
+                <td>
+                  <a href="cetegory-add.php?u_id=<?php echo $category['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                </td>
+                <td>
+                  <button onclick="confirmDelete(<?php echo $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
+                </td>
               </tr>
-            <?php } else { ?>
-              <?php foreach ($categories as $category) { ?>
-                <tr>
-                  <td><?php echo $category['tag'] ?? '' ?></td>
-                  <td><?php echo $category['description'] ?? '' ?></td>
-                  <td>
-                    <?php if (!empty($category['image'])) { ?>
-                      <div class="text-center">
-                        <img alt="category-image" class="img-thumbnail"
-                          src="../<?php echo $category['image'] ?>"
-                          style="max-width: 120px; max-height: 120px; object-fit: contain;">
-                      </div>
-                    <?php } else { ?>
-                      <span class="text-muted">No image</span>
-                    <?php } ?>
-                  </td>
-                  <td><?php echo $category['product_count'] ?? 0 ?></td>
-                  <td>
-                    <a href="cetegory-add.php?u_id=<?php echo $category['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                  </td>
-                  <td>
-                    <button onclick="confirmDelete(<?php echo $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
-                  </td>
-                </tr>
-              <?php }; ?>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
+            <?php }; ?>
+          <?php } ?>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -205,4 +200,4 @@ try {
   }
 </script>
 
-<?php require_once './include/footer-admin.php'; ?>
+<?php require_once './include/footer-staff.php'; ?>

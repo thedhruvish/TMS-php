@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Invoice add";
-require_once './include/header-admin.php';
-require_once './include/sidebar-admin.php';
+require_once './include/header-staff.php';
+require_once './include/sidebar-staff.php';
 
 $invoice = [];
 $items   = [];
@@ -468,4 +468,4 @@ if (isset($_GET['id'])) {
     <?php } ?>
 </script>
 
-<?php include './include/footer-admin.php'; ?>
+<?php include './include/footer-staff.php'; ?>
