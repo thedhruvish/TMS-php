@@ -155,19 +155,19 @@ if (isset($_POST['save'])) {
 ?>
 
 <!-- Messages -->
-<?php if (isset($_SESSION['message'])): ?>
+<?php if (isset($_SESSION['message'])) { ?>
     <div class="alert alert-success alert-dismissible fade show">
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php unset($_SESSION['message']);
-endif; ?>
+} ?>
 
-<?php if (isset($error)): ?>
+<?php if (isset($error)) { ?>
     <div class="alert alert-danger">
-        Error: <?php echo htmlspecialchars($error) ?>
+        Error: <?php echo $error; ?>
     </div>
-<?php endif; ?>
+<?php } ?>
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
     <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -190,23 +190,23 @@ endif; ?>
                     <label>Upload Images</label>
                     <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
 
-                    <?php if (!empty($uploadedImages)): ?>
+                    <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
                             <div class="image-preview-container">
                                 <div class="main-image-container">
                                     <img src="../images/products/<?php echo $uploadedImages[0] ?>" alt="Product Image" class="main-product-image" style="max-height: 200px;">
                                 </div>
                                 <div class="thumbnail-container d-flex mt-2">
-                                    <?php foreach ($uploadedImages as $index => $image): ?>
+                                    <?php foreach ($uploadedImages as $index => $image) { ?>
                                         <div class="thumbnail-wrapper me-2">
                                             <img src="../images/products/<?php echo $image ?>" alt="Thumbnail <?php echo $index ?>" class="thumbnail-image <?php echo $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?php echo $image ?>')">
                                         </div>
-                                    <?php endforeach; ?>
+                                    <?php }; ?>
                                 </div>
                                 <p class="text-muted small mt-1">Click thumbnails to view</p>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="form-check form-switch mt-4">
@@ -236,11 +236,11 @@ endif; ?>
                             <label>Category</label>
                             <select name="category" class="form-select" <?php echo $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
-                                <?php foreach ($categories as $cat): ?>
-                                    <option value="<?php echo htmlspecialchars($cat['tag']) ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
-                                        <?php echo htmlspecialchars($cat['tag']) ?>
+                                <?php foreach ($categories as $cat) { ?>
+                                    <option value="<?php echo $cat['tag']; ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
+                                        <?php echo $cat['tag']; ?>
                                     </option>
-                                <?php endforeach; ?>
+                                <?php }; ?>
                             </select>
                         </div>
 
@@ -269,11 +269,11 @@ endif; ?>
                                 <label class="form-check-label">Price includes taxes</label>
                             </div>
                         </div>
-                        <?php if (!$readonly): ?>
+                        <?php if (!$readonly) { ?>
                             <div class="col-sm-12">
                                 <button type="submit" name="save" class="btn btn-success w-100"><?php echo $isUpdate ? 'Update' : 'Add' ?> Product</button>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

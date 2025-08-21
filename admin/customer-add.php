@@ -84,52 +84,52 @@ $row = $viewMode ? $viewData : $editData;
 <!--  END STYLES  -->
 
 <div class="container my-5">
-  <?php if ($viewMode): ?>
+  <?php if ($viewMode) { ?>
     <h3 class="mb-4">Customer Details (Read-Only)</h3>
-  <?php elseif ($editMode): ?>
+  <?php } elseif ($editMode) { ?>
     <h3 class="mb-4">Edit Customer</h3>
-  <?php else: ?>
+  <?php } else { ?>
     <h3 class="mb-4">Add New Customer</h3>
-  <?php endif; ?>
+  <?php } ?>
 
   <form method="post" enctype="multipart/form-data">
     <div class="row g-4">
 
       <!-- MAIN INFO -->
       <div class="col-xxl-9">
-        <div class="p-4 border rounded bg-light">
+        <div class="p-4 border rounded ">
           <h5 class="mb-3">Personal Information</h5>
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label class="form-label">First Name</label>
               <input name="first_name" type="text" class="form-control"
-                value="<?php echo htmlspecialchars($row['first_name'] ?? '') ?>"
+                value="<?php echo $row['first_name'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-6">
               <label class="form-label">Last Name</label>
               <input name="last_name" type="text" class="form-control"
-                value="<?php echo htmlspecialchars($row['last_name'] ?? '') ?>"
+                value="<?php echo $row['last_name'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Email</label>
               <input name="email" type="email" class="form-control"
-                value="<?php echo htmlspecialchars($row['email'] ?? '') ?>"
+                value="<?php echo $row['email'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-6">
               <label class="form-label">Phone</label>
               <input name="phone" type="tel" class="form-control"
-                value="<?php echo htmlspecialchars($row['phone'] ?? '') ?>"
+                value="<?php echo $row['phone'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Date of Birth</label>
               <input name="dob" type="date" class="form-control"
-                value="<?php echo htmlspecialchars($row['dob'] ?? '') ?>"
+                value="<?php echo $row['dob'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
@@ -146,31 +146,31 @@ $row = $viewMode ? $viewData : $editData;
         </div>
 
         <!-- ADDRESS -->
-        <div class="p-4 border rounded bg-light mt-4">
+        <div class="p-4 border rounded  mt-4">
           <h5 class="mb-3">Address Information</h5>
           <div class="mb-3">
             <label class="form-label">Street Address</label>
             <textarea name="address" class="form-control" rows="2"
-              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo htmlspecialchars($row['address'] ?? '') ?></textarea>
+              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo $row['address'] ?? ''; ?></textarea>
           </div>
 
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label">City</label>
               <input name="city" type="text" class="form-control"
-                value="<?php echo htmlspecialchars($row['city'] ?? '') ?>"
+                value="<?php echo $row['city'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-4">
               <label class="form-label">State</label>
               <input name="state" type="text" class="form-control"
-                value="<?php echo htmlspecialchars($row['state'] ?? '') ?>"
+                value="<?php echo $row['state'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
             <div class="col-md-4">
               <label class="form-label">Zip Code</label>
               <input name="zip" type="text" class="form-control"
-                value="<?php echo htmlspecialchars($row['zip'] ?? '') ?>"
+                value="<?php echo $row['zip'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
 
@@ -189,53 +189,53 @@ $row = $viewMode ? $viewData : $editData;
         </div>
 
         <!-- OTHER DETAILS -->
-        <div class="p-4 border rounded bg-light mt-4">
+        <div class="p-4 border rounded  mt-4">
           <h5 class="mb-3">Other Details</h5>
 
           <div class="mb-3">
             <label class="form-label">Reference Name</label>
             <input name="reference_name" type="text" class="form-control"
-              value="<?php echo htmlspecialchars($row['reference_name'] ?? '') ?>"
+              value="<?php echo $row['reference_name'] ?? ''; ?>"
               <?php echo $viewMode ? 'readonly' : '' ?>>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Notes</label>
             <textarea name="notes" class="form-control" rows="3"
-              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo htmlspecialchars($row['notes'] ?? '') ?></textarea>
+              <?php echo $viewMode ? 'readonly' : '' ?>><?php echo $row['notes'] ?? ''; ?></textarea>
           </div>
 
-          <?php if (!$viewMode): ?>
+          <?php if (!$viewMode) { ?>
             <div class="mb-3">
               <label class="form-label">Profile Image</label>
               <input name="profile_image" type="file" class="form-control">
-              <?php if (!empty($row['profile_image'])): ?>
+              <?php if (!empty($row['profile_image'])) { ?>
                 <div class="mt-2">
-                  <img src="../images/profile/<?php echo htmlspecialchars($row['profile_image']) ?>" width="120" class="img-thumbnail">
-                  <input type="hidden" name="profile_image_old" value="<?php echo htmlspecialchars($row['profile_image']) ?>">
+                  <img src="../images/profile/<?php echo $row['profile_image']; ?>" width="120" class="img-thumbnail">
+                  <input type="hidden" name="profile_image_old" value="<?php echo $row['profile_image']; ?>">
                 </div>
-              <?php endif; ?>
+              <?php } ?>
             </div>
-          <?php else: ?>
-            <?php if (!empty($row['profile_image'])): ?>
+          <?php } else { ?>
+            <?php if (!empty($row['profile_image'])) { ?>
               <div class="mb-3">
                 <label class="form-label">Profile Image</label><br>
-                <img src="../images/profile/<?php echo htmlspecialchars($row['profile_image']) ?>" width="150" class="img-thumbnail">
+                <img src="../images/profile/<?php echo $row['profile_image']; ?>" width="150" class="img-thumbnail">
               </div>
-            <?php endif; ?>
-          <?php endif; ?>
+            <?php } ?>
+          <?php } ?>
         </div>
       </div>
 
       <!-- BUTTONS -->
       <div class="col-xxl-3">
-        <div class="p-4 border rounded bg-light h-100 d-flex flex-column justify-content-between">
+        <div class="p-4 border rounded  h-100 d-flex flex-column justify-content-between">
           <div>
-            <?php if ($viewMode): ?>
+            <?php if ($viewMode) { ?>
               <a href="customer.php" class="btn btn-primary w-100">Back to List</a>
-            <?php else: ?>
+            <?php } else { ?>
               <button type="submit" name="submit" class="btn btn-success w-100">Submit</button>
-            <?php endif; ?>
+            <?php } ?>
           </div>
         </div>
       </div>

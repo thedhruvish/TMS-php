@@ -92,19 +92,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link href="../layouts/vertical-light-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
 
 <!-- Messages -->
-<?php if (isset($_SESSION['message'])): ?>
+<?php if (isset($_SESSION['message'])) { ?>
     <div class="alert alert-success alert-dismissible fade show">
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php unset($_SESSION['message']);
-endif; ?>
+} ?>
 
-<?php if (isset($error)): ?>
+<?php if (isset($error)) { ?>
     <div class="alert alert-danger">
         Error: <?php echo $error ?>
     </div>
-<?php endif; ?>
+<?php } ?>
 
 <div class="row mb-4 layout-spacing layout-top-spacing">
     <form method="POST" enctype="multipart/form-data">
@@ -135,12 +135,12 @@ endif; ?>
                     <div class="col-sm-12">
                         <label class="form-label">Category Image</label>
                         <input type="file" class="form-control" name="image" accept="image/*">
-                        <?php if ($isUpdate && !empty($category['image'])): ?>
+                        <?php if ($isUpdate && !empty($category['image'])) { ?>
                             <div class="mt-2">
                                 <img src="../<?php echo $category['image'] ?>" alt="Current Category Image" style="max-height: 100px;">
                                 <p class="text-muted small mt-1">Current image</p>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -157,4 +157,4 @@ endif; ?>
     </form>
 </div>
 
-<?php include('./include/footer-admin.php'); ?>
+<?php require_once './include/footer-admin.php'; ?>

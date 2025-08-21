@@ -10,7 +10,6 @@ if (isset($_GET['d_id'])) {
   exit();
 }
 
-
 ?>
 
 

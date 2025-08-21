@@ -139,9 +139,9 @@ if (isset($_GET['id'])) {
                 <div class="col-xl-9">
                     <form method="post" autocomplete="off">
                         <!-- hidden id for update -->
-                        <?php if ($edit_mode || $view_mode): ?>
+                        <?php if ($edit_mode || $view_mode) { ?>
                             <input type="hidden" name="invoice_id" value="<?php echo $invoice['id'] ?? '' ?>">
-                        <?php endif; ?>
+                        <?php } ?>
 
                         <div class="invoice-content">
                             <div class="invoice-detail-body">
@@ -216,12 +216,12 @@ if (isset($_GET['id'])) {
                                             <tbody id="item-rows">
                                                 <?php
                                                 $rows = empty($items) ? [[]] : $items;
-                                                foreach ($rows as $idx => $it): ?>
+                                                foreach ($rows as $idx => $it){ ?>
                                                     <tr>
                                                         <td class="delete-item-row">
-                                                            <?php if (!$view_mode): ?>
+                                                            <?php if (!$view_mode) { ?>
                                                                 <a href="javascript:void(0)" class="text-danger delete-item" title="Delete">✕</a>
-                                                            <?php endif; ?>
+                                                            <?php } ?>
                                                         </td>
                                                         <td class="description">
                                                             <select name="items[<?php echo $idx ?>][product_id]" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
@@ -229,7 +229,7 @@ if (isset($_GET['id'])) {
                                                                 <?php
                                                                 foreach ($products as $product) {  ?>
                                                                     <option value="<?php echo $product['id'] ?>">
-                                                                        <?php echo htmlspecialchars($product['name']) ?>
+                                                                        <?php echo $product['name']; ?>
                                                                     </option>
                                                                 <?php } ?>
                                                             </select>
@@ -247,13 +247,13 @@ if (isset($_GET['id'])) {
                                                             <input type="hidden" name="items[<?php echo $idx ?>][amount]" class="amount-input" value="<?php echo ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
                                                         </td>
                                                     </tr>
-                                                <?php endforeach; ?>
+                                                <?php }; ?>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php if (!$view_mode): ?>
+                                    <?php if (!$view_mode) { ?>
                                         <button type="button" class="btn btn-dark btn-sm additem">Add Item</button>
-                                    <?php endif; ?>
+                                    <?php } ?>
                                 </div>
 
                                 <!-- Totals -->
@@ -321,11 +321,11 @@ if (isset($_GET['id'])) {
                                 <!-- Save / Preview buttons -->
                                 <div class="invoice-actions-btn mt-4">
                                     <div class="row">
-                                        <?php if (!$view_mode): ?>
+                                        <?php if (!$view_mode) { ?>
                                             <div class="col-md-4 mb-2">
                                                 <button type="submit" class="btn btn-success w-100">Save Invoice</button>
                                             </div>
-                                        <?php endif; ?>
+                                        <?php } ?>
                                         <div class="col-md-4 mb-2">
                                             <a href="./invoice.php" class="btn btn-outline-dark w-100">Back</a>
                                         </div>
@@ -437,7 +437,7 @@ if (isset($_GET['id'])) {
 </script>
 
 <script>
-    <?php if (!$view_mode): ?>
+    <?php if (!$view_mode) { ?>
         document.querySelector('.additem')?.addEventListener('click', () => {
             const tbody = document.getElementById('item-rows');
             const idx = tbody.rows.length;
@@ -450,9 +450,9 @@ if (isset($_GET['id'])) {
                 <option value="">Choose product…</option>
                 <?php
                 mysqli_data_seek($productsRes, 0);
-                while ($p = mysqli_fetch_assoc($productsRes)): ?>
-                    <option value="<?php echo $p['id'] ?>"><?php echo htmlspecialchars($p['name']) ?></option>
-                <?php endwhile; ?>
+                while ($p = mysqli_fetch_assoc($productsRes)) { ?>
+                    <option value="<?php echo $p['id'] ?>"><?php echo $p['name']; ?></option>
+                <?php } ?>
             </select>
         </td>
         <td><input type="number" step="0.01" name="items[${idx}][rate]" class="form-control form-control-sm rate-input" disabled></td>
@@ -465,7 +465,7 @@ if (isset($_GET['id'])) {
             tbody.appendChild(tr);
             bindCalc(tr);
         });
-    <?php endif; ?>
+    <?php } ?>
 </script>
 
 <?php include './include/footer-admin.php'; ?>

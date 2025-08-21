@@ -40,7 +40,7 @@ while ($r = mysqli_fetch_assoc($res)) $recentInvoices[] = $r;
 /* ---------- 3. Safe echo ---------- */
 function e($string)
 {
-  return htmlspecialchars($string, ENT_QUOTES);
+  return $string;
 }
 ?>
 
@@ -123,12 +123,12 @@ function e($string)
         <h5>Recent Invoices</h5>
       </div>
       <div class="widget-content">
-        <?php foreach ($recentInvoices as $inv): ?>
+        <?php foreach ($recentInvoices as $inv) { ?>
           <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
             <span>#<?php echo e($inv['id']) ?> – <?php echo e($inv['customer']) ?></span>
             <strong>$ <?php echo number_format($inv['total'], 2) ?></strong>
           </div>
-        <?php endforeach; ?>
+        <?php }; ?>
       </div>
     </div>
   </div>

@@ -125,4 +125,4 @@ if (isset($_POST['submit'])) {
     </div>
 </div>
 
-<?php include('./include/footer-admin.php'); ?>
+<?php require_once './include/footer-admin.php'; ?>

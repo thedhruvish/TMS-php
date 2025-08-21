@@ -89,9 +89,9 @@ try {
   <div class="row mb-4 align-items-center justify-content-between">
     <div class="col-lg-6 d-flex align-items-center">
       <form method="get" class="d-flex flex-grow-1 gap-2">
-        <?php if (!empty($searchTerm) || !empty($filterCategory)): ?>
+        <?php if (!empty($searchTerm) || !empty($filterCategory)) { ?>
           <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
-        <?php endif; ?>
+        <?php } ?>
       </form>
     </div>
 
@@ -102,28 +102,28 @@ try {
         </button>
         <ul class="dropdown-menu" aria-labelledby="categoryFilter">
           <li><a class="dropdown-item" href="cetegory.php">All Categories</a></li>
-          <?php foreach ($allCategories as $cat): ?>
+          <?php foreach ($allCategories as $cat) { ?>
             <li><a class="dropdown-item" href="cetegory.php?filter=<?php echo urlencode($cat) ?>"><?php echo $cat ?></a></li>
-          <?php endforeach; ?>
+          <?php }; ?>
         </ul>
       </div>
     </div>
   </div>
 
   <!-- Messages -->
-  <?php if (isset($_SESSION['message'])): ?>
+  <?php if (isset($_SESSION['message'])) { ?>
     <div class="alert alert-success alert-dismissible fade show">
       <?php echo $_SESSION['message'] ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php unset($_SESSION['message']);
-  endif; ?>
+  } ?>
 
-  <?php if ($error): ?>
+  <?php if ($error) { ?>
     <div class="alert alert-danger">
       Error: <?php echo $error ?>
     </div>
-  <?php endif; ?>
+  <?php } ?>
 
   <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -140,25 +140,25 @@ try {
             </tr>
           </thead>
           <tbody>
-            <?php if (empty($categories)): ?>
+            <?php if (empty($categories)) { ?>
               <tr>
                 <td colspan="6" class="text-center">No categories found</td>
               </tr>
-            <?php else: ?>
-              <?php foreach ($categories as $category): ?>
+            <?php } else { ?>
+              <?php foreach ($categories as $category) { ?>
                 <tr>
                   <td><?php echo $category['tag'] ?? '' ?></td>
                   <td><?php echo $category['description'] ?? '' ?></td>
                   <td>
-                    <?php if (!empty($category['image'])): ?>
+                    <?php if (!empty($category['image'])) { ?>
                       <div class="text-center">
                         <img alt="category-image" class="img-thumbnail"
                           src="../<?php echo $category['image'] ?>"
                           style="max-width: 120px; max-height: 120px; object-fit: contain;">
                       </div>
-                    <?php else: ?>
+                    <?php } else { ?>
                       <span class="text-muted">No image</span>
-                    <?php endif; ?>
+                    <?php } ?>
                   </td>
                   <td><?php echo $category['product_count'] ?? 0 ?></td>
                   <td>
@@ -168,8 +168,8 @@ try {
                     <button onclick="confirmDelete(<?php echo $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
                   </td>
                 </tr>
-              <?php endforeach; ?>
-            <?php endif; ?>
+              <?php }; ?>
+            <?php } ?>
           </tbody>
         </table>
       </div>
@@ -205,4 +205,4 @@ try {
   }
 </script>
 
-<?php include('./include/footer-admin.php'); ?>
+<?php require_once './include/footer-admin.php'; ?>

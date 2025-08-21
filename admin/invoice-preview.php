@@ -67,7 +67,7 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                         <div class="col-sm-6 text-sm-end">
                           <p class="inv-list-number mt-sm-3 pb-sm-2 mt-4">
                             <span class="inv-title">Invoice : </span>
-                            <span class="inv-number">#<?php echo htmlspecialchars($invoice['id']); ?></span>
+                            <span class="inv-number">#<?php echo $invoice['id']; ?></span>
                           </p>
                           <p class="inv-created-date mt-sm-5 mt-3">
                             <span class="inv-title">Invoice Date : </span>
@@ -88,10 +88,10 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                           <p class="inv-to">Invoice To</p>
                         </div>
                         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4">
-                          <p class="inv-customer-name"><?php echo htmlspecialchars($invoice['first_name'] . ' ' . $invoice['last_name']); ?></p>
-                          <p class="inv-street-addr"><?php echo htmlspecialchars($invoice['address']); ?>, <?php echo htmlspecialchars($invoice['city']); ?></p>
-                          <p class="inv-email-address"><?php echo htmlspecialchars($invoice['customer_email']); ?></p>
-                          <p class="inv-email-address"><?php echo htmlspecialchars($invoice['phone']); ?></p>
+                          <p class="inv-customer-name"><?php echo $invoice['first_name'] . ' ' . $invoice['last_name'];; ?></p>
+                          <p class="inv-street-addr"><?php echo $invoice['address']; ?>, <?php echo $invoice['city']; ?></p>
+                          <p class="inv-email-address"><?php echo $invoice['customer_email']; ?></p>
+                          <p class="inv-email-address"><?php echo $invoice['phone']; ?></p>
                         </div>
                       </div>
                     </div>
@@ -113,7 +113,7 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                             <?php foreach ($items as $index => $item) {  ?>
                               <tr>
                                 <td><?php echo $index + 1; ?></td>
-                                <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                <td><?php echo $item['product_name']; ?></td>
                                 <td class="text-end"><?php echo $item['quantity']; ?></td>
                                 <td class="text-end">$<?php echo $item['product_price']; ?></td>
                                 <td class="text-end">$<?php echo number_format($item['amount'], 2); ?></td>
@@ -169,12 +169,11 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                       <div class="inv--note">
                         <div class="row mt-4">
                           <div class="col-sm-12 col-12">
-                            <p>Note: <?php echo nl2br(htmlspecialchars($invoice['notes'])); ?></p>
+                            <p>Note: <?php echo nl2br($invoice['notes']); ?></p>
                           </div>
                         </div>
                       </div>
                     <?php } ?>
-
                   </div>
                 </div>
               </div>
@@ -187,7 +186,6 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
           <div class="invoice-actions-btn">
             <div class="invoice-action-btn">
               <div class="row">
-
                 <div class="col-xl-12 col-md-3 col-sm-6">
                   <a href="javascript:void(0);" class="btn btn-secondary btn-print  action-print">Print</a>
                 </div>

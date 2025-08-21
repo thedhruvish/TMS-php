@@ -14,7 +14,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         $productExists = false;
         $productDisabled = false;
         $productName = $stock['product_name'] ?? 'Deleted Product';
-        
+
         // Only check products table if product_id exists
         if (!empty($stock['product_id'])) {
             $productRes = $DB->read("products", array(
@@ -25,11 +25,11 @@ if ($result && mysqli_num_rows($result) > 0) {
                 $product = mysqli_fetch_assoc($productRes);
                 $productExists = true;
                 $productDisabled = $product['disabled'] ?? false;
-                
+
                 // Update product name if different from stored name
                 if (($stock['product_name'] ?? '') !== $product['name']) {
                     $DB->update(
-                        'stock', 
+                        'stock',
                         array('product_name'),  // columns array
                         array($product['name']),  // values array
                         'id',  // where column
@@ -78,7 +78,7 @@ if (isset($_GET['delete_id'])) {
         <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
     </div>
 
-    <?php if (isset($_SESSION['message'])): ?>
+    <?php if (isset($_SESSION['message'])) { ?>
         <div class="col-12">
             <div class="alert alert-success alert-dismissible fade show">
                 <?php echo $_SESSION['message'] ?>
@@ -86,7 +86,7 @@ if (isset($_GET['delete_id'])) {
             </div>
         </div>
         <?php unset($_SESSION['message']); ?>
-    <?php endif; ?>
+    <?php } ?>
 
     <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
         <div class="statbox widget box box-shadow">
@@ -105,15 +105,15 @@ if (isset($_GET['delete_id'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($stockData as $stock): ?>
+                        <?php foreach ($stockData as $stock) { ?>
                             <tr class="<?php echo !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
                                 <td>
-                                    <?php echo htmlspecialchars($stock['product_name']) ?>
-                                    <?php if (!$stock['product_exists']): ?>
+                                    <?php echo $stock['product_name']; ?>
+                                    <?php if (!$stock['product_exists']) { ?>
                                         <span class="badge bg-danger">(Product Deleted)</span>
-                                    <?php elseif ($stock['product_disabled']): ?>
+                                    <?php } elseif ($stock['product_disabled']) { ?>
                                         <span class="badge bg-warning text-dark">(Product Discontinued)</span>
-                                    <?php endif; ?>
+                                    <?php } ?>
                                 </td>
                                 <td><?php echo $stock['current_stock'] ?></td>
                                 <td><?php echo $stock['sold_stock'] ?></td>
@@ -127,13 +127,13 @@ if (isset($_GET['delete_id'])) {
                                     <button onclick="confirmDelete(<?php echo $stock['id'] ?>)" class="btn btn-danger btn-sm">Delete</button>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
 
-                        <?php if (empty($stockData)): ?>
+                        <?php if (empty($stockData)) { ?>
                             <tr>
                                 <td colspan="8" class="text-center">No stock records found</td>
                             </tr>
-                        <?php endif; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -169,4 +169,4 @@ if (isset($_GET['delete_id'])) {
     }
 </script>
 
-<?php include('./include/footer-admin.php'); ?>
+<?php require_once './include/footer-admin.php'; ?>

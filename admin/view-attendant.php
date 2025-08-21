@@ -45,17 +45,17 @@ while ($row = mysqli_fetch_assoc($res)) {
     <!-- left filters -->
     <div class="d-flex gap-2">
       <select class="form-select form-select-sm" id="monthSelect" style="width:120px;">
-        <?php for ($m = 1; $m <= 12; $m++): ?>
+        <?php for ($m = 1; $m <= 12; $m++) { ?>
           <option value="<?php echo $m ?>" <?php echo $m == $selectedMonth ? 'selected' : '' ?>>
             <?php echo date('F', mktime(0, 0, 0, $m, 1)) ?>
           </option>
-        <?php endfor; ?>
+        <?php } ?>
       </select>
 
       <select class="form-select form-select-sm" id="yearSelect" style="width:100px;">
-        <?php for ($y = $currentYear - 1; $y <= $currentYear + 1; $y++): ?>
+        <?php for ($y = $currentYear - 1; $y <= $currentYear + 1; $y++) { ?>
           <option value="<?php echo $y ?>" <?php echo $y == $selectedYear ? 'selected' : '' ?>><?php echo $y ?></option>
-        <?php endfor; ?>
+        <?php } ?>
       </select>
 
       <button class="btn btn-primary btn-sm px-3" id="btnView">Filter</button>
@@ -77,25 +77,25 @@ while ($row = mysqli_fetch_assoc($res)) {
       <thead>
         <tr>
           <th>Name</th>
-          <?php for ($d = 1; $d <= $daysInMonth; $d++): ?>
+          <?php for ($d = 1; $d <= $daysInMonth; $d++) { ?>
             <th><?php echo $d ?></th>
-          <?php endfor; ?>
+          <?php } ?>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($users as $u): ?>
+        <?php foreach ($users as $u) { ?>
           <tr>
             <td><?php echo $u['name'] ?></td>
             <?php
-            for ($d = 1; $d <= $daysInMonth; $d++):
+            for ($d = 1; $d <= $daysInMonth; $d++) {
               $date   = sprintf('%04d-%02d-%02d', $selectedYear, $selectedMonth, $d);
               $status = $attendance[$u['id']][$date] ?? 'A';
               $class  = ($date > date('Y-m-d')) ? 'text-bg-dark' : ($status == 'P' ? 'bg-success' : 'bg-secondary');
             ?>
               <td class="<?php echo $class ?> fw-bold"><?php echo $status ?></td>
-            <?php endfor; ?>
+            <?php } ?>
           </tr>
-        <?php endforeach; ?>
+        <?php }; ?>
       </tbody>
     </table>
   </div>

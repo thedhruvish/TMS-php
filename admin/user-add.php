@@ -133,7 +133,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="name" name="name"
                                     placeholder="Full Name"
-                                    value="<?php echo htmlspecialchars($_POST['name'] ?? $userData['name'] ?? '') ?>"
+                                    value="<?php echo $_POST['name'] ?? $userData['name'] ?? ''; ?>"
                                     required <?php echo $disabledAttr ?>>
                                 <label for="name">Full Name *</label>
                             </div>
@@ -144,7 +144,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="Email"
-                                    value="<?php echo htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '') ?>"
+                                    value="<?php echo $_POST['email'] ?? $userData['email'] ?? ''; ?>"
                                     required <?php echo $disabledAttr ?>>
                                 <label for="email">Email *</label>
                             </div>
@@ -155,7 +155,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="Password"
-                                    value="<?php echo htmlspecialchars($_POST['password'] ?? $userData['password'] ?? '') ?>"
+                                    value="<?php echo $_POST['password'] ?? $userData['password'] ?? ''; ?>"
                                     <?php
                                     if (!empty($userData['auth_provider']) && $userData['auth_provider'] === 'google') {
                                         echo 'readonly disabled';
@@ -172,7 +172,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="mobile_no" name="mobile_no"
                                     placeholder="Mobile"
-                                    value="<?php echo htmlspecialchars($_POST['mobile_no'] ?? $userData['mobile_no'] ?? '') ?>"
+                                    value="<?php echo $_POST['mobile_no'] ?? $userData['mobile_no'] ?? ''; ?>"
                                     <?php echo $disabledAttr ?>>
                                 <label for="mobile_no">Mobile Number</label>
                             </div>
@@ -226,33 +226,33 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Profile Picture -->
                         <div class="col-12">
                             <label class="form-label">Profile Picture</label>
-                            <?php if ($isViewMode && !empty($userData['profile_picture'])): ?>
+                            <?php if ($isViewMode && !empty($userData['profile_picture'])) { ?>
                                 <div class="mt-2">
                                     <img src="../images/profile/<?php echo $userData['profile_picture'] ?>"
                                         alt="Profile" class="rounded" style="max-height: 150px;">
                                 </div>
-                            <?php elseif (!$isViewMode): ?>
+                            <?php } elseif (!$isViewMode) { ?>
                                 <input type="file" class="form-control" name="profile_picture"
                                     accept="image/*" <?php echo $selectDisabled ?>>
-                                <?php if (!empty($userData['profile_picture'])): ?>
+                                <?php if (!empty($userData['profile_picture'])) { ?>
                                     <div class="mt-2">
                                         <small class="text-muted">Current:</small>
                                         <img src="../images/profile/<?php echo $userData['profile_picture'] ?>"
                                             alt="Profile" class="rounded ms-2" style="max-height: 80px;">
                                     </div>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                                <?php } ?>
+                            <?php } ?>
                         </div>
 
                     </div><!-- ./row -->
 
-                    <?php if (!$isViewMode): ?>
+                    <?php if (!$isViewMode) { ?>
                         <div class="text-end mt-4">
                             <button type="submit" name="submit-user" class="btn btn-primary px-4">
                                 <?php echo $isEditMode ? 'Update' : 'Create' ?>
                             </button>
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
                 </form>
             </div><!-- ./card-body -->
         </div><!-- ./card -->
@@ -260,4 +260,4 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
 </div>
 
 
-<?php include './include/footer-admin.php'; ?>
+<?php require_once './include/footer-admin.php'; ?>

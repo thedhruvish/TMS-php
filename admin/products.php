@@ -116,165 +116,166 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 });
 ?>
 
-    <div class="seperator-header layout-top-spacing">
-         <h4 class="mb-0">Products </h4>
-              <a href="products-add.php" class="btn btn-primary">Add New Product</a>
-     </div>
+<div class="seperator-header layout-top-spacing">
+    <h4 class="mb-0">Products </h4>
+    <a href="products-add.php" class="btn btn-primary">Add New Product</a>
+</div>
 
-    <!-- Search and Filter UI -->
-    <div class="row mb-4 align-items-center justify-content-between">
-        <div class="col-lg-6 d-flex align-items-center">
-            <form method="get" class="d-flex flex-grow-1 gap-2">
-                <input type="text" name="search" class="form-control" style="max-width: 300px;"
-                    placeholder="Search products..." value="<?php echo htmlspecialchars($searchTerm) ?>">
-                <button type="submit" class="btn btn-primary px-3">Search</button>
-            </form>
-        </div>
-
-        <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
-            <form id="filterForm" method="get" class="d-inline-block w-100">
-                <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm) ?>">
-                <input type="hidden" name="category" id="categoryInput" value="<?php echo htmlspecialchars($categoryFilter) ?>">
-                <input type="hidden" name="sort" id="sortInput" value="<?php echo htmlspecialchars($sortBy) ?>">
-
-                <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
-                    <!-- Category Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $categoryFilter ?: 'All Categories' ?>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
-                            <?php foreach ($categories as $cat): if (!empty($cat)): ?>
-                                    <li><a class="dropdown-item" href="#" onclick="selectCategory('<?php echo htmlspecialchars($cat) ?>')"><?php echo htmlspecialchars($cat) ?></a></li>
-                            <?php endif;
-                            endforeach; ?>
-                        </ul>
-                    </div>
-
-                    <!-- Sort Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php
-                            echo match ($sortBy) {
-                                'price_low' => 'Price: Low to High',
-                                'price_high' => 'Price: High to Low',
-                                default => 'Newest'
-                            };
-                            ?>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="selectSort('newest')">Newest</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="selectSort('price_low')">Price: Low to High</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="selectSort('price_high')">Price: High to Low</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </form>
-        </div>
+<!-- Search and Filter UI -->
+<div class="row mb-4 align-items-center justify-content-between">
+    <div class="col-lg-6 d-flex align-items-center">
+        <form method="get" class="d-flex flex-grow-1 gap-2">
+            <input type="text" name="search" class="form-control" style="max-width: 300px;"
+                placeholder="Search products..." value="<?php echo $searchTerm; ?>">
+            <button type="submit" class="btn btn-primary px-3">Search</button>
+        </form>
     </div>
 
-    <!-- Messages -->
-    <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-success alert-dismissible fade show">
-            <?php echo $_SESSION['message'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php unset($_SESSION['message']);
-    endif; ?>
+    <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
+        <form id="filterForm" method="get" class="d-inline-block w-100">
+            <input type="hidden" name="search" value="<?php echo $searchTerm; ?>">
+            <input type="hidden" name="category" id="categoryInput" value="<?php echo $categoryFilter; ?>">
+            <input type="hidden" name="sort" id="sortInput" value="<?php echo $sortBy; ?>">
 
-    <?php if ($error): ?>
-        <div class="alert alert-danger">
-            Database Error: <?php echo htmlspecialchars($error) ?>
-        </div>
-    <?php endif; ?>
+            <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
+                <!-- Category Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <?php echo $categoryFilter ?: 'All Categories' ?>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
+                        <?php foreach ($categories as $cat) {
+                            if (!empty($cat)) { ?>
+                                <li><a class="dropdown-item" href="#" onclick="selectCategory('<?php echo $cat; ?>')"><?php echo $cat; ?></a></li>
+                        <?php }
+                        } ?>
+                    </ul>
+                </div>
 
-    <!-- Product Grid -->
-    <div class="row">
-        <?php if (empty($filteredProducts)): ?>
-            <div class="col-12">
-                <div class="alert alert-info">
-                    No products found.
-                    <?php if (!empty($searchTerm) || !empty($categoryFilter)): ?>
-                        <a href="products.php" class="alert-link">Clear filters</a>
-                    <?php endif; ?>
+                <!-- Sort Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <?php
+                        echo match ($sortBy) {
+                            'price_low' => 'Price: Low to High',
+                            'price_high' => 'Price: High to Low',
+                            default => 'Newest'
+                        };
+                        ?>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="selectSort('newest')">Newest</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_low')">Price: Low to High</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_high')">Price: High to Low</a></li>
+                    </ul>
                 </div>
             </div>
-        <?php else: ?>
-            <?php foreach ($filteredProducts as $product): ?>
-                <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
-                    <div class="card h-200">
-                        <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="0" class="active m"></li>
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="1"></li>
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="2"></li>
-                            </ol>
-                            <!-- carousel-inner -->
-                            <div class="carousel-inner">
-                                <?php foreach ($product['images'] as $k => $image): ?>
-                                    <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
-                                        <!-- responsive 4:3 box -->
-                                        <div class="ratio ratio-4x3">
-                                            <img class="img-fluid object-fit-cover"
-                                                src="../images/products/<?php echo $image ?>"
-                                                alt="<?php echo htmlspecialchars($product['name']) ?>">
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <?php if (count($product['images']) != 1): ?>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </a>
-                            <?php endif; ?>
-                        </div>
+        </form>
+    </div>
+</div>
 
-                        <!-- Product Info -->
-                        <div class="card-body">
-                            <h6 class="card-title"> <a href="products-add.php?id=<?php echo $product['id'] ?>"><?php echo htmlspecialchars($product['name']) ?></a></h6>
-                            <div class="d-flex align-items-center mb-2">
-                                <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']): ?>
-                                    <span class="text-danger text-decoration-line-through me-2">
-                                        $<?php echo number_format($product['regular_price'], 2) ?>
-                                    </span>
-                                    <span class="text-success fw-bold">
-                                        $<?php echo number_format($product['sale_price'], 2) ?>
-                                    </span>
-                                <?php else: ?>
-                                    <span class="text-success fw-bold">
-                                        $<?php echo number_format($product['regular_price'], 2) ?>
-                                    </span>
-                                <?php endif; ?>
-                            </div>
+<!-- Messages -->
+<?php if (isset($_SESSION['message'])) { ?>
+    <div class="alert alert-success alert-dismissible fade show">
+        <?php echo $_SESSION['message'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php unset($_SESSION['message']);
+} ?>
+
+<?php if ($error) { ?>
+    <div class="alert alert-danger">
+        Database Error: <?php echo $error; ?>
+    </div>
+<?php } ?>
+
+<!-- Product Grid -->
+<div class="row">
+    <?php if (empty($filteredProducts)) { ?>
+        <div class="col-12">
+            <div class="alert alert-info">
+                No products found.
+                <?php if (!empty($searchTerm) || !empty($categoryFilter)) { ?>
+                    <a href="products.php" class="alert-link">Clear filters</a>
+                <?php } ?>
+            </div>
+        </div>
+    <?php } else { ?>
+        <?php foreach ($filteredProducts as $product) { ?>
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
+                <div class="card h-200">
+                    <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="0" class="active m"></li>
+                            <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="2"></li>
+                        </ol>
+                        <!-- carousel-inner -->
+                        <div class="carousel-inner">
+                            <?php foreach ($product['images'] as $k => $image) { ?>
+                                <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
+                                    <!-- responsive 4:3 box -->
+                                    <div class="ratio ratio-4x3">
+                                        <img class="img-fluid object-fit-cover"
+                                            src="../images/products/<?php echo $image ?>"
+                                            alt="<?php echo $product['name']; ?>">
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <?php if (count($product['images']) != 1) { ?>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </a>
+                        <?php } ?>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="card-body">
+                        <h6 class="card-title"> <a href="products-add.php?id=<?php echo $product['id'] ?>"><?php echo $product['name']; ?></a></h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']) { ?>
+                                <span class="text-danger text-decoration-line-through me-2">
+                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                </span>
+                                <span class="text-success fw-bold">
+                                    $<?php echo number_format($product['sale_price'], 2) ?>
+                                </span>
+                            <?php } else { ?>
+                                <span class="text-success fw-bold">
+                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                </span>
+                            <?php } ?>
+                        </div>
 
                         <!-- Stock Badge -->
                         <div class="mb-2">
-                            <?php if ($product['disabled']): ?>
+                            <?php if ($product['disabled']) { ?>
                                 <span class="badge bg-secondary">DISABLED</span>
-                            <?php else: ?>
+                            <?php } else { ?>
                                 <span class="badge <?php echo $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
                                     <?php echo $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
                                 </span>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
 
-                            <!-- Edit and Delete Buttons -->
-                            <div class="d-flex justify-content-between">
-                                <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </div>
+                        <!-- Edit and Delete Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+            </div>
+        <?php } ?>
+    <?php } ?>
+</div>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -317,4 +318,4 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
 <script src="../src/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<?php include_once './include/footer-admin.php'; ?> 
+<?php include_once './include/footer-admin.php'; ?>

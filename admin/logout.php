@@ -9,10 +9,9 @@ if (isset($_SESSION)) {
   echo $new_path;
   // echo $url;
   header("Location: $new_path ");
-} 
+}
 
 
 $new_path = str_replace("/admin/logout.php", "/login.php", $full_url);
 header("Location: $new_path ");
-
 ?>

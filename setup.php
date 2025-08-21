@@ -62,19 +62,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Database Setup</title>
 </head>
+
 <body>
     <h2>Database Setup</h2>
 
-    <?php if ($DB_exists): ?>
+    <?php if ($DB_exists) { ?>
         <p>⚠️ The database '<strong><?php echo DB_NAME; ?></strong>' already exists.</p>
         <form method="POST">
             <p>Do you want to <strong>drop and recreate</strong> it?</p>
             <button type="submit" name="confirm" value="yes">Yes, Drop and Recreate</button>
         </form>
-    <?php else: ?>
+    <?php } else { ?>
         <p>✅ The database '<strong><?php echo DB_NAME; ?></strong>' does not exist. Creating it...</p>
         <?php
         // Create database
@@ -108,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
 
         mysqli_close($conn);
         ?>
-    <?php endif; ?>
+    <?php } ?>
 </body>
+
 </html>

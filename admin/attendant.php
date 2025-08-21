@@ -64,7 +64,7 @@ if (isset($_POST['save'])) {
 </div>
 
 
-<?php if ($users && $selectedMonth == date('m') && $selectedYear == date('Y')): ?>
+<?php if ($users && $selectedMonth == date('m') && $selectedYear == date('Y')) { ?>
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
             <i class="bi bi-toggle-on me-2"></i> Mark Attendance – <?php echo date('d M Y'); ?>
@@ -83,7 +83,7 @@ if (isset($_POST['save'])) {
                     </thead>
 
                     <tbody>
-                        <?php foreach ($users as $u):
+                        <?php foreach ($users as $u) {
                             $st = $attendance[$u['id']][$today] ?? 'A';
                         ?>
 
@@ -105,7 +105,7 @@ if (isset($_POST['save'])) {
                                     </div>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -117,8 +117,6 @@ if (isset($_POST['save'])) {
             </div>
         </form>
     </div>
-<?php endif; ?>
+<?php } ?>
 
-
-<?php include('./include/footer-admin.php'); ?>
-<!--  END DROPDOWNS -->
+<?php require_once './include/footer-admin.php'; ?>

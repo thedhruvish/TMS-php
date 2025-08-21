@@ -131,4 +131,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../src/plugins/src/tagify/tagify.min.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
-<?php include('./include/footer-admin.php'); ?>
+<?php require_once './include/footer-admin.php'; ?>

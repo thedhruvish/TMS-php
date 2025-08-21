@@ -1,6 +1,8 @@
 <?php $pageTitle = "Invoice";
+
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
 $invoices = null;
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
@@ -13,11 +15,9 @@ $sql = "
     FROM invoices i
     JOIN customer c ON c.id = i.customer_id
     LEFT JOIN payments p ON p.invoice_id = i.id
-    GROUP BY i.id, c.first_name, c.last_name, c.email
 ";
 
-
-if ($search !== '') {;
+if ($search !== '') {
   $sql .= " WHERE (
                 c.email      LIKE '%$search%' OR
                 c.first_name LIKE '%$search%' OR
@@ -25,7 +25,11 @@ if ($search !== '') {;
                 i.total      LIKE '%$search%'
             )";
 }
-$sql .= " ORDER BY i.id DESC";
+
+$sql .= "
+    GROUP BY i.id, c.first_name, c.last_name, c.email
+    ORDER BY i.id DESC
+";
 
 $invoices = $DB->custom_query($sql);
 
@@ -44,9 +48,9 @@ $invoices = $DB->custom_query($sql);
         <input type="text" name="search" class="form-control" style="max-width: 300px;"
           placeholder="Search Email..." value="<?php echo @$search ?>">
         <button type="submit" class="btn btn-primary px-3">Search</button>
-        <?php if (!empty($search)): ?>
+        <?php if (!empty($search)) { ?>
           <a href="invoice.php" class="btn btn-outline-secondary">Clear</a>
-        <?php endif; ?>
+        <?php } ?>
       </form>
     </div>
   </div>
