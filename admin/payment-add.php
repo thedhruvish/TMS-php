@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
 
     $columns = ['invoice_id', 'payment_date', 'amount_paid', 'payment_method', 'reference_number', 'notes'];
     $values = [$invoice_id, $payment_date, $amount_paid, $payment_method, $reference_number, $notes];
-
+    send_message_TG("New Payment Added\nInvoice ID: $invoice_id\nPayment Date: $payment_date\nAmount Paid: $amount_paid\nPayment Method: $payment_method\nReference Number: $reference_number\nNotes: $notes");
     $inserted = $DB->create('payments', $columns, $values);
 
     if ($inserted) {
