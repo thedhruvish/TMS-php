@@ -1,961 +1,174 @@
-<?php $pageTitle = "Customer";
-require_once './include/header-staff.php';
-require_once './include/sidebar-staff.php';
+<?php
+$pageTitle = "Stock Management";
+require_once './include/header-admin.php';
+require_once './include/sidebar-admin.php';
+
+// Get all stock records with product information
+$stockData = [];
+$result = $DB->read("stock", array(
+    'order_by' => 'COALESCE(product_id, 999999) ASC' // Puts NULL product_ids last
+));
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($stock = mysqli_fetch_assoc($result)) {
+        $productExists = false;
+        $productDisabled = false;
+        $productName = $stock['product_name'] ?? 'Deleted Product';
+
+        // Only check products table if product_id exists
+        if (!empty($stock['product_id'])) {
+            $productRes = $DB->read("products", array(
+                'where' => array('id' => array('=' => $stock['product_id']))
+            ));
+
+            if ($productRes && mysqli_num_rows($productRes) > 0) {
+                $product = mysqli_fetch_assoc($productRes);
+                $productExists = true;
+                $productDisabled = $product['disabled'] ?? false;
+
+                // Update product name if different from stored name
+                if (($stock['product_name'] ?? '') !== $product['name']) {
+                    $DB->update(
+                        'stock',
+                        array('product_name'),  // columns array
+                        array($product['name']),  // values array
+                        'id',  // where column
+                        $stock['id']  // where value
+                    );
+                    $productName = $product['name'];
+                } else {
+                    $productName = $stock['product_name'];
+                }
+            }
+        }
+
+        // Calculate pending stock (current - sold - dead)
+        $sold = $stock['sold_stock'] ?? 0;
+        $dead = $stock['dead_stock'] ?? 0;
+        $pendingStock = $stock['current_stock'] - $sold - $dead;
+        if ($stock['current_stock'] < 100) {
+            send_message_TG("Low Stock Alert\nProduct Name: $productName\nCurrent Stock: $stock[current_stock]\nPending Stock: $pendingStock");
+        }
+        $stockData[] = array(
+            'id' => $stock['id'],
+            'product_id' => $stock['product_id'],
+            'product_name' => $productName,
+            'product_exists' => $productExists,
+            'product_disabled' => $productDisabled,
+            'current_stock' => $stock['current_stock'],
+            'sold_stock' => $stock['sold_stock'] ?? 0,
+            'dead_stock' => $stock['dead_stock'] ?? 0,
+            'pending_stock' => $pendingStock > 0 ? $pendingStock : 0,
+            'last_updated' => $stock['last_updated']
+        );
+    }
+}
+
+// Handle delete action
+if (isset($_GET['delete_id'])) {
+    $deleteId = (int)$_GET['delete_id'];
+    $DB->delete('stock', 'id', $deleteId);
+    $_SESSION['message'] = "Stock record deleted successfully";
+    header("Location: stoack.php");
+    exit;
+}
 ?>
 
-
 <div class="row">
-  <div class="seperator-header layout-top-spacing">
-    <h4 class="">CUSTOMER </h4>
-  </div>
-  <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-    <div class="statbox widget box box-shadow">
-      <div class="widget-content widget-content-area">
-        <table id="html5-extension" class="table dt-table-hover" style="width:100%">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
-              <th>Extn.</th>
-              <th>Avatar</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Tiger Nixon</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td>2011/04/25</td>
-              <td>$320,800</td>
-              <td>5421</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference1">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Garrett Winters</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>63</td>
-              <td>2011/07/25</td>
-              <td>$170,750</td>
-              <td>8422</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference2">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Ashton Cox</td>
-              <td>Junior Technical Author</td>
-              <td>San Francisco</td>
-              <td>66</td>
-              <td>2009/01/12</td>
-              <td>$86,000</td>
-              <td>1562</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference3">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Cedric Kelly</td>
-              <td>Senior Javascript Developer</td>
-              <td>Edinburgh</td>
-              <td>22</td>
-              <td>2012/03/29</td>
-              <td>$433,060</td>
-              <td>6224</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference4">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Airi Satou</td>
-              <td>Accountant</td>
-              <td>Tokyo</td>
-              <td>33</td>
-              <td>2008/11/28</td>
-              <td>$162,700</td>
-              <td>5407</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-1.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference5" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference5">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Brielle Williamson</td>
-              <td>Integration Specialist</td>
-              <td>New York</td>
-              <td>61</td>
-              <td>2012/12/02</td>
-              <td>$372,000</td>
-              <td>4804</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference6">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Herrod Chandler</td>
-              <td>Sales Assistant</td>
-              <td>San Francisco</td>
-              <td>59</td>
-              <td>2012/08/06</td>
-              <td>$137,500</td>
-              <td>9608</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference7" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference7">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Rhona Davidson</td>
-              <td>Integration Specialist</td>
-              <td>Tokyo</td>
-              <td>55</td>
-              <td>2010/10/14</td>
-              <td>$327,900</td>
-              <td>6200</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-3.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference8" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference8">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Colleen Hurst</td>
-              <td>Javascript Developer</td>
-              <td>San Francisco</td>
-              <td>39</td>
-              <td>2009/09/15</td>
-              <td>$205,500</td>
-              <td>2360</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference9" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference9">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Sonya Frost</td>
-              <td>Software Engineer</td>
-              <td>Edinburgh</td>
-              <td>23</td>
-              <td>2008/12/13</td>
-              <td>$103,600</td>
-              <td>1667</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference10" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference10">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Jena Gaines</td>
-              <td>Office Manager</td>
-              <td>London</td>
-              <td>30</td>
-              <td>2008/12/19</td>
-              <td>$90,560</td>
-              <td>3814</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-3.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference11" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference11">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Quinn Flynn</td>
-              <td>Support Lead</td>
-              <td>Edinburgh</td>
-              <td>22</td>
-              <td>2013/03/03</td>
-              <td>$342,000</td>
-              <td>9497</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference12" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference12">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Charde Marshall</td>
-              <td>Regional Director</td>
-              <td>San Francisco</td>
-              <td>36</td>
-              <td>2008/10/16</td>
-              <td>$470,600</td>
-              <td>6741</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference13" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference13">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Haley Kennedy</td>
-              <td>Senior Marketing Designer</td>
-              <td>London</td>
-              <td>43</td>
-              <td>2012/12/18</td>
-              <td>$313,500</td>
-              <td>3597</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-1.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference14" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference14">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Tatyana Fitzpatrick</td>
-              <td>Regional Director</td>
-              <td>London</td>
-              <td>19</td>
-              <td>2010/03/17</td>
-              <td>$385,750</td>
-              <td>1965</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-4.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference15" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference15">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Michael Silva</td>
-              <td>Marketing Designer</td>
-              <td>London</td>
-              <td>66</td>
-              <td>2012/11/27</td>
-              <td>$198,500</td>
-              <td>1581</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference16" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference16">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Paul Byrd</td>
-              <td>Chief Financial Officer (CFO)</td>
-              <td>New York</td>
-              <td>64</td>
-              <td>2010/06/09</td>
-              <td>$725,000</td>
-              <td>3059</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference17" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference17">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Gloria Little</td>
-              <td>Systems Administrator</td>
-              <td>New York</td>
-              <td>59</td>
-              <td>2009/04/10</td>
-              <td>$237,500</td>
-              <td>1721</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference18" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference18">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Bradley Greer</td>
-              <td>Software Engineer</td>
-              <td>London</td>
-              <td>41</td>
-              <td>2012/10/13</td>
-              <td>$132,000</td>
-              <td>2558</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference19" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference19">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Dai Rios</td>
-              <td>Personnel Lead</td>
-              <td>Edinburgh</td>
-              <td>35</td>
-              <td>2012/09/26</td>
-              <td>$217,500</td>
-              <td>2290</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference20">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Jenette Caldwell</td>
-              <td>Development Lead</td>
-              <td>New York</td>
-              <td>30</td>
-              <td>2011/09/03</td>
-              <td>$345,000</td>
-              <td>1937</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-1.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference21" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference21">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Yuri Berry</td>
-              <td>Chief Marketing Officer (CMO)</td>
-              <td>New York</td>
-              <td>40</td>
-              <td>2009/06/25</td>
-              <td>$675,000</td>
-              <td>6154</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference22" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference22">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Caesar Vance</td>
-              <td>Pre-Sales Support</td>
-              <td>New York</td>
-              <td>21</td>
-              <td>2011/12/12</td>
-              <td>$106,450</td>
-              <td>8330</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference23" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference23">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Doris Wilder</td>
-              <td>Sales Assistant</td>
-              <td>Sidney</td>
-              <td>23</td>
-              <td>2010/09/20</td>
-              <td>$85,600</td>
-              <td>3023</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference24" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference24">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Angelica Ramos</td>
-              <td>Chief Executive Officer (CEO)</td>
-              <td>London</td>
-              <td>47</td>
-              <td>2009/10/09</td>
-              <td>$1,200,000</td>
-              <td>5797</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-4.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference25" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference25">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Gavin Joyce</td>
-              <td>Developer</td>
-              <td>Edinburgh</td>
-              <td>42</td>
-              <td>2010/12/22</td>
-              <td>$92,575</td>
-              <td>8822</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference26" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference26">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Jennifer Chang</td>
-              <td>Regional Director</td>
-              <td>Singapore</td>
-              <td>28</td>
-              <td>2010/11/14</td>
-              <td>$357,650</td>
-              <td>9239</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/girl-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference27" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference27">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Brenden Wagner</td>
-              <td>Software Engineer</td>
-              <td>San Francisco</td>
-              <td>28</td>
-              <td>2011/06/07</td>
-              <td>$206,850</td>
-              <td>1314</td>
-              <td>
-                <div class="d-flex">
-                  <div class="usr-img-frame mr-2 rounded-circle">
-                    <img alt="avatar" class="img-fluid rounded-circle" src="../src/assets/img/boy-2.png">
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-dark btn-sm">Open</button>
-                  <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference28" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuReference28">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="seperator-header layout-top-spacing">
+        <h4 class="">Stock Management</h4>
+        <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
     </div>
-  </div>
 
+    <?php if (isset($_SESSION['message'])) { ?>
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show">
+                <?php echo $_SESSION['message'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php } ?>
+
+    <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-content widget-content-area">
+                <table id="html5-extension" class="table dt-table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Initial Stock</th>
+                            <th>Sold Stock</th>
+                            <th>Dead Stock</th>
+                            <th>Pending Stock</th>
+                            <th>Last Updated</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($stockData as $stock) { ?>
+                            <tr class="<?php echo !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
+                                <td>
+                                    <?php echo $stock['product_name']; ?>
+                                    <?php if (!$stock['product_exists']) { ?>
+                                        <span class="badge bg-danger">(Product Deleted)</span>
+                                    <?php } elseif ($stock['product_disabled']) { ?>
+                                        <span class="badge bg-warning text-dark">(Product Discontinued)</span>
+                                    <?php } ?>
+                                </td>
+                                <td><?php echo $stock['current_stock'] ?></td>
+                                <td><?php echo $stock['sold_stock'] ?></td>
+                                <td><?php echo $stock['dead_stock'] ?></td>
+                                <td><?php echo $stock['pending_stock'] ?></td>
+                                <td><?php echo date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
+                                <td>
+                                    <a href="stoack-edit.php?id=<?php echo $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                </td>
+                                <td>
+                                    <button onclick="confirmDelete(<?php echo $stock['id'] ?>)" class="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                        <?php } ?>
+
+                        <?php if (empty($stockData)) { ?>
+                            <tr>
+                                <td colspan="8" class="text-center">No stock records found</td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<?php require_once './include/footer-staff.php'; ?> 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this stock record?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteConfirmBtn" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(stockId) {
+        const deleteBtn = document.getElementById('deleteConfirmBtn');
+        deleteBtn.href = `stoack.php?delete_id=${stockId}`;
+        const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+</script>
+
+<?php require_once './include/footer-admin.php'; ?>

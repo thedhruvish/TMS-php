@@ -14,7 +14,7 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'staff')) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-  <title> <?php echo isset($pageTitle) ? $pageTitle : 'Admin'; ?> </title>
+  <title>Admin </title>
 
   <link rel="icon" type="image/x-icon" href="../src/assets/img/favicon.ico" />
   <link href="../layouts/vertical-light-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
@@ -79,11 +79,11 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'staff')) {
   <link href="../src/assets/css/dark/scrollspyNav.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
 
-    <link href="../src/assets/css/dark/scrollspyNav.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
-    <!-- END PAGE LEVEL STYLES -->     
+  <link href="../src/assets/css/dark/scrollspyNav.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="../src/assets/css/dark/forms/switches.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
+  <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css">
+  <!-- END PAGE LEVEL STYLES -->
 
 
 </head>
