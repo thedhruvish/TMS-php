@@ -56,6 +56,10 @@ if (mysqli_num_rows($productsRes) > 0) {
 $customersRes = $DB->read("customer");
 /* ---------- POST handler (insert / update) ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_POST['customer_id'] == '') {
+        echo "<script>alert('Please select a customer!'); window.history.back();</script>";
+        exit();
+    }
     $invoice_data = [
         'invoice_label'   => $_POST['invoice_label']   ?? '',
         'customer_id'     => $_POST['customer_id']     ?? '',
@@ -93,12 +97,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dead  = $stock['dead_stock'] ?? 0;
                 $available = $stock['current_stock'] - $sold - $dead;
 
+                if ($qty > $available) {
+                    // ❌ Not enough stock → prevent save & show alert
+                    echo "<script>alert('Not enough stock for {$row['product_name']}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
+                    exit;
+                }
+
                 // After inserting this qty
                 $remaining = $available - $qty;
 
                 if ($remaining < 100) {
-                    send_message_TG("Low Stock Alert\nProduct Name: {$row['product_name']}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}");
-                    // echo "<script>alert('Warning: Product ID {$product_id} stock will fall below 100 (Remaining: {$remaining})');</script>";
+                    send_message_TG(
+                        "Low Stock Alert\nProduct Name: {$row['product_name']}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}"
+                    );
                 }
             }
 
@@ -122,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $DB->update("stock", ["sold_stock"], [$newSold], "product_id", $product_id);
         }
     }
+
 
 
     header("Location: invoice.php");

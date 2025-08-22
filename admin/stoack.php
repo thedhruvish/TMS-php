@@ -47,7 +47,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         $dead = $stock['dead_stock'] ?? 0;
         $pendingStock = $stock['current_stock'] - $sold - $dead;
         if ($pendingStock < 100) {
-            send_message_TG("Low Stock Alert\nProduct Name: $productName\nCurrent Stock: $stock[current_stock]\nPending Stock: $pendingStock");
+            // send_message_TG("Low Stock Alert\nProduct Name: $productName\nCurrent Stock: $stock[current_stock]\nPending Stock: $pendingStock");
         }
         $stockData[] = array(
             'id' => $stock['id'],
