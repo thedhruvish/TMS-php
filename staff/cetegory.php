@@ -130,8 +130,6 @@ try {
             <th>Description</th>
             <th>Image</th>
             <th>Total Product</th>
-            <th>Edit</th>
-            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -156,12 +154,6 @@ try {
                   <?php } ?>
                 </td>
                 <td><?php echo $category['product_count'] ?? 0 ?></td>
-                <td>
-                  <a href="cetegory-add.php?u_id=<?php echo $category['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                </td>
-                <td>
-                  <button onclick="confirmDelete(<?php echo $category['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
-                </td>
               </tr>
             <?php }; ?>
           <?php } ?>
