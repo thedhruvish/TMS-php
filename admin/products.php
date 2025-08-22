@@ -222,11 +222,16 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
 
                     <div class="card h-200 z-50">
                         <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
+                            <!-- carousel-indicators -->
                             <ol class="carousel-indicators">
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="0" class="active m"></li>
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="1"></li>
-                                <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" data-bs-slide-to="2"></li>
+                                <?php foreach ($product['images'] as $k => $image) { ?>
+                                    <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>"
+                                        data-bs-slide-to="<?php echo $k; ?>"
+                                        class="<?php echo $k == 0 ? 'active' : ''; ?>">
+                                    </li>
+                                <?php } ?>
                             </ol>
+
                             <!-- carousel-inner -->
                             <div class="carousel-inner">
                                 <?php foreach ($product['images'] as $k => $image) { ?>
@@ -239,7 +244,8 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                                     </div>
                                 <?php } ?>
                             </div>
-                            <?php if (count($product['images']) != 1) { ?>
+
+                            <?php if (count($product['images']) > 1) { ?>
                                 <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
@@ -250,6 +256,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                                 </a>
                             <?php } ?>
                         </div>
+
 
                         <!-- Product Info -->
                         <div class="card-body">
