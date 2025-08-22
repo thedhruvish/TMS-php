@@ -37,6 +37,7 @@ if (mysqli_num_rows($productsRes) > 0) {
             $sold = $stock['sold_stock'] ?? 0;
             $dead = $stock['dead_stock'] ?? 0;
             $product['in_stock'] = ($stock['current_stock'] - $sold - $dead) > 0 ? 1 : 0;
+            $product['stock'] = $stock['current_stock'] - $sold - $dead;
         } else {
             $product['in_stock'] = 0;
         }
@@ -83,6 +84,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($_POST['items'] as $row) {
             $product_id = (int)($row['product_id'] ?? 0);
             $qty        = (int)($row['quantity']   ?? 0);
+
+            // ---------- check stock before insert ----------
+            $stockRes = $DB->read("stock", ['where' => ['product_id' => ['=' => $product_id]]]);
+            if ($stockRes && mysqli_num_rows($stockRes) > 0) {
+                $stock = mysqli_fetch_assoc($stockRes);
+                $sold  = $stock['sold_stock'] ?? 0;
+                $dead  = $stock['dead_stock'] ?? 0;
+                $available = $stock['current_stock'] - $sold - $dead;
+
+                // After inserting this qty
+                $remaining = $available - $qty;
+
+                if ($remaining < 100) {
+                    send_message_TG("Low Stock Alert\nProduct Name: {$row['product_name']}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}");
+                    // echo "<script>alert('Warning: Product ID {$product_id} stock will fall below 100 (Remaining: {$remaining})');</script>";
+                }
+            }
+
+            // ---------- insert item ----------
             $DB->create('invoice_items', [
                 'invoice_id',
                 'product_id',
@@ -96,9 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $qty,
                 (float)($row['amount'] ?? 0)
             ]);
-            $DB->update("stock", ["sold_stock"], [$qty], "product_id", $product_id);
+
+            // ---------- update sold stock ----------
+            $newSold = $sold + $qty;
+            $DB->update("stock", ["sold_stock"], [$newSold], "product_id", $product_id);
         }
     }
+
 
     header("Location: invoice.php");
     exit;
@@ -167,7 +191,7 @@ if (isset($_GET['id'])) {
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
-                                                        <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
+                                                        <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?> require>
                                                             <option value="">Choose customer…</option>
                                                             <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
                                                                 <option value="<?php echo $row['id'] ?>"
@@ -406,17 +430,19 @@ if (isset($_GET['id'])) {
             subtotal += parseFloat(row.querySelector('.amount-input')?.value || 0);
         });
 
-        const discount = parseFloat(document.getElementById('discount-input')?.value || 0);
+        const discount = 0;
         const total = subtotal - discount;
 
         document.getElementById('subtotal-display').textContent = subtotal.toFixed(2);
         document.getElementById('subtotal-input').value = subtotal.toFixed(2);
 
-        document.getElementById('discount-display').textContent = discount.toFixed(2);
+
+        // document.getElementById('discount-display').textContent = discount.toFixed(2);
 
         document.getElementById('total-display').textContent = total.toFixed(2);
         document.getElementById('total-input').value = total.toFixed(2);
     }
+
 
     document.addEventListener('input', e => {
         if (e.target.matches('.rate-input, .qty-input, #discount-input')) {
