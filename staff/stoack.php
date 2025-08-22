@@ -71,11 +71,7 @@ if (isset($_GET['delete_id'])) {
 }
 ?>
 
-<div class="row">
-    <div class="seperator-header layout-top-spacing">
-        <h4 class="">Stock Management</h4>
-        <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
-    </div>
+<div class="row pt-4">
 
     <?php if (isset($_SESSION['message'])) { ?>
         <div class="col-12">

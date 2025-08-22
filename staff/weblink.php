@@ -31,7 +31,7 @@ $result_web_link = mysqli_query(
                             <th>CreateAt</th>
                             <th>Total Product</th>
                             <th>Open</th>
-                            <th>Delete</th>
+                            <!-- <th>Delete</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -42,7 +42,7 @@ $result_web_link = mysqli_query(
                                 <td><?php echo $row['createat']; ?></td>
                                 <td><?php echo sizeof(explode(',', $row['productIds'])); ?></td>
                                 <td><a href="../weblink/index.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-primary">Open</a></td>
-                                <td><a href="weblink.php?d_id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
+                                <!-- <td><a href="weblink.php?d_id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td> -->
                             </tr>
                         <?php } ?>
                     </tbody>
