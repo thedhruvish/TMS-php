@@ -32,7 +32,9 @@ if (isset($_GET['d_id'])) {
               <th>Message</th>
               <th>Date</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Open</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -44,20 +46,11 @@ if (isset($_GET['d_id'])) {
                 <td><?php echo $row['message'] ?></td>
                 <td><?php echo $row['created_at'] ?></td>
                 <td><?php echo ($row['status'] == 'new') ? 'New' : 'Old'; ?></td>
-                <td>
-                  <div class="btn-group">
-                    <a href="inquiry.php?d_id=<?php echo $row['id'] ?>">
-                      <button type="button" class="btn btn-dark btn-sm">Delete</button>
-                    </a>
-                    <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference28" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuReference28">
-                      <a class="dropdown-item" href="inquiry-add.php?u_id=<?php echo $row['id'] ?>">Edit</a>
-                    </div>
-                  </div>
+                <td><a class="dropdown-item" href="inquiry-add.php?id=<?php echo $row['id'] ?>"> <button type="button" class="btn btn-primary btn-sm">Open</button></a></td>
+                <td><a class="dropdown-item" href="inquiry-add.php?u_id=<?php echo $row['id'] ?>"> <button type="button" class="btn btn-secondary btn-sm">Edit</button></a></td>
+                <td><a href="inquiry.php?d_id=<?php echo $row['id'] ?>">
+                    <button type="button" class="btn btn-dark btn-sm">Delete</button>
+                  </a>
                 </td>
               </tr>
             <?php } ?>

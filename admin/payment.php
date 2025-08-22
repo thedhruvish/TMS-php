@@ -27,7 +27,9 @@ $payment_data = $DB->custom_query($select_query);
               <th>Reference Number</th>
               <th>Notes</th>
               <th>Created At</th>
-              <th>Action</th>
+              <th>Open</th>
+              <th>Edit</th>
+              <!-- <th>Delete</th> -->
             </tr>
           </thead>
 
@@ -42,22 +44,17 @@ $payment_data = $DB->custom_query($select_query);
                 <td><?php echo $row['reference_number']; ?></td>
                 <td><?php echo $row['notes']; ?></td>
                 <td><?php echo $row['created_at']; ?></td>
-                <td>
-                  <div class="btn-group">
-                    <a href="payment-view.php?id=<?php echo $row['id']; ?>">
-                      <button type="button" class="btn btn-dark btn-sm">Open</button>
-                    </a>
-                    <!-- <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="feather feather-chevron-down" viewBox="0 0 24 24">
-            <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-        </button> -->
-                    <!-- <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Copy</a>
-          <a class="dropdown-item" href="#">Delete</a>
-        </div> -->
-                  </div>
+                <td><a href="payment-view.php?id=<?php echo $row['id']; ?>">
+                    <button type="button" class="btn btn-primary btn-sm">Open</button>
+                  </a>
                 </td>
+                <td><a href="payment-add.php?u_id=<?php echo $row['id']; ?>">
+                    <button type="button" class="btn btn-secondary btn-sm">Edit</button>
+                  </a></td>
+                <!-- <td><a href="payment-view.php?id=<?php echo $row['id']; ?>">
+                    <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                  </a></td> -->
+
               </tr>
             <?php } ?>
           </tbody>
