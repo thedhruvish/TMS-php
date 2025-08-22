@@ -204,115 +204,111 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         </div>
     <?php } else { ?>
         <?php foreach ($filteredProducts as $product) { ?>
-            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
-                <div class="card style-6 h-100 position-relative overflow-hidden">
-
-                    <!--  Checkbox with higher z-index -->
+            <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-6 mb-4">
+                <div class="card h-100 position-relative overflow-hidden shadow-sm" style="transition: all 0.3s ease;">
+                    <!-- Checkbox with higher z-index -->
                     <div class="position-absolute top-0 start-0 m-2" style="z-index:1050;">
                         <input type="checkbox" class="form-check-input product-check" value="<?= $product['id'] ?>">
                     </div>
 
-
-                    <!--  Category Badge -->
+                    <!-- Category Badge -->
                     <?php if (!empty($product['category'])): ?>
                         <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-2">
                             <?= htmlspecialchars($product['category']) ?>
                         </span>
                     <?php endif; ?>
 
-                    <div class="card h-200 z-50">
-                        <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
-                            <!-- carousel-indicators -->
-                            <ol class="carousel-indicators">
+                    <!-- Product Image Carousel -->
+                    <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                        <?php if (count($product['images']) > 1) { ?>
+                            <ol class="carousel-indicators mb-1">
                                 <?php foreach ($product['images'] as $k => $image) { ?>
-                                    <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>"
-                                        data-bs-slide-to="<?php echo $k; ?>"
-                                        class="<?php echo $k == 0 ? 'active' : ''; ?>">
-                                    </li>
+                                    <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" 
+                                        data-bs-slide-to="<?php echo $k; ?>" 
+                                        class="<?php echo $k == 0 ? 'active' : '' ?>" 
+                                        style="width: 8px; height: 8px; border-radius: 50%; margin: 0 3px;"></li>
                                 <?php } ?>
                             </ol>
-
-                            <!-- carousel-inner -->
-                            <div class="carousel-inner">
-                                <?php foreach ($product['images'] as $k => $image) { ?>
-                                    <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
-                                        <div class="ratio ratio-4x3">
-                                            <img class="img-fluid object-fit-cover"
-                                                src="../images/products/<?php echo $image ?>"
-                                                alt="<?php echo $product['name']; ?>">
-                                        </div>
+                        <?php } ?>
+                        
+                        <!-- carousel-inner -->
+                        <div class="carousel-inner">
+                            <?php foreach ($product['images'] as $k => $image) { ?>
+                                <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
+                                    <div class="ratio ratio-4x3">
+                                        <img class="img-fluid object-fit-cover w-100"
+                                            src="../images/products/<?php echo $image ?>"
+                                            alt="<?php echo $product['name']; ?>">
                                     </div>
-                                <?php } ?>
-                            </div>
-
-                            <?php if (count($product['images']) > 1) { ?>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </a>
+                                </div>
                             <?php } ?>
                         </div>
 
+                        <?php if (count($product['images']) > 1) { ?>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </a>
+                        <?php } ?>
+                    </div>
 
-                        <!-- Product Info -->
-                        <div class="card-body">
-                            <!-- Product Name -->
-                            <h6 class="card-title">
-                                <a href="products-add.php?id=<?php echo $product['id'] ?>">
-                                    <?php echo htmlspecialchars($product['name']); ?>
-                                </a>
-                            </h6>
+                    <!-- Product Info -->
+                    <div class="card-body d-flex flex-column">
+                        <!-- Product Name with ellipsis for overflow -->
+                        <h6 class="card-title mb-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
+                            <a href="products-add.php?id=<?php echo $product['id'] ?>" class="text-decoration-none text-dark">
+                                <?php echo htmlspecialchars($product['name']); ?>
+                            </a>
+                        </h6>
 
-                            <!-- Price -->
-                            <div class="d-flex align-items-center mb-2">
-                                <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']) { ?>
-                                    <span class="text-danger text-decoration-line-through me-2">
-                                        $<?php echo number_format($product['regular_price'], 2) ?>
-                                    </span>
-                                    <span class="text-success fw-bold">
-                                        $<?php echo number_format($product['sale_price'], 2) ?>
-                                    </span>
-                                <?php } else { ?>
-                                    <span class="text-success fw-bold">
-                                        $<?php echo number_format($product['regular_price'], 2) ?>
-                                    </span>
-                                <?php } ?>
-                            </div>
-
-                            <!--  Product Description -->
-                            <?php if (!empty($product['description'])) { ?>
-                                <p class="text-muted small mb-2">
-                                    <?php echo htmlspecialchars(substr($product['description'], 0, 80)) . (strlen($product['description']) > 80 ? '...' : ''); ?>
-                                </p>
+                        <!-- Price -->
+                        <div class="d-flex align-items-center mb-2">
+                            <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']) { ?>
+                                <span class="text-danger text-decoration-line-through me-2 small">
+                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                </span>
+                                <span class="text-success fw-bold">
+                                    $<?php echo number_format($product['sale_price'], 2) ?>
+                                </span>
+                            <?php } else { ?>
+                                <span class="text-success fw-bold">
+                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                </span>
                             <?php } ?>
+                        </div>
 
-                            <!-- Stock Badge -->
-                            <div class="mb-2">
-                                <?php if ($product['disabled']) { ?>
-                                    <span class="badge bg-secondary">DISABLED</span>
-                                <?php } else { ?>
-                                    <span class="badge <?php echo $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
-                                        <?php echo $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
-                                    </span>
-                                <?php } ?>
-                            </div>
+                        <!-- Product Description with limited lines -->
+                        <?php if (!empty($product['description'])) { ?>
+                            <p class="text-muted small mb-2" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
+                                <?php echo htmlspecialchars($product['description']); ?>
+                            </p>
+                        <?php } ?>
 
-                            <!-- Edit and Delete Buttons -->
-                            <div class="d-flex justify-content-between">
-                                <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </div>
+                        <!-- Stock Badge -->
+                        <div class="mb-3">
+                            <?php if ($product['disabled']) { ?>
+                                <span class="badge bg-secondary">DISABLED</span>
+                            <?php } else { ?>
+                                <span class="badge <?php echo $product['in_stock'] ? 'bg-success' : 'bg-danger' ?>">
+                                    <?php echo $product['in_stock'] ? 'IN STOCK' : 'OUT OF STOCK' ?>
+                                </span>
+                            <?php } ?>
+                        </div>
+
+                        <!-- Edit and Delete Buttons at the bottom -->
+                        <div class="d-flex justify-content-between mt-auto">
+                            <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
                         </div>
                     </div>
                 </div>
             </div>
         <?php } ?>
     <?php } ?>
-</div>
 </div>
 
 <!-- Delete Confirmation Modal -->
