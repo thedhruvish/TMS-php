@@ -297,13 +297,6 @@ if (isset($_GET['id'])) {
                                                     </div>
                                                 </div>
                                                 <div class="invoice-totals-row">
-                                                    <div class="invoice-summary-label">Discount</div>
-                                                    <div class="invoice-summary-value">
-                                                        $<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="discount" id="discount-input" value="<?php echo $invoice['discount'] ?? 0 ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="invoice-totals-row">
                                                     <div class="invoice-summary-label">Total</div>
                                                     <div class="invoice-summary-value">
                                                         $<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span>

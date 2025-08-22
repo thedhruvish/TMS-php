@@ -17,7 +17,7 @@ if (isset($_GET['d_id'])) {
   <div class="seperator-header layout-top-spacing">
     <h4 class="">CUSTOMER </h4>
   </div>
-  <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+  <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
     <div class="statbox widget box box-shadow">
       <div class="widget-content widget-content-area">
         <table id="html5-extension" class="table dt-table-hover" style="width:100%">
@@ -32,18 +32,15 @@ if (isset($_GET['d_id'])) {
               <th>DOB</th>
               <th>Country</th>
               <th>Avatar</th>
-              <th>Action</th>
+              <th>Update</th>
             </tr>
           </thead>
           <tbody>
-
-            <?php
-
-
-            while ($row = mysqli_fetch_assoc($customer)) {
-            ?>
+            <?php while ($row = mysqli_fetch_assoc($customer)) { ?>
               <tr>
-                <td><?php echo $row['id'] ?></td>
+                <td>
+                  <a href="customer-add.php?id=<?php echo $row['id'] ?>" class="btn btn-sm"><?php echo $row['id'] ?></a>
+                </td>
                 <td><?php echo $row['first_name'] ?></td>
                 <td><?php echo $row['last_name'] ?></td>
                 <td><?php echo $row['email'] ?></td>
@@ -54,37 +51,25 @@ if (isset($_GET['d_id'])) {
                 <td>
                   <div class="d-flex">
                     <div class="usr-img-frame mr-2 rounded-circle">
-                      <img alt="avatar" class="img-fluid rounded-circle" src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == "") ? '../images/profile/avatar.png' : '../images/profile/' . $row['profile_image']; ?>">
+                      <img alt="avatar" class="img-fluid rounded-circle"
+                        src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == '')
+                                ? '../images/profile/avatar.png'
+                                : '../images/profile/' . $row['profile_image']; ?>">
                     </div>
                   </div>
                 </td>
                 <td>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-dark btn-sm"> <a class="dropdown-item" href="customer-add.php?id=<?php echo $row['id'] ?>">Open</a></button>
-                    <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuReference20">
-                      <!-- <a class="dropdown-item" href="#">Action</a> -->
-                      <!-- <a class="dropdown-item" href="#">Another action</a> -->
-                      <a class="dropdown-item" href="customer-add.php?u_id=<?php echo $row['id'] ?>">Update</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="customer.php?d_id=<?php echo $row['id'] ?>">Delete</a>
-                    </div>
-                  </div>
+                  <a class="btn btn-primary" href="customer-add.php?u_id=<?php echo $row['id'] ?>">Update</a>
                 </td>
+
               </tr>
-            <?php
-            }
-            ?>
+            <?php } ?>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-
 </div>
+
 
 <?php require_once './include/footer-staff.php'; ?>
