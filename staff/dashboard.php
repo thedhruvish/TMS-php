@@ -5,14 +5,15 @@ require_once './include/sidebar-staff.php';
 
 /* ---------- 1. Real counts ---------- */
 $totalCustomers   = 0;
-$totalProducts    = 0;
+$totalAttendant    = 0;
 $totalInvoices    = 0;
 $thisWeekSales    = 0;
 $todayAttendance  = 0;
 $pendingInquiries = 0;
 
+$user_id = $_SESSION['user_id'];
 $totalCustomers  = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS c FROM customer"))['c'];
-$totalProducts   = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS p FROM products WHERE disabled = 0"))['p'];
+$totalAttendant   = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS p FROM attendance WHERE user_id='$user_id' AND status='P'"))['p'];
 $totalInvoices   = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS i FROM invoices"))['i'];
 $thisWeekSales   = (float) mysqli_fetch_assoc($DB->custom_query(
   "SELECT COALESCE(SUM(total),0) AS w FROM invoices 
@@ -81,10 +82,10 @@ function e($string)
     <div class="widget widget-card-four">
       <div class="widget-content">
         <div class="w-header">
-          <h6 class="value">Products</h6>
+          <h6 class="value">Present Attendance</h6>
         </div>
         <div class="w-content">
-          <p class="value fs-4 fw-bold"><?php echo number_format($totalProducts) ?></p>
+          <p class="value fs-4 fw-bold"><?php echo number_format($totalAttendant) ?></p>
         </div>
       </div>
     </div>

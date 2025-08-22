@@ -11,7 +11,7 @@ $selectedMonth = isset($_GET['month']) ? (int)$_GET['month'] : $currentMonth;
 $daysInMonth   = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, $selectedYear);
 
 // get userId if passed
-$selectedUserId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$selectedUserId = $_SESSION['user_id'];
 
 /* ---- users ---- */
 $users = [];
@@ -35,6 +35,7 @@ while ($row = mysqli_fetch_assoc($res)) {
 $attendanceWhere = [
   "YEAR(att_date)"  => ["=" => $selectedYear],
   "MONTH(att_date)" => ["=" => $selectedMonth],
+
 ];
 
 if ($selectedUserId) {
@@ -82,12 +83,6 @@ while ($row = mysqli_fetch_assoc($res)) {
       <button class="btn btn-primary btn-sm px-3" id="btnView">Filter</button>
     </div>
 
-    <!-- right button -->
-    <div class="ms-auto">
-      <a href="attendant.php">
-        <button class="btn btn-outline-secondary btn-sm">Edit Today Attendance</button>
-      </a>
-    </div>
   </div>
 </div>
 

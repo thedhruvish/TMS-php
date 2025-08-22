@@ -1,6 +1,6 @@
 <?php
 require_once "../Database.php";
-
+ob_start();
 if (!(isset($_SESSION['user_id']) && $_SESSION['role'] == 'staff')) {
   session_destroy();
   header("location: ../login.php?error=login Required");

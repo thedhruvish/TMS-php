@@ -18,7 +18,7 @@ if (isset($_GET['d_id'])) {
 
 <div class="row">
   <div class="seperator-header layout-top-spacing">
-    <h4 class="">INVOICE</h4>
+    <h4 class="">Inquiry</h4>
   </div>
   <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="statbox widget box box-shadow">
