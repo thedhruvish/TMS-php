@@ -195,7 +195,8 @@ if (isset($_GET['id'])) {
                                         <div class="col-md-3">
                                             <label>Due Date</label>
                                             <input type="date" name="due_date" class="form-control form-control-sm"
-                                                value="<?php echo $invoice['due_date'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
+                                                value="<?php echo $invoice['due_date'] ?? date('Y-m-d', strtotime('+15 days')) ?>"
+                                                <?php echo $view_mode ? 'readonly' : '' ?>>
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +217,7 @@ if (isset($_GET['id'])) {
                                             <tbody id="item-rows">
                                                 <?php
                                                 $rows = empty($items) ? [[]] : $items;
-                                                foreach ($rows as $idx => $it){ ?>
+                                                foreach ($rows as $idx => $it) { ?>
                                                     <tr>
                                                         <td class="delete-item-row">
                                                             <?php if (!$view_mode) { ?>
@@ -235,11 +236,14 @@ if (isset($_GET['id'])) {
                                                             </select>
                                                         </td>
                                                         <td class="rate">
-                                                            <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]" class="form-control form-control-sm rate-input" placeholder="0.00"
-                                                                value="<?php echo $it['rate'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?> disabled>
+                                                            <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]"
+                                                                class="form-control rate-input"
+                                                                style="min-width:120px"
+                                                                value="<?php echo $it['rate'] ?? '' ?>"
+                                                                <?php echo $view_mode ? 'readonly' : '' ?>>
                                                         </td>
                                                         <td class="qty">
-                                                            <input type="number" name="items[<?php echo $idx ?>][quantity]" class="form-control form-control-sm qty-input" placeholder="0"
+                                                            <input type="number" name="items[<?php echo $idx ?>][quantity]" class="form-control  qty-input" placeholder="0" style="min-width:120px"
                                                                 value="<?php echo $it['quantity'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
                                                         </td>
                                                         <td class="text-right amount">
@@ -344,13 +348,11 @@ if (isset($_GET['id'])) {
 <script>
     /* map id → price */
     const productPriceMap = {
-        <?php
-        mysqli_data_seek($productsRes, 0);
-        while ($p = mysqli_fetch_assoc($productsRes)) {
-            $price = !empty($p['sale_price']) ? $p['sale_price'] : $p['regular_price'];
-            echo "{$p['id']}: " . (float)$price . ",\n";
-        }
-        ?>
+        <?php foreach ($products as $p):
+            $price = !empty($p['regular_price']) ? $p['regular_price'] : $p['sale_price']; ?>
+            <?php echo $p['id']; ?>: <?php echo (float)$price; ?>,
+        <?php endforeach; ?>
+
     }
 
     document.addEventListener('change', e => {
@@ -444,28 +446,41 @@ if (isset($_GET['id'])) {
             const tr = document.createElement('tr');
 
             tr.innerHTML = `
-        <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
-        <td class="description">
-            <select name="items[${idx}][product_id]" class="form-select">
-                <option value="">Choose product…</option>
-                <?php
-                mysqli_data_seek($productsRes, 0);
-                while ($p = mysqli_fetch_assoc($productsRes)) { ?>
-                    <option value="<?php echo $p['id'] ?>"><?php echo $p['name']; ?></option>
-                <?php } ?>
-            </select>
-        </td>
-        <td><input type="number" step="0.01" name="items[${idx}][rate]" class="form-control form-control-sm rate-input" disabled></td>
-        <td><input type="number" name="items[${idx}][quantity]" class="form-control form-control-sm qty-input"></td>
-        <td class="text-right">
-            $<span class="item-amount">0.00</span>
-            <input type="hidden" name="items[${idx}][amount]" class="amount-input">
-        </td>`;
+            <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
+            <td class="description">
+                <select name="items[${idx}][product_id]" class="form-select">
+                    <option value="">Choose product…</option>
+                    <?php foreach ($products as $p) { ?>
+                        <option value="<?php echo $p['id']; ?>"><?php echo $p['name']; ?></option>
+                    <?php } ?>
+                </select>
+            </td>
+            <td>
+                <input type="number" step="0.01" name="items[${idx}][rate]"
+                    class="form-control rate-input"
+                    style="min-width:120px"
+                    value="">
+            </td>
+            <td>
+                <input type="number" name="items[${idx}][quantity]"
+                    class="form-control qty-input"
+                    placeholder="0"
+                    style="min-width:120px"
+                    value="">
+            </td>
+            <td class="text-right amount">
+                $<span class="item-amount">0.00</span>
+                <input type="hidden" name="items[${idx}][amount]" class="amount-input" value="0">
+            </td>
+        `;
 
             tbody.appendChild(tr);
             bindCalc(tr);
+            recalcAmount(tr);
+            recalcTotals();
         });
     <?php } ?>
 </script>
+
 
 <?php include './include/footer-admin.php'; ?>
