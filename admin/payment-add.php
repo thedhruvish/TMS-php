@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
     if ($edit_mode) {
         // Update operation
-        $updated = $DB->update('payments', $columns, $values, ['id' => $u_id]);
+        $updated = $DB->update('payments', $columns, $values, 'id', $u_id);
         if ($updated) {
             send_message_TG("Payment Updated\nInvoice ID: $invoice_id\nPayment Date: $payment_date\nAmount Paid: $amount_paid\nPayment Method: $payment_method\nReference Number: $reference_number\nNotes: $notes");
             header("Location:payment.php");
