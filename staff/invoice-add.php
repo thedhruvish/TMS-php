@@ -2,6 +2,7 @@
 $pageTitle = "Invoice add";
 require_once './include/header-staff.php';
 require_once './include/sidebar-staff.php';
+
 $invoice = [];
 $items   = [];
 $edit_mode = false;
@@ -262,9 +263,9 @@ if (isset($_GET['id'])) {
                                                         <td class="description">
                                                             <select name="items[<?php echo $idx ?>][product_id]" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
                                                                 <option value="">Choose product…</option>
-                                                                <?php
-                                                                foreach ($products as $product) {  ?>
-                                                                    <option value="<?php echo $product['id'] ?>">
+                                                                <?php foreach ($products as $product) { ?>
+                                                                    <option value="<?php echo $product['id'] ?>"
+                                                                        <?php echo isset($it['product_id']) && $it['product_id'] == $product['id'] ? 'selected' : '' ?>>
                                                                         <?php echo $product['name']; ?>
                                                                     </option>
                                                                 <?php } ?>
@@ -511,8 +512,5 @@ if (isset($_GET['id'])) {
         });
     <?php } ?>
 </script>
-
-
-
 
 <?php include './include/footer-staff.php'; ?>
