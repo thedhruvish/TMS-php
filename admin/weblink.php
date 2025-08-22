@@ -1,6 +1,7 @@
 <?php $pageTitle = "Weblink";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
+
 if (isset($_GET['d_id'])) {
     $DB->delete("weblink", "id", $_GET['d_id']);
     header("Location: weblink.php");
@@ -40,7 +41,7 @@ $result_web_link = mysqli_query(
                                 <td><?php echo $row['id']; ?></td>
                                 <td><?php echo $row['creator_name']; ?></td>
                                 <td><?php echo $row['createat']; ?></td>
-                                <td><?php echo $row['productIds']; ?></td>
+                                <td><?php echo sizeof(explode(',', $row['productIds'])); ?></td>
                                 <td><a href="../weblink/index.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-primary">Open</a></td>
                                 <td><a href="weblink.php?d_id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
                             </tr>
