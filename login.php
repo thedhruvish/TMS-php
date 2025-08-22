@@ -93,11 +93,11 @@ if (isset($_POST['login'])) {
 
   <?php include_once 'include/login-with-google.php'; ?>
 
-  <div class="col-12">
+  <!-- <div class="col-12">
     <div class="text-center">
       <p class="mb-0">Dont't have an account ? <a href="<?php echo "register.php" ?>" class="text-warning">Sign Up</a></p>
     </div>
-  </div>
+  </div> -->
 
 </div>
 
