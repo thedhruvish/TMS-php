@@ -174,13 +174,14 @@ if (isset($_POST['save'])) {
         <div class="widget-content widget-content-area ecommerce-create-section">
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?>>
+                    <label>Name *</label>
+                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?> require>
                 </div>
             </div>
 
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <label>Description</label>
+                    <label>Description </label>
                     <textarea class="form-control" name="description" <?php echo $readonly ? 'readonly' : '' ?>><?php echo $product['description'] ?></textarea>
                 </div>
             </div>
@@ -233,7 +234,7 @@ if (isset($_POST['save'])) {
                         </div>
 
                         <div class="col-xxl-12 col-md-6 mb-4">
-                            <label>Category</label>
+                            <label>Category *</label>
                             <select name="category" class="form-select" <?php echo $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
                                 <?php foreach ($categories as $cat) { ?>
@@ -256,18 +257,12 @@ if (isset($_POST['save'])) {
                 <div class="widget-content widget-content-area ecommerce-create-section">
                     <div class="row">
                         <div class="col-sm-12 mb-4">
-                            <label>Regular Price</label>
-                            <input type="text" class="form-control" name="regular_price" value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
+                            <label>Regular Price *</label>
+                            <input type="text" class="form-control" name="regular_price" value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?> required>
                         </div>
                         <div class="col-sm-12 mb-4">
                             <label>Sale Price</label>
                             <input type="text" class="form-control" name="sale_price" value="<?php echo $product['sale_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
-                        </div>
-                        <div class="col-sm-12 mb-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="includes_tax" <?php echo $product['includes_tax'] ? 'checked' : '' ?> <?php echo $readonly ? 'disabled' : '' ?>>
-                                <label class="form-check-label">Price includes taxes</label>
-                            </div>
                         </div>
                         <?php if (!$readonly) { ?>
                             <div class="col-sm-12">
@@ -283,10 +278,9 @@ if (isset($_POST['save'])) {
 
 <script>
     function changeMainImage(element, imageSrc) {
-        // Update main image
-        document.querySelector('.main-product-image').src = imageSrc;
+        const mainImage = document.querySelector('.main-product-image');
+        mainImage.src = "../images/products/" + imageSrc; // always full path
 
-        // Update active thumbnail
         document.querySelectorAll('.thumbnail-image').forEach(img => {
             img.classList.remove('active');
         });
