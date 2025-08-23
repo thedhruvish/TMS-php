@@ -171,7 +171,9 @@ if (isset($_GET['d_id'])) {
                         <div class="items">
                             <div class="item-content">
                                 <div class="user-profile">
-                                    <img src="<?php echo ($row['profile_picture'] == null) ? '../images/profile/avatar.png' : '../images/profile/' . $row['profile_picture']; ?>" alt="avatar" class="img-fluid" style="max-width: 60px; max-height: 60px;">
+                                    <img src="<?php
+                                    if ($row['auth_provider'] ==  "google") { echo $row['profile_picture']; } else {
+                                     echo ($row['profile_picture'] == null) ? '../images/profile/avatar.png' : '../images/profile/' . $row['profile_picture']; }?>" alt="avatar" class="img-fluid" style="max-width: 60px; max-height: 60px;">
                                     <div class="user-meta-info">
                                         <p class="user-name" data-name="Alan Green"><?php echo $row['name']; ?></p>
                                         <p class="user-work" data-occupation="Web Developer"><?php echo $row['role']; ?></p>
@@ -187,7 +189,7 @@ if (isset($_GET['d_id'])) {
                                 </div>
                                 <div class="user-phone">
                                     <p class="info-title">Phone: </p>
-                                    <p class="usr-ph-no" data-phone="+1 (070) 123-4567"><?php echo $row['mobile_no']; ?></p>
+                                    <p class="usr-ph-no" data-phone="+1 (070) 123-4567"><?php echo $row['mobile_no'] ?? 'N/A'; ?></p>
                                 </div>
                                 <div class="user-phone">
                                     <p class="info-title">Is verified: </p>
