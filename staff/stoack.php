@@ -60,15 +60,6 @@ if ($result && mysqli_num_rows($result) > 0) {
         );
     }
 }
-
-// Handle delete action
-if (isset($_GET['delete_id'])) {
-    $deleteId = (int)$_GET['delete_id'];
-    $DB->delete('stock', 'id', $deleteId);
-    $_SESSION['message'] = "Stock record deleted successfully";
-    header("Location: stoack.php");
-    exit;
-}
 ?>
 
 <div class="row pt-4">
@@ -95,8 +86,6 @@ if (isset($_GET['delete_id'])) {
                             <th>Dead Stock</th>
                             <th>Pending Stock</th>
                             <th>Last Updated</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,18 +104,12 @@ if (isset($_GET['delete_id'])) {
                                 <td><?php echo $stock['dead_stock'] ?></td>
                                 <td><?php echo $stock['pending_stock'] ?></td>
                                 <td><?php echo date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
-                                <td>
-                                    <a href="stoack-edit.php?id=<?php echo $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
-                                </td>
-                                <td>
-                                    <button onclick="confirmDelete(<?php echo $stock['id'] ?>)" class="btn btn-danger btn-sm">Delete</button>
-                                </td>
                             </tr>
                         <?php } ?>
 
                         <?php if (empty($stockData)) { ?>
                             <tr>
-                                <td colspan="8" class="text-center">No stock records found</td>
+                                <td colspan="6" class="text-center">No stock records found</td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -135,33 +118,5 @@ if (isset($_GET['delete_id'])) {
         </div>
     </div>
 </div>
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this stock record?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a id="deleteConfirmBtn" href="#" class="btn btn-danger">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function confirmDelete(stockId) {
-        const deleteBtn = document.getElementById('deleteConfirmBtn');
-        deleteBtn.href = `stoack.php?delete_id=${stockId}`;
-        const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        modal.show();
-    }
-</script>
 
 <?php require_once './include/footer-staff.php'; ?>
