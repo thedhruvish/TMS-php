@@ -97,9 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dead  = $stock['dead_stock'] ?? 0;
                 $available = $stock['current_stock'] - $sold - $dead;
 
+                $product_name = $productMap[$product_id]['name'] ?? 'Unknown Product';
+
                 if ($qty > $available) {
                     // ❌ Not enough stock → prevent save & show alert
-                    echo "<script>alert('Not enough stock for {$row['product_name']}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
+                    echo "<script>alert('Not enough stock for {$product_name}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
                     exit;
                 }
 
@@ -108,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($remaining < 100) {
                     send_message_TG(
-                        "Low Stock Alert\nProduct Name: {$row['product_name']}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}"
+                        "Low Stock Alert\nProduct Name: {$product_name}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}"
                     );
                 }
             }
