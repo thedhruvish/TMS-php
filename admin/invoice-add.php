@@ -211,7 +211,7 @@ if (isset($_GET['id'])) {
                                                     <label class="col-sm-3 col-form-label-sm">Email</label>
                                                     <div class="col-sm-9">
                                                         <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?> require>
-                                                            <option value="">Choose customer…</option>
+                                                            <option required value="">Choose customer…</option>
                                                             <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
                                                                 <option value="<?php echo $row['id'] ?>"
                                                                     <?php echo isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>

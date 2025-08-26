@@ -175,21 +175,21 @@ if (isset($_POST['save'])) {
             <div class="row mb-4">
                 <div class="col-sm-12">
                     <label>Name *</label>
-                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?> require>
+                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?> required>
                 </div>
             </div>
 
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <label>Description </label>
-                    <textarea class="form-control" name="description" <?php echo $readonly ? 'readonly' : '' ?>><?php echo $product['description'] ?></textarea>
+                    <label>Description *</label>
+                    <textarea required class="form-control" name="description" <?php echo $readonly ? 'readonly' : '' ?>><?php echo $product['description'] ?></textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-8">
-                    <label>Upload Images</label>
-                    <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
+                    <label>Upload Images *</label>
+                    <input required type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
 
                     <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
@@ -235,7 +235,7 @@ if (isset($_POST['save'])) {
 
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Category *</label>
-                            <select name="category" class="form-select" <?php echo $readonly ? 'disabled' : '' ?>>
+                            <select required name="category" class="form-select" <?php echo $readonly ? 'disabled' : '' ?>>
                                 <option value="">Choose...</option>
                                 <?php foreach ($categories as $cat) { ?>
                                     <option value="<?php echo $cat['tag']; ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>

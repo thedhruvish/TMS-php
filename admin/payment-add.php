@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
                                                 <div class="form-group">
                                                     <label for="invoice_id">Invoice ID</label>
                                                     <select class="form-select mb-3" name="invoice_id" id="invoice_id" required>
-                                                        <option value="">Select Invoice ID</option>
+                                                        <option required value="">Select Invoice ID</option>
                                                         <?php while ($row = mysqli_fetch_assoc($invoice_data)) { ?>
                                                             <option value="<?php echo $row['id'] ?>" <?php echo ($row['id'] == $invoice_id) ? 'selected' : ''; ?>>
                                                                 <?php echo $row['id'] ?>

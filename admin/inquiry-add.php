@@ -62,13 +62,13 @@ if (!$viewMode && isset($_POST['submit'])) {
         <!-- Row 1 -->
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Name *</label>
             <input type="text" class="form-control" id="name" name="name"
               value="<?php echo $editData['name'] ?? ''; ?>"
               <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
           <div class="col-md-6">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">Email *</label>
             <input type="email" class="form-control" id="email" name="email"
               value="<?php echo $editData['email'] ?? ''; ?>"
               <?php echo $viewMode ? 'disabled' : 'required'; ?>>
@@ -78,14 +78,14 @@ if (!$viewMode && isset($_POST['submit'])) {
         <!-- Row 2 -->
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="phone" class="form-label">Phone</label>
+            <label for="phone" class="form-label">Phone *</label>
             <input type="text" class="form-control" id="phone" name="phone"
               value="<?php echo $editData['phone'] ?? ''; ?>"
-              <?php echo $viewMode ? 'disabled' : ''; ?>>
+              <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
 
           <div class="col-md-6">
-            <label for="status" class="form-label">Status</label>
+            <label for="status" class="form-label">Status *</label>
             <select class="form-select" id="status" name="status" <?php echo $viewMode ? 'disabled' : ''; ?>>
               <?php
               $opts = ['new', 'in_progress', 'resolved', 'closed'];
@@ -100,9 +100,9 @@ if (!$viewMode && isset($_POST['submit'])) {
 
         <!-- Row 3 -->
         <div class="mb-3">
-          <label for="message" class="form-label">Message</label>
+          <label for="message" class="form-label">Message *</label>
           <textarea class="form-control" id="message" name="message" rows="4"
-            placeholder="Enter your message" <?php echo $viewMode ? 'disabled' : ''; ?>><?php echo $editData['message'] ?? ''; ?></textarea>
+            placeholder="Enter your message" <?php echo $viewMode ? 'disabled' : 'required'; ?>><?php echo $editData['message'] ?? ''; ?></textarea>
         </div>
 
         <?php if (!$viewMode): ?>

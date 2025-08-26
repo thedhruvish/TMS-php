@@ -125,13 +125,13 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
             </div>
 
             <div class="card-body">
-                <form method="POST" enctype="multipart/form-data" novalidate>
+                <form method="POST" enctype="multipart/form-data">
                     <div class="row row-cols-1 row-cols-md-2 g-3">
 
                         <!-- Full Name -->
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="name" name="name"
+                                <input required type="text" class="form-control" id="name" name="name"
                                     placeholder="Full Name"
                                     value="<?php echo $_POST['name'] ?? $userData['name'] ?? ''; ?>"
                                     required <?php echo $disabledAttr ?>>
@@ -142,7 +142,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Email -->
                         <div class="col">
                             <div class="form-floating">
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input required type="email" class="form-control" id="email" name="email"
                                     placeholder="Email"
                                     value="<?php echo $_POST['email'] ?? $userData['email'] ?? ''; ?>"
                                     required <?php echo $disabledAttr ?>>
@@ -153,7 +153,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Password -->
                         <div class="col">
                             <div class="form-floating">
-                                <input type="password" class="form-control" id="password" name="password"
+                                <input required type="password" class="form-control" id="password" name="password"
                                     placeholder="Password"
                                     value="<?php echo $_POST['password'] ?? $userData['password'] ?? ''; ?>"
                                     <?php
@@ -181,7 +181,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Role -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="role" name="role" required <?php echo $selectDisabled ?>>
+                                <select required class="form-select" id="role" name="role" required <?php echo $selectDisabled ?>>
                                     <option value="">Select Role</option>
                                     <option value="admin" <?php echo (($_POST['role'] ?? $userData['role'] ?? '') === 'admin')  ? 'selected' : '' ?>>Admin</option>
                                     <option value="staff" <?php echo (($_POST['role'] ?? $userData['role'] ?? '') === 'staff')  ? 'selected' : '' ?>>Staff</option>
@@ -193,7 +193,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Auth Provider -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="auth_provider" name="auth_provider" required <?php echo $selectDisabled ?>>
+                                <select required class="form-select" id="auth_provider" name="auth_provider" required <?php echo $selectDisabled ?>>
                                     <option value="local" <?php echo (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'local')  ? 'selected' : '' ?>>Local</option>
                                     <option value="google" <?php echo (($_POST['auth_provider'] ?? $userData['auth_provider'] ?? '') === 'google') ? 'selected' : '' ?>>Google</option>
                                 </select>
@@ -204,7 +204,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Two-step -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="two_step_auth" name="two_step_auth" <?php echo $selectDisabled ?>>
+                                <select required class="form-select" id="two_step_auth" name="two_step_auth" <?php echo $selectDisabled ?>>
                                     <option value="0" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '0') ? 'selected' : '' ?>>Disabled</option>
                                     <option value="1" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '1') ? 'selected' : '' ?>>Enabled</option>
                                 </select>
@@ -215,7 +215,7 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                         <!-- Verified -->
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select" id="is_verified" name="is_verified" <?php echo $selectDisabled ?>>
+                                <select required class="form-select" id="is_verified" name="is_verified" <?php echo $selectDisabled ?>>
                                     <option value="0" <?php echo (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '0') ? 'selected' : '' ?>>No</option>
                                     <option value="1" <?php echo (($_POST['is_verified'] ?? $userData['is_verified'] ?? '') == '1') ? 'selected' : '' ?>>Yes</option>
                                 </select>

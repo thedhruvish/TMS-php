@@ -1,5 +1,5 @@
 <?php
-require_once './config.php';
+require_once 'config.php';
 
 // Connect to MySQL server (without DB selection)
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS);

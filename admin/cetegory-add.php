@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Category Title (stored in 'tag' column) -->
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label class="form-label">Category Name (Tag)</label>
+                        <label class="form-label">Category Name (Tag) *</label>
                         <input type="text" class="form-control" name="title" placeholder="Category name"
                             value="<?php echo $category['tag'] ?>" required>
                         <small class="text-muted">This will be stored as the category tag</small>
@@ -124,8 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Description -->
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="4"
+                        <label class="form-label">Description *</label>
+                        <textarea required class="form-control" name="description" rows="4"
                             placeholder="Enter category description"><?php echo $category['description'] ?></textarea>
                     </div>
                 </div>
@@ -133,8 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Image Upload -->
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label class="form-label">Category Image</label>
-                        <input type="file" class="form-control" name="image" accept="image/*">
+                        <label class="form-label">Category Image *</label>
+                        <input required type="file" class="form-control" name="image" accept="image/*">
                         <?php if ($isUpdate && !empty($category['image'])) { ?>
                             <div class="mt-2">
                                 <img src="../<?php echo $category['image'] ?>" alt="Current Category Image" style="max-height: 100px;">
