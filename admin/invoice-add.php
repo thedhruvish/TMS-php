@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     $invoice_data = [
-        'invoice_label'   => $_POST['invoice_label']   ?? '',
+        'invoice_label'   => "Invoice",
         'customer_id'     => $_POST['customer_id']     ?? '',
         'invoice_date'    => $_POST['invoice_date']    ?? '',
         'due_date'        => $_POST['due_date']        ?: null,
@@ -174,212 +174,210 @@ if (isset($_GET['id'])) {
     }
 }
 ?>
-
 <div class="row invoice layout-top-spacing layout-spacing">
-    <div class="col-xl-12">
-        <div class="doc-container">
-            <div class="row">
-                <div class="col-xl-9">
-                    <form method="post" autocomplete="off">
-                        <!-- hidden id for update -->
-                        <?php if ($edit_mode || $view_mode) { ?>
-                            <input type="hidden" name="invoice_id" value="<?php echo $invoice['id'] ?? '' ?>">
-                        <?php } ?>
+  <div class="col-xl-12">
+    <div class="doc-container">
+      <form method="post" autocomplete="off">
+        
+        <!-- Hidden invoice id -->
+        <?php if ($edit_mode || $view_mode) { ?>
+          <input type="hidden" name="invoice_id" value="<?php echo $invoice['id'] ?? '' ?>">
+        <?php } ?>
 
-                        <div class="invoice-content">
-                            <div class="invoice-detail-body">
-
-                                <!-- Invoice label -->
-                                <div class="invoice-detail-title">
-                                    <div class="invoice-title">
-                                        <input type="text"
-                                            name="invoice_label"
-                                            class="form-control"
-                                            placeholder="Invoice Label"
-                                            value="<?php echo $invoice['invoice_label'] ?? 'Invoice' ?>"
-                                            <?php echo $view_mode ? 'readonly' : '' ?>>
-                                    </div>
-                                </div>
-
-                                <!-- Client section -->
-                                <div class="invoice-detail-header">
-                                    <div class="row justify-content-between">
-                                        <div class="col-xl-5 invoice-address-client">
-                                            <h4>Bill To:-</h4>
-                                            <div class="invoice-address-client-fields">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label-sm">Email</label>
-                                                    <div class="col-sm-9">
-                                                        <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?> require>
-                                                            <option required value="">Choose customer…</option>
-                                                            <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
-                                                                <option value="<?php echo $row['id'] ?>"
-                                                                    <?php echo isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
-                                                                    <?php echo $row['email'] ?>
-                                                                </option>
-                                                            <?php endwhile; ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Dates -->
-                                <div class="invoice-detail-terms">
-                                    <div class="row justify-content-between">
-                                        <div class="col-md-3">
-                                            <label>Invoice Date</label>
-                                            <input type="date" name="invoice_date" class="form-control form-control-sm"
-                                                value="<?php echo $invoice['invoice_date'] ?? date('Y-m-d') ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label>Due Date</label>
-                                            <input type="date" name="due_date" class="form-control form-control-sm"
-                                                value="<?php echo $invoice['due_date'] ?? date('Y-m-d', strtotime('+15 days')) ?>"
-                                                <?php echo $view_mode ? 'readonly' : '' ?>>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Items -->
-                                <div class="invoice-detail-items">
-                                    <div class="table-responsive">
-                                        <table class="table item-table">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Title</th>
-                                                    <th>Rate</th>
-                                                    <th>Qty</th>
-                                                    <th class="text-right">Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="item-rows">
-                                                <?php
-                                                $rows = empty($items) ? [[]] : $items;
-                                                foreach ($rows as $idx => $it) { ?>
-                                                    <tr>
-                                                        <td class="delete-item-row">
-                                                            <?php if (!$view_mode) { ?>
-                                                                <a href="javascript:void(0)" class="text-danger delete-item" title="Delete">✕</a>
-                                                            <?php } ?>
-                                                        </td>
-                                                        <td class="description">
-                                                            <select name="items[<?php echo $idx ?>][product_id]" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?>>
-                                                                <option value="">Choose product…</option>
-                                                                <?php foreach ($products as $product) { ?>
-                                                                    <option value="<?php echo $product['id'] ?>"
-                                                                        <?php echo isset($it['product_id']) && $it['product_id'] == $product['id'] ? 'selected' : '' ?>>
-                                                                        <?php echo $product['name']; ?>
-                                                                    </option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </td>
-                                                        <td class="rate">
-                                                            <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]"
-                                                                class="form-control rate-input"
-                                                                style="min-width:120px"
-                                                                value="<?php echo $it['rate'] ?? '' ?>"
-                                                                <?php echo $view_mode ? 'readonly' : '' ?>>
-                                                        </td>
-                                                        <td class="qty">
-                                                            <input type="number" name="items[<?php echo $idx ?>][quantity]" class="form-control  qty-input" placeholder="0" style="min-width:120px"
-                                                                value="<?php echo $it['quantity'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
-                                                        </td>
-                                                        <td class="text-right amount">
-                                                            $<span class="item-amount"><?php echo number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?></span>
-                                                            <input type="hidden" name="items[<?php echo $idx ?>][amount]" class="amount-input" value="<?php echo ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
-                                                        </td>
-                                                    </tr>
-                                                <?php }; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <?php if (!$view_mode) { ?>
-                                        <button type="button" class="btn btn-dark btn-sm additem">Add Item</button>
-                                    <?php } ?>
-                                </div>
-
-                                <!-- Totals -->
-                                <div class="invoice-detail-total">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label-sm">Account #</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="account_number" class="form-control form-control-sm" placeholder="Bank Account Number"
-                                                        value="<?php echo $invoice['account_number'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label-sm">Bank Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="bank_name" class="form-control form-control-sm" placeholder="Insert Bank Name"
-                                                        value="<?php echo $invoice['bank_name'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label-sm">SWIFT code</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="swift_code" class="form-control form-control-sm" placeholder="Insert Code"
-                                                        value="<?php echo $invoice['swift_code'] ?? '' ?>" <?php echo $view_mode ? 'readonly' : '' ?>>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="totals-row">
-                                                <div class="invoice-totals-row">
-                                                    <div class="invoice-summary-label">Subtotal</div>
-                                                    <div class="invoice-summary-value">
-                                                        $<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="subtotal" id="subtotal-input" value="<?php echo $invoice['subtotal'] ?? 0 ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="invoice-totals-row">
-                                                    <div class="invoice-summary-label">Total</div>
-                                                    <div class="invoice-summary-value">
-                                                        $<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span>
-                                                        <input type="hidden" name="total" id="total-input" value="<?php echo $invoice['total'] ?? 0 ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Notes -->
-                                <div class="invoice-detail-note">
-                                    <label>Notes</label>
-                                    <textarea name="notes" class="form-control" rows="3" placeholder='Notes - For example, "Thank you for doing business with us"'
-                                        <?php echo $view_mode ? 'readonly' : '' ?>><?php echo $invoice['notes'] ?? '' ?></textarea>
-                                </div>
-
-                                <!-- Save / Preview buttons -->
-                                <div class="invoice-actions-btn mt-4">
-                                    <div class="row">
-                                        <?php if (!$view_mode) { ?>
-                                            <div class="col-md-4 mb-2">
-                                                <button type="submit" class="btn btn-success w-100">Save Invoice</button>
-                                            </div>
-                                        <?php } ?>
-                                        <div class="col-md-4 mb-2">
-                                            <a href="./invoice.php" class="btn btn-outline-dark w-100">Back</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <!-- Invoice Label -->
+        <div class="card shadow-sm mb-4">
+            <h4 class="card-header">Invoice</h4>
         </div>
+
+        <!-- Customer Info -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">Customer Information</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Customer (Email)</label>
+                <select name="customer_id" class="form-select" <?php echo $view_mode ? 'disabled' : '' ?> required>
+                  <option value="">Choose customer…</option>
+                  <?php while ($row = mysqli_fetch_assoc($customersRes)): ?>
+                    <option value="<?php echo $row['id'] ?>"
+                      <?php echo isset($invoice['customer_id']) && $invoice['customer_id'] == $row['id'] ? 'selected' : '' ?>>
+                      <?php echo $row['email'] ?>
+                    </option>
+                  <?php endwhile; ?>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Invoice Date</label>
+                <input type="date" name="invoice_date" class="form-control"
+                  value="<?php echo $invoice['invoice_date'] ?? date('Y-m-d') ?>"
+                  <?php echo $view_mode ? 'readonly' : '' ?> 
+                  >
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Due Date</label>
+                <input type="date" name="due_date" class="form-control"
+                  value="<?php echo $invoice['due_date'] ?? date('Y-m-d', strtotime('+15 days')) ?>"
+                  <?php echo $view_mode ? 'readonly' : '' ?>>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice Items -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">Invoice Items</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th style="width:40px;"></th>
+                    <th>Product</th>
+                    <th class="text-end">Rate ($)</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Amount ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="item-rows">
+                  <?php $rows = empty($items) ? [[]] : $items;
+                  foreach ($rows as $idx => $it) { ?>
+                    <tr>
+                      <td class="text-center">
+                        <?php if (!$view_mode) { ?>
+                            <a href="javascript:void(0)" class="text-danger delete-item">✕</a>
+                        <?php } ?>
+                      </td>
+                      <td>
+                        <select name="items[<?php echo $idx ?>][product_id]" class="form-select"
+                          <?php echo $view_mode ? 'disabled' : '' ?>>
+                          <option value="">Choose product…</option>
+                          <?php foreach ($products as $product) { ?>
+                            <option value="<?php echo $product['id'] ?>"
+                              <?php echo isset($it['product_id']) && $it['product_id'] == $product['id'] ? 'selected' : '' ?>>
+                              <?php echo $product['name']; ?>
+                            </option>
+                          <?php } ?>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]"
+                          class="form-control text-end rate-input"
+                          value="<?php echo $it['rate'] ?? '' ?>"
+                          <?php echo $view_mode ? 'readonly' : '' ?>>
+                      </td>
+                      <td>
+                        <input type="number" name="items[<?php echo $idx ?>][quantity]"
+                          class="form-control text-end qty-input"
+                          value="<?php echo $it['quantity'] ?? '' ?>"
+                          <?php echo $view_mode ? 'readonly' : '' ?>>
+                      </td>
+                      <td class="text-end">
+                        $<span class="item-amount">
+                          <?php echo number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?>
+                        </span>
+                        <input type="hidden" name="items[<?php echo $idx ?>][amount]" class="amount-input"
+                          value="<?php echo ($it['rate'] ?? 0) * ($it['quantity'] ?? 0) ?>">
+                      </td>
+                    </tr>
+                  <?php }; ?>
+                </tbody>
+              </table>
+            </div>
+            <?php if (!$view_mode) { ?>
+              <button type="button" class="btn btn-sm btn-primary mt-2 additem">
+                <i class="bi bi-plus-circle"></i> Add Item
+              </button>
+            <?php } ?>
+          </div>
+        </div>
+
+        <!-- Bank Info + Totals -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+              <div class="card-body">
+                <h5 class="mb-3">Payment Details</h5>
+                <div class="mb-3">
+                  <label class="form-label">Account #</label>
+                  <input type="text" name="account_number" class="form-control"
+                    value="<?php echo $invoice['account_number'] ?? '' ?>"
+                    <?php echo $view_mode ? 'readonly' : '' ?>>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Bank Name</label>
+                  <input type="text" name="bank_name" class="form-control"
+                    value="<?php echo $invoice['bank_name'] ?? '' ?>"
+                    <?php echo $view_mode ? 'readonly' : '' ?>>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">SWIFT Code</label>
+                  <input type="text" name="swift_code" class="form-control"
+                    value="<?php echo $invoice['swift_code'] ?? '' ?>"
+                    <?php echo $view_mode ? 'readonly' : '' ?>>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Totals -->
+          <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+              <div class="card-body">
+                <h5 class="mb-3">Totals</h5>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Subtotal</span>
+                  <strong>$<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span></strong>
+                  <input type="hidden" name="subtotal" id="subtotal-input" value="<?php echo $invoice['subtotal'] ?? 0 ?>">
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Total</span>
+                  <strong class="text-success">$<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span></strong>
+                  <input type="hidden" name="total" id="total-input" value="<?php echo $invoice['total'] ?? 0 ?>">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">Notes</h5>
+            <textarea name="notes" class="form-control" rows="3"
+              placeholder="Thank you for doing business with us"
+              <?php echo $view_mode ? 'readonly' : '' ?>><?php echo $invoice['notes'] ?? '' ?></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="row mb-4">
+          <?php if (!$view_mode) { ?>
+            <div class="col-md-4 mb-2">
+              <button type="submit" class="btn btn-success w-100">
+                <i class="bi bi-save"></i> Save Invoice
+              </button>
+            </div>
+          <?php } ?>
+          <div class="col-md-4 mb-2">
+            <a href="./invoice.php" class="btn btn-outline-secondary w-100">
+              <i class="bi bi-arrow-left"></i> Back
+            </a>
+          </div>
+          <?php if ($view_mode) { ?>
+            <div class="col-md-4 mb-2">
+              <button type="button" class="btn btn-primary w-100" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print
+              </button>
+            </div>
+          <?php } ?>
+        </div>
+
+      </form>
     </div>
+  </div>
 </div>
+
+
 
 <script>
     /* map id → price */
