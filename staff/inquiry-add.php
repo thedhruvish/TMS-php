@@ -20,7 +20,7 @@ elseif (isset($_GET['u_id'])) {
 // Handle form submission (only for add or edit, not view)
 if (!$viewMode && isset($_POST['submit'])) {
   $columns = ['name', 'email', 'phone', 'message', 'status'];
-  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], $_POST['status'] ?? 'new'];
+  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], 'new'];
 
   if (isset($_GET['u_id'])) {
     // Update
@@ -49,9 +49,12 @@ if (!$viewMode && isset($_POST['submit'])) {
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">
         <?php
-        if ($viewMode) echo "View Inquiry";
-        elseif (isset($_GET['u_id'])) echo "Edit Inquiry";
-        else echo "Add Inquiry";
+        if ($viewMode)
+          echo "View Inquiry";
+        elseif (isset($_GET['u_id']))
+          echo "Edit Inquiry";
+        else
+          echo "Add Inquiry";
         ?>
       </h5>
     </div>
@@ -62,15 +65,13 @@ if (!$viewMode && isset($_POST['submit'])) {
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="name" class="form-label">Name *</label>
-            <input type="text" class="form-control" id="name" name="name"
-              value="<?php echo $editData['name'] ?? ''; ?>"
+            <input type="text" class="form-control" id="name" name="name" value="<?php echo $editData['name'] ?? ''; ?>"
               <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
           <div class="col-md-6">
             <label for="email" class="form-label">Email *</label>
             <input type="email" class="form-control" id="email" name="email"
-              value="<?php echo $editData['email'] ?? ''; ?>"
-              <?php echo $viewMode ? 'disabled' : 'required'; ?>>
+              value="<?php echo $editData['email'] ?? ''; ?>" <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
         </div>
 
@@ -79,29 +80,15 @@ if (!$viewMode && isset($_POST['submit'])) {
           <div class="col-md-6">
             <label for="phone" class="form-label">Phone *</label>
             <input type="text" class="form-control" id="phone" name="phone"
-              value="<?php echo $editData['phone'] ?? ''; ?>"
-              <?php echo $viewMode ? 'disabled' : 'required'; ?>>
+              value="<?php echo $editData['phone'] ?? ''; ?>" <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
 
-          <div class="col-md-6">
-            <label for="status" class="form-label">Status *</label>
-            <select class="form-select" id="status" name="status" <?php echo $viewMode ? 'disabled' : 'required'; ?>>
-              <?php
-              $opts = ['new', 'in_progress', 'resolved', 'closed'];
-              foreach ($opts as $opt) {
-                $sel = ($editData['status'] ?? 'new') === $opt ? 'selected' : '';
-                echo "<option $sel value=\"$opt\">" . ucwords(str_replace('_', ' ', $opt)) . "</option>";
-              }
-              ?>
-            </select>
-          </div>
         </div>
 
         <!-- Row 3 -->
         <div class="mb-3">
           <label for="message" class="form-label">Message *</label>
-          <textarea class="form-control" id="message" name="message" rows="4"
-            placeholder="Enter your message" <?php echo $viewMode ? 'disabled' : 'required'; ?>><?php echo $editData['message'] ?? ''; ?></textarea>
+          <textarea class="form-control" id="message" name="message" rows="4" placeholder="Enter your message" <?php echo $viewMode ? 'disabled' : 'required'; ?>><?php echo $editData['message'] ?? ''; ?></textarea>
         </div>
 
         <?php if (!$viewMode): ?>

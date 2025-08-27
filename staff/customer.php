@@ -39,7 +39,8 @@ if (isset($_GET['d_id'])) {
             <?php while ($row = mysqli_fetch_assoc($customer)) { ?>
               <tr>
                 <td>
-                  <a href="customer-add.php?id=<?php echo $row['id'] ?>" class="btn btn-sm"><?php echo $row['id'] ?></a>
+                  <!-- <a href="customer-add.php?id=<?php echo $row['id'] ?>" class="btn btn-sm"><?php echo $row['id'] ?></a> -->
+                  <?php echo $row['id'] ?>
                 </td>
                 <td><?php echo $row['first_name'] ?></td>
                 <td><?php echo $row['last_name'] ?></td>
@@ -51,10 +52,9 @@ if (isset($_GET['d_id'])) {
                 <td>
                   <div class="d-flex">
                     <div class="usr-img-frame mr-2 rounded-circle">
-                      <img alt="avatar" class="img-fluid rounded-circle"
-                        src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == '')
-                                ? '../images/profile/avatar.png'
-                                : '../images/profile/' . $row['profile_image']; ?>">
+                      <img alt="avatar" class="img-fluid rounded-circle" src="<?php echo ($row['profile_image'] == null || $row['profile_image'] == '')
+                        ? '../images/profile/avatar.png'
+                        : '../images/profile/' . $row['profile_image']; ?>">
                     </div>
                   </div>
                 </td>
