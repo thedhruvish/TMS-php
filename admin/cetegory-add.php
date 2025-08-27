@@ -3,9 +3,6 @@ $pageTitle = "Category Create";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 $category = [
     'tag' => '',
@@ -30,60 +27,76 @@ if (isset($_GET['u_id'])) {
 
 // Handle Form Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Handle image upload
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../images/categories/';
-        if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+    // Always sanitize inputs
+    $title = trim($_POST['title']);
+    $checkRes = $DB->custom_query("
+    SELECT * FROM category 
+    WHERE LOWER(tag) = LOWER('" . $title . "')
+");
+
+    if ($checkRes && mysqli_num_rows($checkRes) > 0) {
+        $existing = mysqli_fetch_assoc($checkRes);
+        if (!$isUpdate || $existing['id'] != $updateId) {
+            $error = "Category name already exists!";
         }
-
-        $originalName = basename($_FILES['image']['name']);
-        $uniqueName = time() . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
-        $targetPath = $uploadDir . $uniqueName;
-
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            $uploadedImagePath = 'images/categories/' . $uniqueName;
-
-            // Delete old image if it exists and we're updating
-            if ($isUpdate && !empty($category['image']) && file_exists('../' . $category['image'])) {
-                unlink('../' . $category['image']);
-            }
-        }
-    } elseif ($isUpdate && !empty($category['image'])) {
-        // Keep existing image if no new image was uploaded
-        $uploadedImagePath = $category['image'];
     }
 
-    // Prepare data - matches your table structure
-    $data = [
-        $_POST['description'],
-        $uploadedImagePath,
-        $_POST['title']  // This is stored in 'tag' column
-    ];
-
-    $columns = ['description', 'image', 'tag'];
-
-    try {
-        if ($isUpdate && $updateId !== null) {
-            $result = $DB->update('category', $columns, $data, 'id', $updateId);
-            if ($result) {
-                $_SESSION['message'] = "Category updated successfully";
-                header("Location: cetegory.php");
-                exit;
+    // Handle image upload
+    if (!isset($error)) {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '../images/categories/';
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
             }
-        } else {
-            $result = $DB->create('category', $columns, $data);
-            if ($result) {
-                $_SESSION['message'] = "Category added successfully";
-                header("Location: cetegory.php");
-                exit;
+
+            $originalName = basename($_FILES['image']['name']);
+            $uniqueName = time() . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
+            $targetPath = $uploadDir . $uniqueName;
+
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                $uploadedImagePath = 'images/categories/' . $uniqueName;
+
+                // Delete old image if it exists and we're updating
+                if ($isUpdate && !empty($category['image']) && file_exists('../' . $category['image'])) {
+                    unlink('../' . $category['image']);
+                }
             }
+        } elseif ($isUpdate && !empty($category['image'])) {
+            // Keep existing image if no new image was uploaded
+            $uploadedImagePath = $category['image'];
         }
 
-        // If we get here, the operation failed
-        $error = "Failed to save category to database. Please check your data.";
-    } catch (Exception $e) {
-        $error = "Database error: " . $e->getMessage();
+        // Prepare data - matches your table structure
+        $data = [
+            $_POST['description'],
+            $uploadedImagePath,
+            $_POST['title']  // This is stored in 'tag' column
+        ];
+
+        $columns = ['description', 'image', 'tag'];
+
+        try {
+            if ($isUpdate && $updateId !== null) {
+                $result = $DB->update('category', $columns, $data, 'id', $updateId);
+                if ($result) {
+                    $_SESSION['message'] = "Category updated successfully";
+                    header("Location: cetegory.php");
+                    exit;
+                }
+            } else {
+                $result = $DB->create('category', $columns, $data);
+                if ($result) {
+                    $_SESSION['message'] = "Category added successfully";
+                    header("Location: cetegory.php");
+                    exit;
+                }
+            }
+
+            // If we get here, the operation failed
+            $error = "Failed to save category to database. Please check your data.";
+        } catch (Exception $e) {
+            $error = "Database error: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -97,12 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php unset($_SESSION['message']);
+    <?php unset($_SESSION['message']);
 } ?>
 
 <?php if (isset($error)) { ?>
-    <div class="alert alert-danger">
-        Error: <?php echo $error ?>
+    <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error:</strong> <?php echo $error; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php } ?>
 
@@ -137,7 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input required type="file" class="form-control" name="image" accept="image/*">
                         <?php if ($isUpdate && !empty($category['image'])) { ?>
                             <div class="mt-2">
-                                <img src="../<?php echo $category['image'] ?>" alt="Current Category Image" style="max-height: 100px;">
+                                <img src="../<?php echo $category['image'] ?>" alt="Current Category Image"
+                                    style="max-height: 100px;">
                                 <p class="text-muted small mt-1">Current image</p>
                             </div>
                         <?php } ?>
