@@ -389,7 +389,7 @@ $user = mysqli_fetch_assoc($data);
           </ul>
         </li>
 
-        <!-- stoack -->
+        <!-- stock -->
         <li class="menu">
           <a href="#Stoack" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -398,7 +398,7 @@ $user = mysqli_fetch_assoc($data);
                 <polyline points="2 17 12 22 22 17" />
                 <polyline points="2 12 12 17 22 12" />
               </svg>
-              <span>Stoack</span>
+              <span>Stock</span>
             </div>
             <div>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
@@ -408,10 +408,10 @@ $user = mysqli_fetch_assoc($data);
           </a>
           <ul class="collapse submenu list-unstyled " id="Stoack" data-bs-parent="#accordionExample">
             <li class="active">
-              <a href="./stoack.php"> Stoack </a>
+              <a href="./stoack.php"> Stock </a>
             </li>
             <li>
-              <a href="./Stoack-add.php"> Add Stoack </a>
+              <a href="./Stoack-add.php"> Add Stock </a>
             </li>
           </ul>
         </li>

@@ -344,7 +344,7 @@ $user = mysqli_fetch_assoc($data);
                 <polyline points="2 17 12 22 22 17" />
                 <polyline points="2 12 12 17 22 12" />
               </svg>
-              <span>Stoack</span>
+              <span>Stock</span>
             </div>
           </a>
         </li>

@@ -31,7 +31,7 @@ if (isset($_GET['d_id'])) {
               <th>Phone</th>
               <th>Message</th>
               <th>Date</th>
-              <th>Status</th>
+              <!-- <th>Status</th> -->
               <!-- <th>Open</th> -->
               <th>Edit</th>
               <th>Delete</th>
@@ -45,7 +45,7 @@ if (isset($_GET['d_id'])) {
                 <td><?php echo $row['phone'] ?></td>
                 <td><?php echo $row['message'] ?></td>
                 <td><?php echo $row['created_at'] ?></td>
-                <td><?php echo ($row['status'] == 'new') ? 'New' : 'Old'; ?></td>
+                <!-- <td><?php echo ($row['status'] == 'new') ? 'New' : 'Old'; ?></td> -->
                 <!-- <td><a class="dropdown-item" href="inquiry-add.php?id=<?php echo $row['id'] ?>"> <button type="button" class="btn btn-primary btn-sm">Open</button></a></td> -->
                 <td><a class="dropdown-item" href="inquiry-add.php?u_id=<?php echo $row['id'] ?>"> <button type="button" class="btn btn-secondary btn-sm">Edit</button></a></td>
                 <td><a href="inquiry.php?d_id=<?php echo $row['id'] ?>">
