@@ -45,8 +45,14 @@ if (isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stockId = (int)$_POST['stock_id'];
     $currentStock = (int)$_POST['current_stock'];
-    $soldStock = (int)$_POST['sold_stock'];
     $deadStock = (int)$_POST['dead_stock'];
+    
+    // Get the original sold stock value from database to prevent tampering
+    $originalStockRes = $DB->read("stock", [
+        'where' => ['id' => ['=' => $stockId]]
+    ]);
+    $originalStock = mysqli_fetch_assoc($originalStockRes);
+    $soldStock = $originalStock['sold_stock'];
 
     // Update stock record
     $DB->update(
@@ -80,42 +86,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="row mb-4 layout-spacing layout-top-spacing">
     <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="widget-content widget-content-area blog-create-section">
+            <div class="alert alert-info mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span>Sold stock is automatically calculated from invoices and cannot be manually edited</span>
+                </div>
+            </div>
+            
             <form method="POST">
                 <input type="hidden" name="stock_id" value="<?php echo $stock['id'] ?>">
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label>Product</label>
-                        <input type="text" class="form-control" value="<?php echo $stock['product_name'] ?>" readonly>
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h5 class="card-title mb-0">Product Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-sm-12">
+                                <label class="form-label fw-bold">Product Name</label>
+                                <div class="form-control-plaintext bg-light p-3 rounded border">
+                                    <h5 class="mb-0 text-primary"><?php echo htmlspecialchars($stock['product_name']) ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h5 class="card-title mb-0">Stock Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Current Stock</label>
+                                <input type="number" class="form-control form-control-lg" name="current_stock"
+                                    value="<?php echo $stock['current_stock'] ?>" required min="0">
+                                <small class="form-text text-muted">This should reflect physical inventory counts</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Sold Stock</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-lg bg-light" name="sold_stock"
+                                        value="<?php echo $stock['sold_stock'] ?>" readonly>
+                                    <span class="input-group-text bg-success text-white">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </div>
+                                <small class="form-text text-muted">Auto-calculated from invoices</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-sm-12">
+                                <label class="form-label fw-bold">Dead Stock (Damaged/Lost/Expired)</label>
+                                <input type="number" class="form-control" name="dead_stock"
+                                    value="<?php echo $stock['dead_stock'] ?>" min="0">
+                                <small class="form-text text-muted">Record items that are no longer sellable</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label>Initial Stock</label>
-                        <input type="number" class="form-control" name="current_stock"
-                            value="<?php echo $stock['current_stock'] ?>" required min="0">
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3">
+                            <i class="fas fa-save me-2"></i> UPDATE STOCK
+                        </button>
                     </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label>Sold Stock</label>
-                        <input type="number" class="form-control" name="sold_stock"
-                            value="<?php echo $stock['sold_stock'] ?>" min="0">
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label>Dead Stock</label>
-                        <input type="number" class="form-control" name="dead_stock"
-                            value="<?php echo $stock['dead_stock'] ?>" min="0">
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <button type="submit" class="btn btn-success w-100">UPDATE STOCK</button>
                 </div>
             </form>
         </div>

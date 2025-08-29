@@ -86,16 +86,10 @@ if (isset($_POST['save'])) {
     $uploadedImagePaths = [];
 
     // Check for duplicate name before inserting/updating
-    $checkRes = $DB->read("products", [
-        'where' => [
-            'name' => ['=' => $_POST['name']]
-        ]
-    ]);
     $name = $_POST['name'];
     $checkRes = $DB->custom_query("
     SELECT * FROM products 
     WHERE LOWER(name) = LOWER('" . $name . "')");
-
 
     if ($checkRes && mysqli_num_rows($checkRes) > 0) {
         // If update, allow same name for the same product id
@@ -107,74 +101,82 @@ if (isset($_POST['save'])) {
 
     if (!isset($error)) {  // Only continue if no error
         // Handle multiple file uploads
-        if (!empty($_FILES['images']['name'][0])) {
-            $uploadDir = '../images/products/';
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
+        $uploadedImagePaths = [];
+
+        // If update mode and no new images uploaded, keep existing images
+        if ($isUpdate && empty($_FILES['images']['name'][0])) {
+            if (isset($_POST['keep_existing_images']) && $_POST['keep_existing_images'] == 1 && !empty($product['images'])) {
+                $uploadedImagePaths = json_decode($product['images'], true);
             }
+        } else {
+            // Handle new file uploads
+            if (!empty($_FILES['images']['name'][0])) {
+                $uploadDir = '../images/products/';
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
 
-            foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
-                if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                    $originalName = basename($_FILES['images']['name'][$key]);
-                    $uniqueName = time() . '_' . $key . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
-                    $targetPath = $uploadDir . $uniqueName;
+                foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
+                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                        $originalName = basename($_FILES['images']['name'][$key]);
+                        $uniqueName = time() . '_' . $key . '_' . preg_replace('/[^a-zA-Z0-9.\-_]/', '_', $originalName);
+                        $targetPath = $uploadDir . $uniqueName;
 
-                    if (move_uploaded_file($tmpName, $targetPath)) {
-                        $uploadedImagePaths[] = $uniqueName;
+                        if (move_uploaded_file($tmpName, $targetPath)) {
+                            $uploadedImagePaths[] = $uniqueName;
+                        }
                     }
                 }
             }
         }
 
-        // If no new images uploaded but in update mode, keep existing images
-        if ($isUpdate && empty($uploadedImagePaths) && !empty($product['images'])) {
-            $uploadedImagePaths = json_decode($product['images'], true);
-        }
-
-        $data = [
-            $_POST['name'],
-            $_POST['description'],
-            $_POST['product_code'],
-            $_POST['category'],
-            $_POST['tags'],
-            $_POST['regular_price'],
-            $_POST['sale_price'],
-            isset($_POST['includes_tax']) ? 1 : 0,
-            $product['in_stock'],
-            isset($_POST['show_publicly']) ? 1 : 0,
-            isset($_POST['disabled']) ? 1 : 0,
-            json_encode($uploadedImagePaths)
-        ];
-
-        $columns = [
-            'name',
-            'description',
-            'product_code',
-            'category',
-            'tags',
-            'regular_price',
-            'sale_price',
-            'includes_tax',
-            'in_stock',
-            'show_publicly',
-            'disabled',
-            'images'
-        ];
-
-        if ($isUpdate && $updateId !== null) {
-            $DB->update('products', $columns, $data, 'id', $updateId);
-            $_SESSION['message'] = "Product updated successfully";
+        // If no images and creating new product, show error
+        if (!$isUpdate && empty($uploadedImagePaths)) {
+            $error = "Please upload at least one product image";
         } else {
-            $DB->create('products', $columns, $data);
-            $_SESSION['message'] = "Product added successfully";
-        }
+            $data = [
+                $_POST['name'],
+                $_POST['description'],
+                $_POST['product_code'],
+                $_POST['category'],
+                $_POST['tags'],
+                $_POST['regular_price'],
+                $_POST['sale_price'],
+                isset($_POST['includes_tax']) ? 1 : 0,
+                $product['in_stock'],
+                isset($_POST['show_publicly']) ? 1 : 0,
+                isset($_POST['disabled']) ? 1 : 0,
+                json_encode($uploadedImagePaths)
+            ];
 
-        header("Location: products.php?success=1");
-        exit;
+            $columns = [
+                'name',
+                'description',
+                'product_code',
+                'category',
+                'tags',
+                'regular_price',
+                'sale_price',
+                'includes_tax',
+                'in_stock',
+                'show_publicly',
+                'disabled',
+                'images'
+            ];
+
+            if ($isUpdate && $updateId !== null) {
+                $DB->update('products', $columns, $data, 'id', $updateId);
+                $_SESSION['message'] = "Product updated successfully";
+            } else {
+                $DB->create('products', $columns, $data);
+                $_SESSION['message'] = "Product added successfully";
+            }
+
+            header("Location: products.php?success=1");
+            exit;
+        }
     }
 }
-
-
 ?>
 
 <!-- Messages -->
@@ -183,8 +185,8 @@ if (isset($_POST['save'])) {
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <?php unset($_SESSION['message']);
-} ?>
+    <?php unset($_SESSION['message']); ?>
+<?php } ?>
 
 <?php if (isset($error)) { ?>
     <div class="alert alert-danger alert-dismissible fade show">
@@ -192,7 +194,6 @@ if (isset($_POST['save'])) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php } ?>
-
 
 <form method="POST" class="row mb-4 layout-spacing layout-top-spacing" enctype="multipart/form-data">
     <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -214,9 +215,10 @@ if (isset($_POST['save'])) {
 
             <div class="row">
                 <div class="col-md-8">
-                    <label>Upload Images *</label>
-                    <input required type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
-
+                    <label>Upload Images <?php echo !$isUpdate ? '*' : '' ?></label>
+                    <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?> 
+                        <?php echo !$isUpdate ? 'required' : '' ?>>
+                    
                     <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
                             <div class="image-preview-container">
@@ -233,11 +235,17 @@ if (isset($_POST['save'])) {
                                                 style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;"
                                                 onclick="changeMainImage(this, '<?php echo $image ?>')">
                                         </div>
-                                    <?php }
-                                    ; ?>
+                                    <?php } ?>
                                 </div>
                                 <p class="text-muted small mt-1">Click thumbnails to view</p>
                             </div>
+                        </div>
+                    <?php } ?>
+                    
+                    <?php if ($isUpdate && !empty($uploadedImages)) { ?>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="keep_existing_images" value="1" checked>
+                            <label class="form-check-label">Keep existing images</label>
                         </div>
                     <?php } ?>
                 </div>
@@ -274,8 +282,7 @@ if (isset($_POST['save'])) {
                                     <option value="<?php echo $cat['tag']; ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
                                         <?php echo $cat['tag']; ?>
                                     </option>
-                                <?php }
-                                ; ?>
+                                <?php } ?>
                             </select>
                         </div>
 

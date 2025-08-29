@@ -12,10 +12,10 @@ if (isset($_GET['d_id'])) {
 
 ?>
 
-
 <div class="row">
   <div class="seperator-header layout-top-spacing">
     <h4 class="">CUSTOMER </h4>
+    <a href="customer-add.php" class="btn btn-primary">Add New Customer</a>
   </div>
   <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
     <div class="statbox widget box box-shadow">
