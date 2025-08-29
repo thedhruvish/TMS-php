@@ -262,3 +262,9 @@ CREATE TABLE `inquiry` (
 
 ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_publicly`;
 
+
+
+
+
+-- run this line
+-- ALTER TABLE `inquiry` CHANGE `status` `status` TINYINT NULL DEFAULT '0';

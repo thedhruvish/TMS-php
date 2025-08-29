@@ -20,7 +20,8 @@ elseif (isset($_GET['u_id'])) {
 // Handle form submission (only for add or edit, not view)
 if (!$viewMode && isset($_POST['submit'])) {
   $columns = ['name', 'email', 'phone', 'message', 'status'];
-  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], 'new'];
+  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], $status];
+
 
   if (isset($_GET['u_id'])) {
     // Update
@@ -82,7 +83,22 @@ if (!$viewMode && isset($_POST['submit'])) {
             <input type="text" class="form-control" id="phone" name="phone"
               value="<?php echo $editData['phone'] ?? ''; ?>" <?php echo $viewMode ? 'disabled' : 'required'; ?>>
           </div>
-
+          <div class="col-md-6">
+            <label for="status" class="form-label">Status *</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="status" name="status" value="1" <?php
+              // Checked if editData status is '1'
+              if (($editData['status'] ?? '') === '1')
+                echo 'checked';
+              // Disable if view mode
+              if ($viewMode)
+                echo ' disabled';
+              ?>>
+              <label class="form-check-label" for="status">
+                <?php echo (($editData['status'] ?? '') === '1') ? 'Active' : 'Inactive'; ?>
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- Row 3 -->
