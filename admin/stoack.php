@@ -75,8 +75,8 @@ if (isset($_GET['delete_id'])) {
 ?>
 
 <div class="row">
-    <div class="seperator-header layout-top-spacing">
-        <h4 class="">Stock Management</h4>
+    <div class="seperator-header layout-top-spacing mb-4">
+        <h4 class="mb-0">Stock Management</h4>
         <a href="stoack-add.php" class="btn btn-primary">Add New Stock</a>
     </div>
 
@@ -102,13 +102,24 @@ if (isset($_GET['delete_id'])) {
                             <th>Dead Stock</th>
                             <th>Pending Stock</th>
                             <th>Last Updated</th>
+                            <th>Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($stockData as $stock) { ?>
-                            <tr class="<?php echo !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
+                        <?php foreach ($stockData as $stock) { 
+                            $isOutOfStock = $stock['pending_stock'] <= 0;
+                            $rowClass = '';
+                            if ($isOutOfStock) {
+                                $rowClass = 'table-danger';
+                            } elseif (!$stock['product_exists']) {
+                                $rowClass = 'table-danger';
+                            } elseif ($stock['product_disabled']) {
+                                $rowClass = 'table-warning';
+                            }
+                        ?>
+                            <tr class="<?php echo $rowClass ?>">
                                 <td>
                                     <?php echo $stock['product_name']; ?>
                                     <?php if (!$stock['product_exists']) { ?>
@@ -116,12 +127,31 @@ if (isset($_GET['delete_id'])) {
                                     <?php } elseif ($stock['product_disabled']) { ?>
                                         <span class="badge bg-warning text-dark">(Product Discontinued)</span>
                                     <?php } ?>
+                                    <?php if ($isOutOfStock) { ?>
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    <?php } ?>
                                 </td>
                                 <td><?php echo $stock['current_stock'] ?></td>
                                 <td><?php echo $stock['sold_stock'] ?></td>
                                 <td><?php echo $stock['dead_stock'] ?></td>
-                                <td><?php echo $stock['pending_stock'] ?></td>
+                                <td>
+                                    <?php echo $stock['pending_stock'] ?>
+                                    <?php if ($stock['pending_stock'] < 10 && $stock['pending_stock'] > 0) { ?>
+                                        <span class="badge bg-warning text-dark ms-1">Low Stock</span>
+                                    <?php } ?>
+                                </td>
                                 <td><?php echo date('M d, Y H:i', strtotime($stock['last_updated'])) ?></td>
+                                <td>
+                                    <?php if ($isOutOfStock) { ?>
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    <?php } elseif (!$stock['product_exists']) { ?>
+                                        <span class="badge bg-danger">Product Deleted</span>
+                                    <?php } elseif ($stock['product_disabled']) { ?>
+                                        <span class="badge bg-warning text-dark">Discontinued</span>
+                                    <?php } else { ?>
+                                        <span class="badge bg-success">In Stock</span>
+                                    <?php } ?>
+                                </td>
                                 <td>
                                     <a href="stoack-edit.php?id=<?php echo $stock['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
                                 </td>
@@ -133,7 +163,7 @@ if (isset($_GET['delete_id'])) {
 
                         <?php if (empty($stockData)) { ?>
                             <tr>
-                                <td colspan="8" class="text-center">No stock records found</td>
+                                <td colspan="9" class="text-center">No stock records found</td>
                             </tr>
                         <?php } ?>
                     </tbody>

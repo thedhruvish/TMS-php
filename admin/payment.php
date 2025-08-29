@@ -8,10 +8,10 @@ $payment_data = $DB->custom_query($select_query);
 
 ?>
 
-
 <div class="row">
   <div class="seperator-header layout-top-spacing">
     <h4 class="">PAYMENT</h4>
+    <a href="payment-add.php" class="btn btn-primary">Add New Payment Record</a>
   </div>
   <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="statbox widget box box-shadow">

@@ -36,10 +36,12 @@ $invoices = $DB->custom_query($sql);
 ?>
 
 <div class="row">
-  <div class="seperator-header layout-top-spacing d-flex justify-content-between align-items-center">
-    <h4 class="mb-0">Invoice</h4>
-    <a href="invoice-add.php" class="btn btn-primary">Add Invoice</a>
+  <div class="seperator-header layout-top-spacing">
+    <h4 class="">Invoice</h4>
+    <a href="invoice-add.php" class="btn btn-primary">Add New Invoice</a>
   </div>
+
+
 
   <!-- Search and Filter Section -->
   <div class="row mb-4 align-items-center justify-content-between">
