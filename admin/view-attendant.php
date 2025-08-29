@@ -3,23 +3,29 @@ $pageTitle = "Attendance – View Only";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
-$currentYear  = date('Y');
+$currentYear = date('Y');
 $currentMonth = date('m');
 
-$selectedYear  = isset($_GET['year'])  ? (int)$_GET['year']  : $currentYear;
-$selectedMonth = isset($_GET['month']) ? (int)$_GET['month'] : $currentMonth;
-$daysInMonth   = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, $selectedYear);
+$selectedYear = isset($_GET['year']) ? (int) $_GET['year'] : $currentYear;
+$selectedMonth = isset($_GET['month']) ? (int) $_GET['month'] : $currentMonth;
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, $selectedYear);
 
 /* ---- users ---- */
 $users = [];
-$res   = $DB->read("users", ['order_by' => 'name ASC']);
-while ($row = mysqli_fetch_assoc($res)) $users[] = $row;
+$res = $DB->read("users", [
+  'order_by' => 'name ASC',
+  "where" => [
+    "role" => ["=" => "staff"]
+  ]
+]);
+while ($row = mysqli_fetch_assoc($res))
+  $users[] = $row;
 
 /* ---- attendance ---- */
 
 $res = $DB->read("attendance", [
   "where" => [
-    "YEAR(att_date)" => ["=" =>  $selectedYear],
+    "YEAR(att_date)" => ["=" => $selectedYear],
     "MONTH(att_date)" => ["=" => $selectedMonth]
   ]
 ]);
@@ -88,14 +94,15 @@ while ($row = mysqli_fetch_assoc($res)) {
             <td><?php echo $u['name'] ?></td>
             <?php
             for ($d = 1; $d <= $daysInMonth; $d++) {
-              $date   = sprintf('%04d-%02d-%02d', $selectedYear, $selectedMonth, $d);
+              $date = sprintf('%04d-%02d-%02d', $selectedYear, $selectedMonth, $d);
               $status = $attendance[$u['id']][$date] ?? 'A';
-              $class  = ($date > date('Y-m-d')) ? 'text-bg-dark' : ($status == 'P' ? 'bg-success' : 'bg-secondary');
-            ?>
+              $class = ($date > date('Y-m-d')) ? 'text-bg-dark' : ($status == 'P' ? 'bg-success' : 'bg-secondary');
+              ?>
               <td class="<?php echo $class ?> fw-bold"><?php echo $status ?></td>
             <?php } ?>
           </tr>
-        <?php }; ?>
+        <?php }
+        ; ?>
       </tbody>
     </table>
   </div>

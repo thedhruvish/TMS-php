@@ -7,14 +7,18 @@ $selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('m');
 $selectedYear  = isset($_GET['year'])  ? $_GET['year']  : date('Y');
 $today = date('Y-m-d');
 
-$result = $DB->read("users");
+$result = $DB->read("users",[
+    "where"=> [
+        "role" => ["=" => "staff"]
+    ]
+]);
 $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $attendance = [];
 $res = $DB->read("attendance", [
     "where" => [
         "YEAR(att_date)" => ["=" => $selectedYear],
-        "MONTH(att_date)" => ["=" => $selectedMonth]
+        "MONTH(att_date)" => ["=" => $selectedMonth],
     ]
 ]);
 while ($row = mysqli_fetch_assoc($res)) {
