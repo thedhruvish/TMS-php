@@ -1,18 +1,46 @@
-<?php $pageTitle = "Payment";
+<?php
+$pageTitle = "Payment";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
+// Get all payment methods from the database for the filter
+$paymentMethods = ['Cash', 'Credit Card', 'Bank Transfer', 'UPI', 'Cheque'];
 
-$select_query = "SELECT payments.*, invoices.id as invoice_id FROM payments LEFT JOIN invoices ON payments.invoice_id = invoices.id";
+// Handle filter parameter
+$currentFilter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+
+// Build the query based on filter
+if ($currentFilter === 'all') {
+    $select_query = "SELECT payments.*, invoices.id as invoice_id FROM payments LEFT JOIN invoices ON payments.invoice_id = invoices.id";
+} else {
+    $select_query = "SELECT payments.*, invoices.id as invoice_id FROM payments LEFT JOIN invoices ON payments.invoice_id = invoices.id WHERE payments.payment_method = '$currentFilter'";
+}
+
 $payment_data = $DB->custom_query($select_query);
 
 ?>
 
 <div class="row">
-  <div class="seperator-header layout-top-spacing">
-    <h4 class="">PAYMENT</h4>
-    <a href="payment-add.php" class="btn btn-primary">Add New Payment Record</a>
+  <div class="seperator-header layout-top-spacing d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">PAYMENT</h4>
+    <div class="d-flex align-items-center">
+      <a href="payment-add.php" class="btn btn-primary me-2">Add New Payment Record</a>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <?php 
+          echo $currentFilter === 'all' ? 'All Methods' : $currentFilter;
+          ?>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item <?php echo $currentFilter === 'all' ? 'active' : ''; ?>" href="payment.php?filter=all">All Methods</a></li>
+          <?php foreach ($paymentMethods as $method) { ?>
+            <li><a class="dropdown-item <?php echo $currentFilter === $method ? 'active' : ''; ?>" href="payment.php?filter=<?php echo urlencode($method); ?>"><?php echo $method; ?></a></li>
+          <?php } ?>
+        </ul>
+      </div>
+    </div>
   </div>
+  
   <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="statbox widget box box-shadow">
       <div class="widget-content widget-content-area">
