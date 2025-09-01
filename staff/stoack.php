@@ -46,6 +46,10 @@ if ($result && mysqli_num_rows($result) > 0) {
         $sold = $stock['sold_stock'] ?? 0;
         $dead = $stock['dead_stock'] ?? 0;
         $pendingStock = $stock['current_stock'] - $sold - $dead;
+        
+        // Check if product is out of stock
+        $isOutOfStock = ($pendingStock <= 0);
+        
         $stockData[] = array(
             'id' => $stock['id'],
             'product_id' => $stock['product_id'],
@@ -56,7 +60,8 @@ if ($result && mysqli_num_rows($result) > 0) {
             'sold_stock' => $stock['sold_stock'] ?? 0,
             'dead_stock' => $stock['dead_stock'] ?? 0,
             'pending_stock' => $pendingStock > 0 ? $pendingStock : 0,
-            'last_updated' => $stock['last_updated']
+            'last_updated' => $stock['last_updated'],
+            'is_out_of_stock' => $isOutOfStock
         );
     }
 }
@@ -89,11 +94,23 @@ if ($result && mysqli_num_rows($result) > 0) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($stockData as $stock) { ?>
-                            <tr class="<?php echo !$stock['product_exists'] ? 'table-danger' : ($stock['product_disabled'] ? 'table-warning' : '') ?>">
+                        <?php foreach ($stockData as $stock) { 
+                            // Determine row class based on conditions
+                            $rowClass = '';
+                            if ($stock['is_out_of_stock']) {
+                                $rowClass = 'table-danger'; // Out of stock - highest priority
+                            } elseif (!$stock['product_exists']) {
+                                $rowClass = 'table-danger'; // Product deleted
+                            } elseif ($stock['product_disabled']) {
+                                $rowClass = 'table-warning'; // Product disabled
+                            }
+                        ?>
+                            <tr class="<?php echo $rowClass ?>">
                                 <td>
                                     <?php echo $stock['product_name']; ?>
-                                    <?php if (!$stock['product_exists']) { ?>
+                                    <?php if ($stock['is_out_of_stock']) { ?>
+                                        <span class="badge bg-danger">(Out of Stock)</span>
+                                    <?php } elseif (!$stock['product_exists']) { ?>
                                         <span class="badge bg-danger">(Product Deleted)</span>
                                     <?php } elseif ($stock['product_disabled']) { ?>
                                         <span class="badge bg-warning text-dark">(Product Discontinued)</span>
