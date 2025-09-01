@@ -611,3 +611,14 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+
+-- run
+
+ALTER TABLE `payments` ADD `created_by` INT NOT NULL AFTER `created_at`, ADD `updated_by` INT NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `inquiry` ADD `created_by` INT NOT NULL AFTER `created_at`, ADD `updated_by` INT NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `invoices` ADD `created_by` INT NOT NULL AFTER `created_at`, ADD `updated_by` INT NULL DEFAULT NULL AFTER `created_by`;
+

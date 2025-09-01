@@ -20,9 +20,9 @@ elseif (isset($_GET['u_id'])) {
 
 // Handle form submission (only for add or edit, not view)
 if (!$viewMode && isset($_POST['submit'])) {
-  $columns = ['name', 'email', 'phone', 'message', 'status'];
+  $columns = ['name', 'email', 'phone', 'message', 'status', "created_by"];
   $status = isset($_POST['status']) ? '1' : '0';
-  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], $status];
+  $values = [$_POST['name'], $_POST['email'], $_POST['phone'], $_POST['message'], $status, $_SESSION['user_id']];
 
   if (isset($_GET['u_id'])) {
     // Update

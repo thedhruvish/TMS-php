@@ -16,14 +16,12 @@ if (mysqli_num_rows($productsRes) > 0) {
     $filteredProducts = []; // store only in-stock products
 
     foreach ($products as &$product) {
-        // Decode images
         if (!empty($product['images'])) {
             $product['images'] = json_decode($product['images'], true);
         } else {
             $product['images'] = ['../images/placeholder.jpg'];
         }
 
-        // Skip stock calculation for disabled products
         if ($product['disabled']) {
             continue;
         }
@@ -42,23 +40,33 @@ if (mysqli_num_rows($productsRes) > 0) {
             $product['in_stock'] = 0;
         }
 
-        // Add only if in stock
         if ($product['in_stock'] == 1) {
             $filteredProducts[] = $product;
         }
     }
     unset($product);
 
-    // Replace products with filtered array
     $products = $filteredProducts;
 }
 
 $productMap = [];
 foreach ($products as $p) {
-    $productMap[$p['id']] = $p; // map product ID to full product array
+    $productMap[$p['id']] = $p;
 }
 
+/* ---------- fetch customers for drop-down and details view ---------- */
 $customersRes = $DB->read("customer");
+$customers = mysqli_fetch_all($customersRes, MYSQLI_ASSOC);
+mysqli_data_seek($customersRes, 0); // Reset pointer for the while loop in HTML form
+
+$customerMap = [];
+foreach ($customers as $c) {
+    $customerMap[$c['id']] = [
+        'full_name' => trim($c['first_name'] . ' ' . $c['last_name']),
+        'phone'     => $c['phone']
+    ];
+}
+
 /* ---------- POST handler (insert / update) ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['customer_id'] == '') {
@@ -77,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'subtotal'        => (float)($_POST['subtotal'] ?? 0),
         'discount'        => (float)($_POST['discount'] ?? 0),
         'total'           => (float)($_POST['total']    ?? 0),
+        'created_by'      => $_SESSION['user_id']
     ];
 
     if (!empty($_POST['invoice_id'])) {                 // UPDATE
@@ -94,25 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_id = (int)($row['product_id'] ?? 0);
             $qty        = (int)($row['quantity']   ?? 0);
 
-            // ---------- check stock before insert ----------
             $stockRes = $DB->read("stock", ['where' => ['product_id' => ['=' => $product_id]]]);
             if ($stockRes && mysqli_num_rows($stockRes) > 0) {
                 $stock = mysqli_fetch_assoc($stockRes);
                 $sold  = $stock['sold_stock'] ?? 0;
                 $dead  = $stock['dead_stock'] ?? 0;
                 $available = $stock['current_stock'] - $sold - $dead;
-
                 $product_name = $productMap[$product_id]['name'] ?? 'Unknown Product';
 
                 if ($qty > $available) {
-                    // ❌ Not enough stock → prevent save & show alert
                     echo "<script>alert('Not enough stock for {$product_name}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
                     exit;
                 }
-
-                // After inserting this qty
                 $remaining = $available - $qty;
-
                 if ($remaining < 100) {
                     send_message_TG(
                         "Low Stock Alert\nProduct Name: {$product_name}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}"
@@ -120,29 +123,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // ---------- insert item ----------
             $DB->create('invoice_items', [
-                'invoice_id',
-                'product_id',
-                'rate',
-                'quantity',
-                'amount'
+                'invoice_id', 'product_id', 'rate', 'quantity', 'amount'
             ], [
-                $invoice_id,
-                $product_id,
-                (float)($row['rate']  ?? 0),
-                $qty,
-                (float)($row['amount'] ?? 0)
+                $invoice_id, $product_id, (float)($row['rate'] ?? 0), $qty, (float)($row['amount'] ?? 0)
             ]);
 
-            // ---------- update sold stock ----------
             $newSold = $sold + $qty;
             $DB->update("stock", ["sold_stock"], [$newSold], "product_id", $product_id);
         }
     }
-
-
-
     header("Location: invoice.php");
     exit;
 }
@@ -152,9 +142,9 @@ if (isset($_GET['d_id'])) {
     $d_id = $_GET['d_id'];
     $DB->delete('invoice_items', 'invoice_id', $d_id);
     $DB->delete("invoices", "id", $d_id);
-
     header("Location: invoice.php");
 }
+
 /* ---------- Determine mode & fetch data ---------- */
 if (isset($_GET['id'])) {
     $view_mode = true;
@@ -179,17 +169,14 @@ if (isset($_GET['id'])) {
     <div class="doc-container">
       <form method="post" autocomplete="off">
         
-        <!-- Hidden invoice id -->
         <?php if ($edit_mode || $view_mode) { ?>
           <input type="hidden" name="invoice_id" value="<?php echo $invoice['id'] ?? '' ?>">
         <?php } ?>
 
-        <!-- Invoice Label -->
         <div class="card shadow-sm mb-4">
             <h4 class="card-header">Invoice</h4>
         </div>
 
-        <!-- Customer Info -->
         <div class="card shadow-sm mb-4">
           <div class="card-body">
             <h5 class="mb-3">Customer Information</h5>
@@ -205,13 +192,16 @@ if (isset($_GET['id'])) {
                     </option>
                   <?php endwhile; ?>
                 </select>
+                <div id="customer-details" class="mt-3 p-3 border rounded " style="display: none;">
+                  <p class="mb-1"><strong>Name:</strong> <span id="customer-name"></span></p>
+                  <p class="mb-0"><strong>Phone:</strong> <span id="customer-phone"></span></p>
+                </div>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Invoice Date</label>
                 <input type="date" name="invoice_date" class="form-control"
                   value="<?php echo $invoice['invoice_date'] ?? date('Y-m-d') ?>"
-                  <?php echo $view_mode ? 'readonly' : '' ?> 
-                  >
+                  <?php echo $view_mode ? 'readonly' : '' ?> >
               </div>
               <div class="col-md-3">
                 <label class="form-label">Due Date</label>
@@ -223,7 +213,6 @@ if (isset($_GET['id'])) {
           </div>
         </div>
 
-        <!-- Invoice Items -->
         <div class="card shadow-sm mb-4">
           <div class="card-body">
             <h5 class="mb-3">Invoice Items</h5>
@@ -291,7 +280,6 @@ if (isset($_GET['id'])) {
           </div>
         </div>
 
-        <!-- Bank Info + Totals -->
         <div class="row">
           <div class="col-md-6">
             <div class="card shadow-sm mb-4">
@@ -319,7 +307,6 @@ if (isset($_GET['id'])) {
             </div>
           </div>
 
-          <!-- Totals -->
           <div class="col-md-6">
             <div class="card shadow-sm mb-4">
               <div class="card-body">
@@ -329,9 +316,31 @@ if (isset($_GET['id'])) {
                   <strong>$<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span></strong>
                   <input type="hidden" name="subtotal" id="subtotal-input" value="<?php echo $invoice['subtotal'] ?? 0 ?>">
                 </div>
+
+                <?php
+                  // For existing invoices, assume discount is a flat amount for display purposes.
+                  $discount_value = ($edit_mode || $view_mode) ? ($invoice['discount'] ?? 0) : 0;
+                  $discount_type = ($edit_mode || $view_mode) ? 'flat' : 'percentage';
+                ?>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>Discount</span>
+                    <div class="d-flex" style="max-width: 220px;">
+                        <input type="number" id="discount-value-input" class="form-control form-control-sm text-end me-2" value="<?php echo $discount_value; ?>" min="0" <?php echo $view_mode ? 'readonly' : '' ?>>
+                        <select id="discount-type-select" class="form-select form-select-sm" <?php echo $view_mode ? 'disabled' : '' ?>>
+                            <option value="percentage" <?php if($discount_type == 'percentage') echo 'selected'; ?>>%</option>
+                            <option value="flat" <?php if($discount_type == 'flat') echo 'selected'; ?>>$</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="d-flex justify-content-end mb-2">
+                    <strong class="text-danger">-$<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span></strong>
+                    <input type="hidden" name="discount" id="discount-input" value="<?php echo $invoice['discount'] ?? 0 ?>">
+                </div>
+                <hr class="my-2">
+                
                 <div class="d-flex justify-content-between">
-                  <span>Total</span>
-                  <strong class="text-success">$<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span></strong>
+                  <span class="h5">Total</span>
+                  <strong class="text-success h5">$<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span></strong>
                   <input type="hidden" name="total" id="total-input" value="<?php echo $invoice['total'] ?? 0 ?>">
                 </div>
               </div>
@@ -339,7 +348,6 @@ if (isset($_GET['id'])) {
           </div>
         </div>
 
-        <!-- Notes -->
         <div class="card shadow-sm mb-4">
           <div class="card-body">
             <h5 class="mb-3">Notes</h5>
@@ -349,7 +357,6 @@ if (isset($_GET['id'])) {
           </div>
         </div>
 
-        <!-- Actions -->
         <div class="row mb-4">
           <?php if (!$view_mode) { ?>
             <div class="col-md-4 mb-2">
@@ -377,146 +384,177 @@ if (isset($_GET['id'])) {
   </div>
 </div>
 
-
-
 <script>
-    /* map id → price */
+    // --- Data from PHP ---
     const productPriceMap = {
         <?php foreach ($products as $p):
             $price = !empty($p['regular_price']) ? $p['regular_price'] : $p['sale_price']; ?>
             <?php echo $p['id']; ?>: <?php echo (float)$price; ?>,
         <?php endforeach; ?>
+    };
+    const customerMap = <?php echo json_encode($customerMap); ?>;
 
+    // --- Event Listeners ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initial setup calls
+        setupCustomerDetails();
+        recalcTotals();
+        
+        // Bind event listeners
+        document.addEventListener('change', handleFormChange);
+        document.addEventListener('input', handleFormInput);
+        document.addEventListener('click', handleFormClick);
+    });
+
+    // --- Event Handlers ---
+    function handleFormChange(e) {
+        if (e.target.matches('select[name$="[product_id]"]')) {
+            updateProductPrice(e.target);
+        }
+        if (e.target.matches('select[name="customer_id"]')) {
+            updateCustomerDetails();
+        }
+        if (e.target.matches('.rate-input, .qty-input, #discount-type-select')) {
+            recalcTotals();
+        }
+    }
+    
+    function handleFormInput(e) {
+        if (e.target.matches('.rate-input, .qty-input, #discount-value-input')) {
+            const row = e.target.closest('tr');
+            if (row) recalcAmount(row);
+            recalcTotals();
+        }
     }
 
-    document.addEventListener('change', e => {
-        if (!e.target.matches('select[name$="[product_id]"]')) return;
-        const row = e.target.closest('tr');
-        const price = productPriceMap[e.target.value] || 0;
-        const rateInput = row.querySelector('.rate-input');
-        if (rateInput) {
-            rateInput.value = price.toFixed(2);
-            rateInput.dispatchEvent(new Event('input'));
+    function handleFormClick(e) {
+        if (e.target.matches('.additem')) {
+            addNewItemRow();
         }
-    });
-</script>
+        if (e.target.matches('.delete-item')) {
+            e.preventDefault();
+            e.target.closest('tr')?.remove();
+            recalcTotals(); // Recalculate after removing an item
+        }
+    }
 
-<script>
-    /* recalc amount = rate * qty */
+    // --- Customer Details Logic ---
+    function setupCustomerDetails() {
+        const customerSelect = document.querySelector('select[name="customer_id"]');
+        if (customerSelect.value) {
+            updateCustomerDetails();
+        }
+    }
+
+    function updateCustomerDetails() {
+        const customerSelect = document.querySelector('select[name="customer_id"]');
+        const detailsDiv = document.getElementById('customer-details');
+        const nameSpan = document.getElementById('customer-name');
+        const phoneSpan = document.getElementById('customer-phone');
+        const selectedId = customerSelect.value;
+        
+        if (selectedId && customerMap[selectedId]) {
+            const customer = customerMap[selectedId];
+            nameSpan.textContent = customer.full_name;
+            phoneSpan.textContent = customer.phone;
+            detailsDiv.style.display = 'block';
+        } else {
+            detailsDiv.style.display = 'none';
+        }
+    }
+
+    // --- Calculation Logic ---
     function recalcAmount(row) {
         const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
         const qty = parseInt(row.querySelector('.qty-input').value) || 0;
-        const amount = (rate * qty).toFixed(2);
-
-        row.querySelector('.item-amount').textContent = amount;
-        row.querySelector('.amount-input').value = amount;
+        const amount = (rate * qty);
+        row.querySelector('.item-amount').textContent = amount.toFixed(2);
+        row.querySelector('.amount-input').value = amount.toFixed(2);
     }
-
-    function bindCalc(row) {
-        ['input', 'change'].forEach(evt => ['.rate-input', '.qty-input'].forEach(sel =>
-            row.querySelector(sel)?.addEventListener(evt, () => recalcAmount(row))
-        ));
-    }
-
-    document.querySelectorAll('#item-rows tr').forEach(bindCalc);
-
-    document.addEventListener('click', e => {
-        if (e.target && e.target.classList.contains('additem')) {
-            setTimeout(() => {
-                const newRow = document.querySelector('#item-rows tr:last-child');
-                bindCalc(newRow);
-                recalcAmount(newRow);
-            }, 0);
-        }
-    });
-
-    document.addEventListener('click', e => {
-        if (e.target.matches('.delete-item')) {
-            e.preventDefault();
-            const tr = e.target.closest('tr');
-            if (tr) tr.remove();
-        }
-    });
-</script>
-
-<script>
-    /* Recalculate totals without tax */
+    
     function recalcTotals() {
         let subtotal = 0;
         document.querySelectorAll('#item-rows tr').forEach(row => {
             subtotal += parseFloat(row.querySelector('.amount-input')?.value || 0);
         });
 
-        const discount = 0;
-        const total = subtotal - discount;
+        let discountValueInput = document.getElementById('discount-value-input');
+        let discountValue = parseFloat(discountValueInput.value) || 0;
+        const discountType = document.getElementById('discount-type-select').value;
+        let calculatedDiscount = 0;
+
+        if (discountType === 'percentage') {
+            if (discountValue > 80) {
+                alert('Discount percentage cannot exceed 80%.');
+                discountValue = 80;
+                discountValueInput.value = 80;
+            }
+            calculatedDiscount = (subtotal * discountValue) / 100;
+        } else {
+            calculatedDiscount = discountValue;
+        }
+        
+        if (calculatedDiscount > subtotal) {
+            calculatedDiscount = subtotal;
+        }
+
+        const total = subtotal - calculatedDiscount;
 
         document.getElementById('subtotal-display').textContent = subtotal.toFixed(2);
         document.getElementById('subtotal-input').value = subtotal.toFixed(2);
-
-
-        // document.getElementById('discount-display').textContent = discount.toFixed(2);
-
+        document.getElementById('discount-display').textContent = calculatedDiscount.toFixed(2);
+        document.getElementById('discount-input').value = calculatedDiscount.toFixed(2);
         document.getElementById('total-display').textContent = total.toFixed(2);
         document.getElementById('total-input').value = total.toFixed(2);
     }
 
-
-    document.addEventListener('input', e => {
-        if (e.target.matches('.rate-input, .qty-input, #discount-input')) {
-            if (e.target.matches('.rate-input, .qty-input')) {
-                const row = e.target.closest('tr');
-                recalcAmount(row);
-            }
+    function updateProductPrice(selectElement) {
+        const row = selectElement.closest('tr');
+        const price = productPriceMap[selectElement.value] || 0;
+        const rateInput = row.querySelector('.rate-input');
+        if (rateInput) {
+            rateInput.value = price.toFixed(2);
+            // Manually trigger events to update calculations
+            recalcAmount(row);
             recalcTotals();
         }
-    });
+    }
 
-    document.addEventListener('DOMContentLoaded', recalcTotals);
-</script>
+    function bindRowEvents(row) {
+        // Events are now handled globally, but you could add row-specific logic here if needed.
+    }
 
-<script>
-    <?php if (!$view_mode) { ?>
-        document.querySelector('.additem')?.addEventListener('click', () => {
+    // --- DOM Manipulation ---
+    function addNewItemRow() {
+        <?php if (!$view_mode) { ?>
             const tbody = document.getElementById('item-rows');
             const idx = tbody.rows.length;
             const tr = document.createElement('tr');
 
             tr.innerHTML = `
-            <td><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
-            <td class="description">
+            <td class="text-center"><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
+            <td>
                 <select name="items[${idx}][product_id]" class="form-select">
                     <option value="">Choose product…</option>
                     <?php foreach ($products as $p) { ?>
-                        <option value="<?php echo $p['id']; ?>"><?php echo $p['name']; ?></option>
+                        <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['name']); ?></option>
                     <?php } ?>
                 </select>
             </td>
             <td>
-                <input type="number" step="0.01" name="items[${idx}][rate]"
-                    class="form-control rate-input"
-                    style="min-width:120px"
-                    value="">
+                <input type="number" step="0.01" name="items[${idx}][rate]" class="form-control text-end rate-input" value="">
             </td>
             <td>
-                <input type="number" name="items[${idx}][quantity]"
-                    class="form-control qty-input"
-                    placeholder="0"
-                    style="min-width:120px"
-                    value="">
+                <input type="number" name="items[${idx}][quantity]" class="form-control text-end qty-input" value="">
             </td>
-            <td class="text-right amount">
+            <td class="text-end">
                 $<span class="item-amount">0.00</span>
                 <input type="hidden" name="items[${idx}][amount]" class="amount-input" value="0">
             </td>
-        `;
-
+            `;
             tbody.appendChild(tr);
-            bindCalc(tr);
-            recalcAmount(tr);
-            recalcTotals();
-        });
-    <?php } ?>
+        <?php } ?>
+    }
 </script>
-
 
 <?php include './include/footer-admin.php'; ?>

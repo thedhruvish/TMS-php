@@ -17,20 +17,18 @@ $reult = $DB->read("user_log");
                 <table id="html5-extension" class="table dt-table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>id</th>
                             <th>user_id</th>
                             <th>Email</th>
-                            <th>Is success</th>
+                            <th>Status</th>
                             <th>login time</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($reult)) { ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
                                 <td><?php echo $row['user_id']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
-                                <td><?php echo $row['is_success']; ?></td>
+                                <td><?php echo $row['is_success'] ? "success" : "failed" ?></td>
                                 <td><?php echo $row['login_time']; ?></td>
                             </tr>
                         <?php } ?>

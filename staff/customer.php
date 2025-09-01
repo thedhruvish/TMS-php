@@ -23,7 +23,6 @@ if (isset($_GET['d_id'])) {
         <table id="html5-extension" class="table dt-table-hover" style="width:100%">
           <thead>
             <tr>
-              <th>ID</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
@@ -38,10 +37,6 @@ if (isset($_GET['d_id'])) {
           <tbody>
             <?php while ($row = mysqli_fetch_assoc($customer)) { ?>
               <tr>
-                <td>
-                  <!-- <a href="customer-add.php?id=<?php echo $row['id'] ?>" class="btn btn-sm"><?php echo $row['id'] ?></a> -->
-                  <?php echo $row['id'] ?>
-                </td>
                 <td><?php echo $row['first_name'] ?></td>
                 <td><?php echo $row['last_name'] ?></td>
                 <td><?php echo $row['email'] ?></td>
