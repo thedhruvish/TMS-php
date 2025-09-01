@@ -71,6 +71,8 @@ if (isset($_POST['submit'])) {
     $payment_method = $_POST['payment_method'] ?? '';
     $reference_number = $_POST['reference_number'] ?? '';
     $notes = $_POST['notes'] ?? '';
+    $customer_name = $_POST['customer_name'] ?? '';
+    $customer_phone = $_POST['customer_phone'] ?? 'N/A';
 
     $columns = ['invoice_id', 'payment_date', 'amount_paid', 'payment_method', 'reference_number', 'notes', 'created_by'];
     $values = [$invoice_id, $payment_date, $amount_paid, $payment_method, $reference_number, $notes, $_SESSION['user_id']];
@@ -78,7 +80,7 @@ if (isset($_POST['submit'])) {
     if ($edit_mode) {
         $updated = $DB->update('payments', $columns, $values, 'id', $u_id);
         if ($updated) {
-            send_message_TG("Payment Updated\nInvoice ID: $invoice_id\nAmount: $amount_paid");
+            send_message_TG("Payment Updated\nCustomer: $customer_name : Phone No ($customer_phone)\nInvoice ID: $invoice_id\nAmount: $amount_paid");
             header("Location:payment.php");
         } else {
             echo "Error: Unable to update payment.";
@@ -86,7 +88,7 @@ if (isset($_POST['submit'])) {
     } else {
         $inserted = $DB->create('payments', $columns, $values);
         if ($inserted) {
-            send_message_TG("New Payment Added\nInvoice ID: $invoice_id\nAmount: $amount_paid");
+            send_message_TG("New Payment Added\nCustomer: $customer_name : Phone No  ($customer_phone)\nInvoice ID: $invoice_id\nAmount: $amount_paid");
             header("Location:payment.php");
         } else {
             echo "Error: Unable to insert payment.";
@@ -116,6 +118,9 @@ if (isset($_POST['submit'])) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="customer_id">Select Customer</label>
+                                                    <input type="hidden" name="customer_name" id="customer_name_hidden">
+                                                    <input type="hidden" name="customer_phone"
+                                                        id="customer_phone_hidden">
                                                     <select class="form-select mb-3" id="customer_id" required>
                                                         <option value="">Select Customer Email</option>
                                                         <?php if ($customer_data) {
@@ -133,10 +138,10 @@ if (isset($_POST['submit'])) {
                                             <div class="col-md-6">
                                                 <div id="customer-details" class="mt-4 p-2 border rounded"
                                                     style="display: none;">
-                                                    <p class="mb-1"><strong>Name:</strong> <span
-                                                            id="customer-name"></span></p>
-                                                    <p class="mb-0"><strong>Phone:</strong> <span
-                                                            id="customer-phone"></span></p>
+                                                    <p class="mb-1"><strong>Name:</strong> <span id="customer-name"
+                                                            name="customer_name"></span></p>
+                                                    <p class="mb-0"><strong>Phone:</strong> <span id="customer-phone"
+                                                            name="customer_phone"></span></p>
                                                 </div>
                                             </div>
 
@@ -236,6 +241,8 @@ if (isset($_POST['submit'])) {
         const detailsDiv = document.getElementById('customer-details');
         const nameSpan = document.getElementById('customer-name');
         const phoneSpan = document.getElementById('customer-phone');
+        const nameHiddenInput = document.getElementById('customer_name_hidden');
+        const phoneNumHiddenInput = document.getElementById('customer_phone_hidden');
 
         // --- Event Listeners ---
         customerSelect.addEventListener('change', handleCustomerChange);
@@ -261,6 +268,8 @@ if (isset($_POST['submit'])) {
             if (customerId && customerMap[customerId]) {
                 nameSpan.textContent = customerMap[customerId].full_name;
                 phoneSpan.textContent = customerMap[customerId].phone;
+                nameHiddenInput.value = customerMap[customerId].full_name;
+                phoneNumHiddenInput.value = customerMap[customerId].phone;
                 detailsDiv.style.display = 'block';
             } else {
                 detailsDiv.style.display = 'none';
