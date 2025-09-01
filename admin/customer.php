@@ -43,8 +43,18 @@ if (isset($_GET['d_id'])) {
                   <!-- <a href="customer-add.php?id=<?php echo $row['id'] ?>" class="btn btn-sm"><?php echo $row['id'] ?></a> -->
                   <?php echo $row['id'] ?>
                 </td>
-                <td><?php echo $row['first_name'] ?></td>
-                <td><?php echo $row['last_name'] ?></td>
+                <!-- <td><?php echo $row['first_name'] ?></td>
+                <td><?php echo $row['last_name'] ?></td> -->
+                <td>
+                  <a href="customer-transactions.php?id=<?php echo $row['id']; ?>" title="View transaction history">
+                   <?php echo $row['first_name'] ?>
+                  </a>
+                </td>
+                <td>
+                    <a href="customer-transactions.php?id=<?php echo $row['id']; ?>" title="View transaction history">
+                        <?php echo $row['last_name'] ?>
+                    </a>
+                </td>
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td><?php echo $row['total_amount'] ?></td>
