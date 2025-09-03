@@ -267,4 +267,10 @@ ALTER TABLE `products` ADD COLUMN `disabled` TINYINT(1) DEFAULT 0 AFTER `show_pu
 
 
 -- run this line
--- ALTER TABLE `inquiry` CHANGE `status` `status` TINYINT NULL DEFAULT '0';
+ALTER TABLE `inquiry` CHANGE `status` `status` TINYINT NULL DEFAULT '0';
+
+--working do not run this query---
+-- ALTER TABLE `stock` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `last_updated`;
+
+
+
