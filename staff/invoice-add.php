@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     $invoice_data = [
-        'invoice_label'   => "Invoice",
+        // 'invoice_label' removed to match new schema
         'customer_id'     => $_POST['customer_id']     ?? '',
         'invoice_date'    => $_POST['invoice_date']    ?? '',
         'due_date'        => $_POST['due_date']        ?: null,
@@ -84,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'notes'           => $_POST['notes']           ?: null,
         'subtotal'        => (float)($_POST['subtotal'] ?? 0),
         'discount'        => (float)($_POST['discount'] ?? 0),
+        'tax'             => (float)($_POST['tax']      ?? 0), // Added tax field
         'total'           => (float)($_POST['total']    ?? 0),
         'created_by'      => $_SESSION['user_id']
     ];
@@ -318,9 +319,13 @@ if (isset($_GET['id'])) {
                 </div>
 
                 <?php
-                  // For existing invoices, assume discount is a flat amount for display purposes.
+                  // Discount logic
                   $discount_value = ($edit_mode || $view_mode) ? ($invoice['discount'] ?? 0) : 0;
                   $discount_type = ($edit_mode || $view_mode) ? 'flat' : 'percentage';
+
+                  // Tax logic: For existing invoices, use flat amount. For new, default to 10%.
+                  $tax_value = ($edit_mode || $view_mode) ? ($invoice['tax'] ?? 0) : 10;
+                  $tax_type = ($edit_mode || $view_mode) ? 'flat' : 'percentage';
                 ?>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span>Discount</span>
@@ -336,6 +341,22 @@ if (isset($_GET['id'])) {
                     <strong class="text-danger">-$<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span></strong>
                     <input type="hidden" name="discount" id="discount-input" value="<?php echo $invoice['discount'] ?? 0 ?>">
                 </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>Tax</span>
+                    <div class="d-flex" style="max-width: 220px;">
+                        <input type="number" id="tax-value-input" class="form-control form-control-sm text-end me-2" value="<?php echo $tax_value; ?>" min="0" <?php echo $view_mode ? 'readonly' : '' ?>>
+                        <select id="tax-type-select" class="form-select form-select-sm" <?php echo $view_mode ? 'disabled' : '' ?>>
+                            <option value="percentage" <?php if($tax_type == 'percentage') echo 'selected'; ?>>%</option>
+                            <option value="flat" <?php if($tax_type == 'flat') echo 'selected'; ?>>$</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="d-flex justify-content-end mb-2">
+                    <strong class="text-info">+$<span id="tax-display"><?php echo number_format($invoice['tax'] ?? 0, 2) ?></span></strong>
+                    <input type="hidden" name="tax" id="tax-input" value="<?php echo $invoice['tax'] ?? 0 ?>">
+                </div>
+
                 <hr class="my-2">
                 
                 <div class="d-flex justify-content-between">
@@ -414,13 +435,13 @@ if (isset($_GET['id'])) {
         if (e.target.matches('select[name="customer_id"]')) {
             updateCustomerDetails();
         }
-        if (e.target.matches('.rate-input, .qty-input, #discount-type-select')) {
+        if (e.target.matches('.rate-input, .qty-input, #discount-type-select, #tax-type-select')) {
             recalcTotals();
         }
     }
     
     function handleFormInput(e) {
-        if (e.target.matches('.rate-input, .qty-input, #discount-value-input')) {
+        if (e.target.matches('.rate-input, .qty-input, #discount-value-input, #tax-value-input')) {
             const row = e.target.closest('tr');
             if (row) recalcAmount(row);
             recalcTotals();
@@ -478,6 +499,7 @@ if (isset($_GET['id'])) {
             subtotal += parseFloat(row.querySelector('.amount-input')?.value || 0);
         });
 
+        // --- Discount Calculation ---
         let discountValueInput = document.getElementById('discount-value-input');
         let discountValue = parseFloat(discountValueInput.value) || 0;
         const discountType = document.getElementById('discount-type-select').value;
@@ -498,12 +520,30 @@ if (isset($_GET['id'])) {
             calculatedDiscount = subtotal;
         }
 
-        const total = subtotal - calculatedDiscount;
+        // --- Tax Calculation ---
+        let taxValue = parseFloat(document.getElementById('tax-value-input').value) || 0;
+        const taxType = document.getElementById('tax-type-select').value;
+        let calculatedTax = 0;
 
+        if (taxType === 'percentage') {
+            calculatedTax = (subtotal * taxValue) / 100;
+        } else {
+            calculatedTax = taxValue;
+        }
+
+        // --- Final Total ---
+        const total = subtotal - calculatedDiscount + calculatedTax;
+
+        // --- Update DOM ---
         document.getElementById('subtotal-display').textContent = subtotal.toFixed(2);
         document.getElementById('subtotal-input').value = subtotal.toFixed(2);
+
         document.getElementById('discount-display').textContent = calculatedDiscount.toFixed(2);
         document.getElementById('discount-input').value = calculatedDiscount.toFixed(2);
+        
+        document.getElementById('tax-display').textContent = calculatedTax.toFixed(2);
+        document.getElementById('tax-input').value = calculatedTax.toFixed(2);
+
         document.getElementById('total-display').textContent = total.toFixed(2);
         document.getElementById('total-input').value = total.toFixed(2);
     }
@@ -556,5 +596,4 @@ if (isset($_GET['id'])) {
         <?php } ?>
     }
 </script>
-
 <?php include './include/footer-staff.php'; ?>
