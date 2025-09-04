@@ -4,15 +4,19 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
 /* ==========================================================================
-   1. EXISTING METRICS (UNCHANGED)
+   1. METRICS CALCULATION
    ========================================================================== */
 $totalCustomers   = 0;
 $totalProducts    = 0;
 $totalInvoices    = 0;
 $thisWeekSales    = 0;
 $todayAttendance  = 0;
-$pendingInquiries = 0;
+$todaysInquiries  = 0;
+$todaySales       = 0;
+$outstandingPayments = 0;
 
+
+// --- Existing Metrics ---
 $totalCustomers  = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS c FROM customer"))['c'];
 $totalProducts   = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS p FROM products WHERE disabled = 0"))['p'];
 $totalInvoices   = (int) mysqli_fetch_assoc($DB->custom_query("SELECT COUNT(*) AS i FROM invoices"))['i'];
@@ -24,17 +28,14 @@ $todayAttendance = (int) mysqli_fetch_assoc($DB->custom_query(
   "SELECT COUNT(*) AS a FROM attendance 
          WHERE att_date = CURDATE() AND status = 'P'"
 ))['a'];
-$pendingInquiries = (int) mysqli_fetch_assoc($DB->custom_query(
-  "SELECT COUNT(*) AS cnt FROM inquiry WHERE status='new'"
+
+// --- Today's Inquiries ---
+$todaysInquiries = (int) mysqli_fetch_assoc($DB->custom_query(
+  "SELECT COUNT(*) AS cnt FROM inquiry WHERE DATE(created_at) = CURDATE()"
 ))['cnt'];
 
 
-/* ==========================================================================
-   2. NEW METRICS
-   ========================================================================== */
-$todaySales = 0;
-$outstandingPayments = 0;
-
+// --- New Metrics ---
 // Today's Sales
 $todaySales = (float) mysqli_fetch_assoc($DB->custom_query(
   "SELECT COALESCE(SUM(total),0) AS s FROM invoices WHERE invoice_date = CURDATE()"
@@ -47,8 +48,10 @@ $outstandingPayments = $totalInvoiceAmount - $totalPaidAmount;
 
 
 /* ==========================================================================
-   3. RECENT INVOICES (UNCHANGED)
+   2. WIDGETS DATA
    ========================================================================== */
+
+// --- Recent Invoices ---
 $recentInvoices = [];
 $res = $DB->custom_query(
   "SELECT i.id, i.invoice_date, i.total, 
@@ -61,12 +64,7 @@ while ($r = mysqli_fetch_assoc($res)) {
   $recentInvoices[] = $r;
 }
 
-
-/* ==========================================================================
-   4. WIDGETS DATA
-   ========================================================================== */
-
-// Top 5 Selling Products
+// --- Top 5 Selling Products ---
 $topProducts = [];
 $res_top_products = $DB->custom_query(
   "SELECT p.name, SUM(ii.quantity) as total_sold
@@ -82,7 +80,7 @@ if ($res_top_products) {
   }
 }
 
-// Pending Payments (Replaces Low Stock)
+// --- Pending Payments ---
 $pendingPayments = [];
 $res_pending_payments = $DB->custom_query("
     SELECT
@@ -106,7 +104,7 @@ if ($res_pending_payments) {
 }
 
 
-// Recent Login Activity
+// --- Recent Login Activity ---
 $recentLogs = [];
 $res_logs = $DB->custom_query(
   "SELECT email, login_time, is_success FROM user_log ORDER BY id DESC LIMIT 5"
@@ -124,7 +122,6 @@ function e($string)
 }
 ?>
 
-<!--  BEGIN BREADCRUMBS  -->
 <div class="secondary-nav">
   <div class="breadcrumbs-container" data-page-heading="Analytics">
     <header class="header navbar navbar-expand-sm">
@@ -138,11 +135,8 @@ function e($string)
     </header>
   </div>
 </div>
-<!--  END BREADCRUMBS  -->
-
 <div class="row layout-top-spacing">
 
-  <!-- =======  Row #1 – Key Metrics (6 Cards)  ======= -->
   <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 layout-spacing">
     <div class="widget widget-card-four">
       <div class="widget-content">
@@ -222,7 +216,6 @@ function e($string)
   </div>
 
 
-  <!-- =======  Row #2 – Mini-lists (Existing) ======= -->
   <div class="col-xl-6 col-lg-12 col-12 layout-spacing">
     <div class="widget widget-four">
       <div class="widget-heading">
@@ -233,7 +226,7 @@ function e($string)
             <p class="text-center">No recent invoices.</p>
         <?php else: ?>
             <?php foreach ($recentInvoices as $inv) : ?>
-              <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                 <span>#<?php echo e($inv['id']) ?> – <?php echo e($inv['customer']) ?></span>
                 <strong>$ <?php echo number_format($inv['total'], 2) ?></strong>
               </div>
@@ -249,19 +242,18 @@ function e($string)
         <h5>Today Overview</h5>
       </div>
       <div class="widget-content">
-        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
           <span>Staff Present</span>
           <strong><?php echo number_format($todayAttendance) ?></strong>
         </div>
-        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
           <span>New Inquiries</span>
-          <strong><?php echo number_format($pendingInquiries) ?></strong>
+          <strong><?php echo number_format($todaysInquiries) ?></strong>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- =======  Row #3 – New Mini-lists  ======= -->
   <div class="col-xl-6 col-lg-12 col-12 layout-spacing">
     <div class="widget widget-four">
       <div class="widget-heading">
@@ -272,7 +264,7 @@ function e($string)
             <p class="text-center">No sales data available.</p>
         <?php else: ?>
             <?php foreach ($topProducts as $product) : ?>
-              <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                 <span><?php echo e($product['name']) ?></span>
                 <strong><?php echo number_format($product['total_sold']) ?> Units Sold</strong>
               </div>
@@ -315,7 +307,6 @@ function e($string)
     </div>
   </div>
   
-  <!-- =======  Row #4 – Recent Activity Log  ======= -->
   <div class="col-xl-12 col-lg-12 col-12 layout-spacing">
     <div class="widget widget-four">
       <div class="widget-heading">
@@ -346,4 +337,3 @@ function e($string)
 </div>
 
 <?php include './include/footer-admin.php'; ?>
-

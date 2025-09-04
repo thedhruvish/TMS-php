@@ -522,7 +522,7 @@ $user = mysqli_fetch_assoc($data);
           </ul>
         </li>
 
-        <!-- Attendant -->
+        <!-- Attendance -->
         <li class="menu">
           <a href="#Attendant" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -540,10 +540,10 @@ $user = mysqli_fetch_assoc($data);
           </a>
           <ul class="collapse submenu list-unstyled " id="Attendant" data-bs-parent="#accordionExample">
             <li class="active">
-              <a href="./attendant.php"> Attendant </a>
+              <a href="./attendant.php"> Attendance </a>
             </li>
             <li>
-              <a href="./view-attendant.php"> View Attendant </a>
+              <a href="./view-attendant.php"> View Attendance </a>
             </li>
           </ul>
         </li>
