@@ -26,7 +26,7 @@ if (isset($_POST['login'])) {
     $user = mysqli_fetch_assoc($result);
 
     if ($user['is_verified'] == 0) {
-    $insert_log = $DB->create("user_log",['user_id',"is_success","email"],[$user['id'],0,$email]);
+      $insert_log = $DB->create("user_log", ['user_id', "is_success", "email"], [$user['id'], 0, $email]);
 
       header("location: ./login.php?error=Contect to Admin for the approved to account");
       exit();
@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['role'] = $user['role'];
-    $insert_log = $DB->create("user_log",['user_id',"is_success","email"],[$user['id'],1,$email]);
+    $insert_log = $DB->create("user_log", ['user_id', "is_success", "email"], [$user['id'], 1, $email]);
     if ($user['role'] === 'admin') {
       header("Location: ./admin");
     } else {
@@ -70,11 +70,6 @@ if (isset($_POST['login'])) {
     </div>
 
 
-    <div class="col-12">
-      <div class="mb-4">
-        <a href="password-reset.php" class="text-primary "> Forget your password ?</a>
-      </div>
-    </div>
     <div class="col-12">
       <div class="mb-4">
         <button name="login" type="submit" class="btn btn-secondary w-100">SIGN IN</button>

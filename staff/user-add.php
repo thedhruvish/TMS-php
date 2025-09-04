@@ -43,7 +43,6 @@ if (isset($_POST['submit-user'])) {
         'role',
         'profile_picture',
         'auth_provider',
-        'two_step_auth',
         'created_by'
     ];
     $values   = [
@@ -55,7 +54,6 @@ if (isset($_POST['submit-user'])) {
         $_POST['role'],
         $profile_picture,
         $_POST['auth_provider'],
-        $_POST['two_step_auth'],
         $_SESSION['user_id']
     ];
 
@@ -68,7 +66,6 @@ if (isset($_POST['submit-user'])) {
             'role',
             'profile_picture',
             'auth_provider',
-            'two_step_auth',
             'is_verified'
         ];
         $updateValues  = [
@@ -79,7 +76,6 @@ if (isset($_POST['submit-user'])) {
             $_POST['role'],
             $profile_picture,
             $_POST['auth_provider'],
-            $_POST['two_step_auth'],
             $_POST['is_verified']
         ];
 
@@ -201,16 +197,6 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             </div>
                         </div>
 
-                        <!-- Two-step -->
-                        <div class="col">
-                            <div class="form-floating">
-                                <select class="form-select" id="two_step_auth" name="two_step_auth" <?php echo $selectDisabled ?>>
-                                    <option value="0" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '0') ? 'selected' : '' ?>>Disabled</option>
-                                    <option value="1" <?php echo (($_POST['two_step_auth'] ?? $userData['two_step_auth'] ?? '') == '1') ? 'selected' : '' ?>>Enabled</option>
-                                </select>
-                                <label for="two_step_auth">Two-Step Auth</label>
-                            </div>
-                        </div>
 
                         <!-- Verified -->
                         <div class="col">

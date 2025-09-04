@@ -27,7 +27,6 @@ $result_web_link = mysqli_query(
                 <table id="html5-extension" class="table dt-table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>CreateBy</th>
                             <th>CreateAt</th>
                             <th>Total Product</th>
@@ -38,7 +37,6 @@ $result_web_link = mysqli_query(
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result_web_link)) { ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
                                 <td><?php echo $row['creator_name']; ?></td>
                                 <td><?php echo $row['createat']; ?></td>
                                 <td><?php echo sizeof(explode(',', $row['productIds'])); ?></td>

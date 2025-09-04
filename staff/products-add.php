@@ -35,7 +35,6 @@ $product = [
     'description' => '',
     'product_code' => '',
     'category' => '',
-    'tags' => '',
     'regular_price' => '',
     'sale_price' => '',
     'includes_tax' => 0,
@@ -164,10 +163,6 @@ if (isset($_GET['id'])) {
                             </select>
                         </div>
 
-                        <div class="col-xxl-12 col-lg-6 col-md-12">
-                            <label>Tags</label>
-                            <input type="text" class="form-control" name="tags" value="<?php echo $product['tags'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
-                        </div>
                     </div>
                 </div>
             </div>

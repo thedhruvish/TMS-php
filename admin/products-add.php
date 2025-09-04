@@ -139,7 +139,6 @@ if (isset($_POST['save'])) {
                 $_POST['description'],
                 $_POST['product_code'],
                 $_POST['category'],
-                $_POST['tags'],
                 $_POST['regular_price'],
                 $_POST['sale_price'],
                 isset($_POST['includes_tax']) ? 1 : 0,
@@ -154,7 +153,6 @@ if (isset($_POST['save'])) {
                 'description',
                 'product_code',
                 'category',
-                'tags',
                 'regular_price',
                 'sale_price',
                 'includes_tax',
@@ -218,7 +216,7 @@ if (isset($_POST['save'])) {
                     <label>Upload Images <?php echo !$isUpdate ? '*' : '' ?></label>
                     <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?> 
                         <?php echo !$isUpdate ? 'required' : '' ?>>
-                    
+
                     <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
                             <div class="image-preview-container">
@@ -241,7 +239,7 @@ if (isset($_POST['save'])) {
                             </div>
                         </div>
                     <?php } ?>
-                    
+
                     <?php if ($isUpdate && !empty($uploadedImages)) { ?>
                         <div class="form-check mt-2">
                             <input class="form-check-input" type="checkbox" name="keep_existing_images" value="1" checked>
@@ -284,12 +282,6 @@ if (isset($_POST['save'])) {
                                     </option>
                                 <?php } ?>
                             </select>
-                        </div>
-
-                        <div class="col-xxl-12 col-lg-6 col-md-12">
-                            <label>Tags</label>
-                            <input type="text" class="form-control" name="tags" value="<?php echo $product['tags'] ?>"
-                                <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                     </div>
                 </div>
