@@ -41,7 +41,7 @@ if (isset($_POST['save'])) {
             $DB->create("attendance", ['user_id', 'att_date', 'status'], [$userId, $today, $status]);
         }
     }
-    header("Location: attendant.php");
+    header("Location: view-attendant.php");
     ob_flush();
     exit;
 }

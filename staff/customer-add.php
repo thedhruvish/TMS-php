@@ -46,25 +46,38 @@ if (isset($_POST['submit'])) {
     $data[$f] = $_POST[$f] ?? '';
   }
 
+  $email = $data['email'];
+  $check_email_res = $DB->read("customer", ['where' => ['email' => ['=' => $email]]]);
+  $existing_customer = mysqli_fetch_assoc($check_email_res);
+
+  $error = null;
+
+  // Check if we are in 'add new customer' mode and if the email already exists
+  if (!isset($_GET['u_id']) && $existing_customer) {
+      $error = "Error: This email address is already registered.";
+  }
+
+  if (!$error) {
   /* IMAGE UPLOAD */
-  if (!empty($_FILES['profile_image']['name'])) {
-    $filename = time() . '_' . basename($_FILES['profile_image']['name']);
-    $targetDir  = '../images/profile/';
-    $targetFile = $targetDir . $filename;
-    if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
-      $data['profile_image'] = $filename;
+    if (!empty($_FILES['profile_image']['name'])) {
+      $filename = time() . '_' . basename($_FILES['profile_image']['name']);
+      $targetDir  = '../images/profile/';
+      $targetFile = $targetDir . $filename;
+      if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
+        $data['profile_image'] = $filename;
+      }
+    } else {
+      /* keep existing image if nothing uploaded */
+      $data['profile_image'] = $editData['profile_image'] ?? '';
     }
-  } else {
-    /* keep existing image if nothing uploaded */
-    $data['profile_image'] = $editData['profile_image'] ?? '';
+    if (isset($_GET['u_id'])) {
+      $DB->update("customer", array_keys($data), array_values($data), 'id', (int)$_GET['u_id']);
+    } else {
+      $DB->create("customer", array_keys($data), array_values($data));
+    }
+    header("Location: customer.php");
+    exit;
   }
-  if (isset($_GET['u_id'])) {
-    $DB->update("customer", array_keys($data), array_values($data), 'id', (int)$_GET['u_id']);
-  } else {
-    $DB->create("customer", array_keys($data), array_values($data));
-  }
-  header("Location: customer.php");
-  exit;
 }
 
 /* ---------- SHARED DATA ---------- */
@@ -83,6 +96,12 @@ $row = $viewMode ? $viewData : $editData;
 <link rel="stylesheet" href="../src/assets/css/dark/apps/blog-create.css">
 <!--  END STYLES  -->
 
+
+<?php if (isset($error)) { ?>
+    <div class="alert alert-danger" role="alert">
+        <?php echo $error; ?>
+    </div>
+<?php } ?>
 <div class="container my-5">
   <?php if ($viewMode) { ?>
     <h3 class="mb-4">Customer Details (Read-Only)</h3>
