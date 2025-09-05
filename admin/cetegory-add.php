@@ -30,18 +30,16 @@ if (isset($_GET['u_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Always sanitize inputs
     $title = trim($_POST['title']);
-    
-    // LOGIC FIX: Securely check for duplicate category names to prevent SQL injection
-    $checkQuery = "SELECT * FROM category WHERE LOWER(tag) = LOWER(?)";
-    $params = [&$title];
-    if ($isUpdate) {
-        $checkQuery .= " AND id != ?";
-        $params[] = &$updateId;
-    }
-    $checkRes = $DB->custom_query($checkQuery, $params);
+    $checkRes = $DB->custom_query("
+    SELECT * FROM category 
+    WHERE LOWER(tag) = LOWER('" . $title . "')
+");
 
     if ($checkRes && mysqli_num_rows($checkRes) > 0) {
-        $error = "Category name already exists!";
+        $existing = mysqli_fetch_assoc($checkRes);
+        if (!$isUpdate || $existing['id'] != $updateId) {
+            $error = "Category name already exists!";
+        }
     }
 
     // Handle image upload
@@ -63,47 +61,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($isUpdate && !empty($category['image']) && file_exists('../' . $category['image'])) {
                     unlink('../' . $category['image']);
                 }
-            } else {
-                 $error = "Failed to move uploaded file.";
             }
-        } 
-        // If no new file is uploaded, $uploadedImagePath already holds the existing image path.
+        } elseif ($isUpdate && !empty($category['image'])) {
+            // Keep existing image if no new image was uploaded
+            $uploadedImagePath = $category['image'];
+        }
 
-        if (!isset($error)) {
-            // Prepare data - matches your table structure
-            $data = [
-                $_POST['description'],
-                $uploadedImagePath,
-                $_POST['title']  // This is stored in 'tag' column
-            ];
+        // Prepare data - matches your table structure
+        $data = [
+            $_POST['description'],
+            $uploadedImagePath,
+            $_POST['title']  // This is stored in 'tag' column
+        ];
 
-            $columns = ['description', 'image', 'tag'];
+        $columns = ['description', 'image', 'tag'];
 
-            try {
-                if ($isUpdate && $updateId !== null) {
-                    $result = $DB->update('category', $columns, $data, 'id', $updateId);
-                    if ($result) {
-                        $_SESSION['message'] = "Category updated successfully";
-                        header("Location: cetegory.php");
-                        exit;
-                    }
-                } else {
-                    $result = $DB->create('category', $columns, $data);
-                    if ($result) {
-                        $_SESSION['message'] = "Category added successfully";
-                        header("Location: cetegory.php");
-                        exit;
-                    }
+        try {
+            if ($isUpdate && $updateId !== null) {
+                $result = $DB->update('category', $columns, $data, 'id', $updateId);
+                if ($result) {
+                    $_SESSION['message'] = "Category updated successfully";
+                    header("Location: cetegory.php");
+                    exit;
                 }
-                // If we get here, the operation failed
-                $error = "Failed to save category to database. Please check your data.";
-            } catch (Exception $e) {
-                $error = "Database error: " . $e->getMessage();
+            } else {
+                $result = $DB->create('category', $columns, $data);
+                if ($result) {
+                    $_SESSION['message'] = "Category added successfully";
+                    header("Location: cetegory.php");
+                    exit;
+                }
             }
+
+            // If we get here, the operation failed
+            $error = "Failed to save category to database. Please check your data.";
+        } catch (Exception $e) {
+            $error = "Database error: " . $e->getMessage();
         }
     }
 }
-
 function e($string) {
     return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
 }
