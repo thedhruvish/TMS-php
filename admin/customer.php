@@ -2,15 +2,29 @@
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
+
 $customer = $DB->read("customer");
 
 if (isset($_GET['d_id'])) {
-  $DB->delete("customer", "id", $_GET['d_id']);
-  header("Location: customer.php");
-  exit();
-}
+  $deleteId = $_GET['d_id'];
 
+  // Check if this customer has invoices
+  $checkInvoice = $DB->custom_query("SELECT COUNT(*) as cnt FROM invoices WHERE customer_id = '$deleteId'");
+  $invoiceData = mysqli_fetch_assoc($checkInvoice);
+
+  if ($invoiceData['cnt'] > 0) {
+    // Customer has invoices, do not delete
+    echo "<script>alert('Customer cannot be deleted because invoices exist.'); window.location='customer.php';</script>";
+    exit();
+  } else {
+    // Safe to delete
+    $DB->delete("customer", "id", $deleteId);
+    header("Location: customer.php");
+    exit();
+  }
+}
 ?>
+
 
 <div class="row">
   <div class="seperator-header layout-top-spacing">

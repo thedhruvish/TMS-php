@@ -87,10 +87,7 @@ $data = mysqli_fetch_assoc($result);
 
       <h5 class="mt-4 mb-3">Invoice Information</h5>
       <table class="table table-bordered table-striped">
-        <tr>
-          <th style="width: 30%;">Invoice Label</th>
-          <td><?php echo $data['invoice_label']; ?></td>
-        </tr>
+
         <tr>
           <th>Client Name</th>
           <td><?php echo $data['client_name']; ?></td>
