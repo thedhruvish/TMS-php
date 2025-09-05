@@ -1,31 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Sep 04, 2025 at 06:52 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `tms-php`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `attendance`
---
 
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
@@ -35,10 +7,6 @@ CREATE TABLE `attendance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
---
--- Table structure for table `category`
---
-
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `description` text DEFAULT NULL,
@@ -46,11 +14,6 @@ CREATE TABLE `category` (
   `tag` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `customer`
---
 
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
@@ -72,12 +35,6 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
--- --------------------------------------------------------
-
---
--- Table structure for table `inquiry`
---
-
 CREATE TABLE `inquiry` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -90,17 +47,6 @@ CREATE TABLE `inquiry` (
   `updated_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `inquiry`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `invoices`
---
 
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
@@ -120,13 +66,6 @@ CREATE TABLE `invoices` (
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
--- --------------------------------------------------------
-
---
--- Table structure for table `invoice_items`
---
-
 CREATE TABLE `invoice_items` (
   `id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
@@ -136,13 +75,6 @@ CREATE TABLE `invoice_items` (
   `amount` decimal(12,2) DEFAULT 0.00,
   `taxable` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payments`
---
 
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
@@ -157,17 +89,6 @@ CREATE TABLE `payments` (
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `payments`
---
-
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `products`
---
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
@@ -187,13 +108,6 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock`
---
-
 CREATE TABLE `stock` (
   `id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
@@ -204,14 +118,6 @@ CREATE TABLE `stock` (
   `pending_stock` int(11) DEFAULT NULL,
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ;
-
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -227,19 +133,10 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
 
 INSERT INTO `users` (`id`, `is_verified`, `name`, `email`, `password`, `mobile_no`, `role`, `profile_picture`, `auth_provider`,  `created_by`, `created_at`) VALUES
 (1, 1, 'admin', 'admin@gmail.com', 'admin@123', 7894568756, 'admin', '1755402618_max-media-landing-pages-5-2000x1332.jpg', 'local', 0,  '2025-08-17 03:46:49'),
 (2, 1, 'staff', 'staff@gmail.com', 'staff@123', 7894568756, 'staff', 'avatar.png', 'local', 0,  '2025-08-17 03:46:49');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_log`
---
 
 CREATE TABLE `user_log` (
   `id` int(11) NOT NULL,
@@ -249,14 +146,6 @@ CREATE TABLE `user_log` (
   `login_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `weblink`
---
 
 CREATE TABLE `weblink` (
   `id` int(11) NOT NULL,
@@ -266,205 +155,102 @@ CREATE TABLE `weblink` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
---
--- Indexes for table `attendance`
---
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uniq_user_date` (`user_id`,`att_date`);
 
---
--- Indexes for table `category`
---
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `customer`
---
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `inquiry`
---
+
 ALTER TABLE `inquiry`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `invoices`
---
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `invoice_items`
---
+
 ALTER TABLE `invoice_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_items_invoice` (`invoice_id`);
 
---
--- Indexes for table `payments`
---
+
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `invoice_id` (`invoice_id`);
 
---
--- Indexes for table `products`
---
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 
---
--- Indexes for table `stock`
---
 ALTER TABLE `stock`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_stock_product` (`product_id`);
 
---
--- Indexes for table `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `user_log`
---
+
 ALTER TABLE `user_log`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
---
--- Indexes for table `weblink`
---
+
 ALTER TABLE `weblink`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_weblink_createby` (`createby`);
 
---
--- AUTO_INCREMENT for dumped tables
---
 
---
--- AUTO_INCREMENT for table `attendance`
---
 ALTER TABLE `attendance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
---
--- AUTO_INCREMENT for table `category`
---
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
---
--- AUTO_INCREMENT for table `customer`
---
 ALTER TABLE `customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- AUTO_INCREMENT for table `inquiry`
---
 ALTER TABLE `inquiry`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT for table `invoices`
---
+
 ALTER TABLE `invoices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
---
--- AUTO_INCREMENT for table `invoice_items`
---
 ALTER TABLE `invoice_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
---
--- AUTO_INCREMENT for table `payments`
---
 ALTER TABLE `payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
---
--- AUTO_INCREMENT for table `products`
---
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
---
--- AUTO_INCREMENT for table `reset_password`
---
-ALTER TABLE `reset_password`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `stock`
---
 ALTER TABLE `stock`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `users`
---
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
---
--- AUTO_INCREMENT for table `user_log`
---
 ALTER TABLE `user_log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT for table `weblink`
---
 ALTER TABLE `weblink`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `invoice_items`
---
 ALTER TABLE `invoice_items`
   ADD CONSTRAINT `fk_items_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE;
 
---
--- Constraints for table `payments`
---
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE;
 
---
--- Constraints for table `reset_password`
---
-ALTER TABLE `reset_password`
-  ADD CONSTRAINT `reset_password_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `stock`
---
 ALTER TABLE `stock`
   ADD CONSTRAINT `fk_stock_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `user_log`
---
 ALTER TABLE `user_log`
   ADD CONSTRAINT `user_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
---
--- Constraints for table `weblink`
---
 ALTER TABLE `weblink`
   ADD CONSTRAINT `fk_weblink_createby` FOREIGN KEY (`createby`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 COMMIT;
