@@ -409,7 +409,9 @@ if (isset($_GET['id'])) {
     // --- Data from PHP ---
     const productPriceMap = {
       <?php foreach ($products as $p): 
-            $price = !empty($p['sale_price']) ? $p['sale_price'] : $p['regular_price']; ?>
+           $price = (!empty($p['sale_price']) && (float)$p['sale_price'] > 0) 
+           ? $p['sale_price'] 
+           : $p['regular_price'];?>
             <?php echo $p['id']; ?>: <?php echo (float)$price; ?>,
         <?php endforeach; ?>
     };
