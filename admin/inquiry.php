@@ -4,6 +4,7 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
 // Create a query to join the inquiry table with the users table
+
 $query = "
     SELECT 
         inquiry.*, 

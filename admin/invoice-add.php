@@ -239,7 +239,7 @@ if (isset($_GET['id'])) {
                       </td>
                       <td>
                         <select name="items[<?php echo $idx ?>][product_id]" class="form-select"
-                          <?php echo $view_mode ? 'disabled' : '' ?>>
+                          <?php echo $view_mode ? 'disabled' : '' ?> required>
                           <option value="">Choose product…</option>
                           <?php foreach ($products as $product) { ?>
                             <option value="<?php echo $product['id'] ?>"
@@ -253,13 +253,13 @@ if (isset($_GET['id'])) {
                         <input type="number" step="0.01" name="items[<?php echo $idx ?>][rate]"
                           class="form-control text-end rate-input"
                           value="<?php echo $it['rate'] ?? '' ?>"
-                          <?php echo $view_mode ? 'readonly' : '' ?>>
+                          <?php echo $view_mode ? 'readonly' : '' ?> required>
                       </td>
                       <td>
                         <input type="number" name="items[<?php echo $idx ?>][quantity]"
                           class="form-control text-end qty-input"
                           value="<?php echo $it['quantity'] ?? '' ?>"
-                          <?php echo $view_mode ? 'readonly' : '' ?>>
+                          <?php echo $view_mode ? 'readonly' : '' ?> required>
                       </td>
                       <td class="text-end">
                         $<span class="item-amount">
@@ -574,7 +574,7 @@ if (isset($_GET['id'])) {
             tr.innerHTML = `
             <td class="text-center"><a href="javascript:void(0)" class="text-danger delete-item">✕</a></td>
             <td>
-                <select name="items[${idx}][product_id]" class="form-select">
+                <select name="items[${idx}][product_id]" class="form-select" required>
                     <option value="">Choose product…</option>
                     <?php foreach ($products as $p) { ?>
                         <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['name']); ?></option>
@@ -582,10 +582,10 @@ if (isset($_GET['id'])) {
                 </select>
             </td>
             <td>
-                <input type="number" step="0.01" name="items[${idx}][rate]" class="form-control text-end rate-input" value="">
+                <input type="number" step="0.01" name="items[${idx}][rate]" class="form-control text-end rate-input" value="" required>
             </td>
             <td>
-                <input type="number" name="items[${idx}][quantity]" class="form-control text-end qty-input" value="">
+                <input type="number" name="items[${idx}][quantity]" class="form-control text-end qty-input" value="" required>
             </td>
             <td class="text-end">
                 $<span class="item-amount">0.00</span>

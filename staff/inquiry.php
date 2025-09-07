@@ -12,6 +12,7 @@ $query = "
 ";
 $result = $DB->custom_query($query);
 
+
 if (isset($_GET['d_id'])) {
   $delete = $DB->delete("inquiry", "id", $_GET['d_id']);
   if ($delete) {
@@ -22,7 +23,6 @@ if (isset($_GET['d_id'])) {
 }
 
 ?>
-
 
 <div class="row">
   <div class="seperator-header layout-top-spacing">
@@ -41,9 +41,7 @@ if (isset($_GET['d_id'])) {
               <th>Date</th>
               <th>Status</th>
               <th>Created By</th>
-              <!-- <th>Open</th> -->
               <th>Edit</th>
-              <!-- <th>Delete</th> -->
             </tr>
           </thead>
           <tbody>
@@ -53,19 +51,17 @@ if (isset($_GET['d_id'])) {
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td><?php echo $row['message'] ?></td>
-                <td><?php echo $row['created_at'] ?></td>
                 <td><?php echo date('d M Y', strtotime($row['created_at'])) ?></td>
                 <td>
                   <?php echo ($row['status'] == '1') ? '<span class="badge badge-success">Done</span>' : '<span class="badge badge-warning">Pending</span>'; ?>
                 </td>
                 <td><?php echo $row['created_by_name'] ?? 'N/A'; ?></td>
-                <!-- <td><a class="dropdown-item" href="inquiry-add.php?id=<?php echo $row['id'] ?>"> <button type="button" class="btn btn-primary btn-sm">Open</button></a></td> -->
-                <td><a class="dropdown-item" href="inquiry-add.php?u_id=<?php echo $row['id'] ?>"> <button type="button"
-                      class="btn btn-secondary btn-sm">Edit</button></a></td>
-                <!-- <td><a href="inquiry.php?d_id=<?php echo $row['id'] ?>">
-                    <button type="button" class="btn btn-dark btn-sm">Delete</button>
+                <td>
+                  <a class="dropdown-item" href="inquiry-add.php?u_id=<?php echo $row['id'] ?>">
+                    <button type="button" class="btn btn-secondary btn-sm">Edit</button>
                   </a>
-                </td> -->
+                </td>
+                
               </tr>
             <?php } ?>
           </tbody>
@@ -73,7 +69,6 @@ if (isset($_GET['d_id'])) {
       </div>
     </div>
   </div>
-
 </div>
 
 <?php require_once './include/footer-staff.php'; ?>

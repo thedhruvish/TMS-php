@@ -79,39 +79,13 @@ try {
 }
 ?>
 
-
-<!-- Search and Filter Section -->
-<div class="row mb-4 align-items-center justify-content-between">
-  <div class="col-lg-6 d-flex align-items-center">
-    <form method="get" class="d-flex flex-grow-1 gap-2">
-      <?php if (!empty($searchTerm) || !empty($filterCategory)) { ?>
-        <a href="cetegory.php" class="btn btn-outline-secondary">Clear</a>
-      <?php } ?>
-    </form>
-  </div>
-
-  <div class="col-lg-6 text-lg-end text-start mt-3 mt-lg-0">
-    <div class="dropdown d-inline-block">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown" aria-expanded="false">
-        <?php echo !empty($filterCategory) ? $filterCategory : 'Filter by Category' ?>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="categoryFilter">
-        <li><a class="dropdown-item" href="cetegory.php">All Categories</a></li>
-        <?php foreach ($allCategories as $cat) { ?>
-          <li><a class="dropdown-item" href="cetegory.php?filter=<?php echo urlencode($cat) ?>"><?php echo $cat ?></a></li>
-        <?php }; ?>
-      </ul>
-    </div>
-  </div>
-</div>
-
 <!-- Messages -->
 <?php if (isset($_SESSION['message'])) { ?>
   <div class="alert alert-success alert-dismissible fade show">
     <?php echo $_SESSION['message'] ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<?php unset($_SESSION['message']);
+  <?php unset($_SESSION['message']);
 } ?>
 
 <?php if ($error) { ?>
@@ -120,7 +94,13 @@ try {
   </div>
 <?php } ?>
 
-<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+<?php if ($error) { ?>
+  <div class="alert alert-danger">
+    Error: <?php echo $error ?>
+  </div>
+<?php } ?>
+
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing p-2">
   <div class="statbox widget box box-shadow">
     <div class="widget-content widget-content-area">
       <table id="html5-extension" class="table dt-table-hover" style="width:100%">
