@@ -522,16 +522,19 @@ if (isset($_GET['id'])) {
             calculatedDiscount = subtotal;
         }
 
-        // --- Tax Calculation ---
-        let taxValue = parseFloat(document.getElementById('tax-value-input').value) || 0;
-        const taxType = document.getElementById('tax-type-select').value;
-        let calculatedTax = 0;
+        
+       // --- Tax Calculation ---
+      let taxValue = parseFloat(document.getElementById('tax-value-input').value) || 0;
+      const taxType = document.getElementById('tax-type-select').value;
+      let calculatedTax = 0;
 
-        if (taxType === 'percentage') {
-            calculatedTax = (subtotal * taxValue) / 100;
-        } else {
-            calculatedTax = taxValue;
-        }
+      const taxableAmount = subtotal - calculatedDiscount;
+
+      if (taxType === 'percentage') {
+          calculatedTax = (taxableAmount * taxValue) / 100;
+      } else {
+          calculatedTax = taxValue;
+      }
 
         // --- Final Total ---
         const total = subtotal - calculatedDiscount + calculatedTax;

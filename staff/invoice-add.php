@@ -527,8 +527,10 @@ if (isset($_GET['id'])) {
         const taxType = document.getElementById('tax-type-select').value;
         let calculatedTax = 0;
 
+        const taxableAmount = subtotal - calculatedDiscount;
+
         if (taxType === 'percentage') {
-            calculatedTax = (subtotal * taxValue) / 100;
+            calculatedTax = (taxableAmount * taxValue) / 100;
         } else {
             calculatedTax = taxValue;
         }
