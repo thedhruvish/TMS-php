@@ -30,6 +30,7 @@ if (isset($_GET['d_id'])) {
 <div class="row">
   <div class="seperator-header layout-top-spacing">
     <h4 class="">Inquiry</h4>
+    <a href="inquiry-add.php" class="btn btn-primary">Add New Inquiry</a>
   </div>
   <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="statbox widget box box-shadow">
