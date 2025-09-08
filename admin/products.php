@@ -1,5 +1,4 @@
 <?php
-$pageTitle = "Products";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
@@ -16,7 +15,7 @@ if (isset($_GET['share']) && !empty($_GET['products'])) {
 // Handle delete action
 if (isset($_GET['delete_id'])) {
     try {
-        $deleteId = (int)$_GET['delete_id'];
+        $deleteId = (int) $_GET['delete_id'];
         $result = $DB->delete("products", "id", $deleteId);
         if ($result) {
             $_SESSION['message'] = "Product deleted successfully";
@@ -132,25 +131,31 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
     <div class="col-lg-6 text-lg-end text-start">
         <form id="filterForm" method="get" class="d-inline-block w-100">
             <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm, ENT_QUOTES) ?>">
-            <input type="hidden" name="category" id="categoryInput" value="<?= htmlspecialchars($categoryFilter, ENT_QUOTES) ?>">
+            <input type="hidden" name="category" id="categoryInput"
+                value="<?= htmlspecialchars($categoryFilter, ENT_QUOTES) ?>">
             <input type="hidden" name="sort" id="sortInput" value="<?= htmlspecialchars($sortBy, ENT_QUOTES) ?>">
 
             <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         <?= htmlspecialchars($categoryFilter ?: 'All Categories') ?>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
-                        <?php foreach ($categories as $cat): if (!empty($cat)): ?>
-                                <li><a class="dropdown-item" href="#" onclick="selectCategory('<?= htmlspecialchars($cat, ENT_QUOTES) ?>')"><?= htmlspecialchars($cat) ?></a></li>
-                        <?php endif;
+                        <?php foreach ($categories as $cat):
+                            if (!empty($cat)): ?>
+                                <li><a class="dropdown-item" href="#"
+                                        onclick="selectCategory('<?= htmlspecialchars($cat, ENT_QUOTES) ?>')"><?= htmlspecialchars($cat) ?></a>
+                                </li>
+                            <?php endif;
                         endforeach; ?>
                     </ul>
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         <?php
                         echo match ($sortBy) {
                             'price_low' => 'Price: Low to High',
@@ -161,8 +166,10 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#" onclick="selectSort('newest')">Newest</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_low')">Price: Low to High</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_high')">Price: High to Low</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_low')">Price: Low to High</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#" onclick="selectSort('price_high')">Price: High to Low</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -178,7 +185,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php unset($_SESSION['message']);
+    <?php unset($_SESSION['message']);
 } ?>
 
 <?php if ($error) { ?>
@@ -211,24 +218,23 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         </span>
                     <?php endif; ?>
 
-                    <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                    <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide"
+                        data-bs-ride="carousel" data-bs-interval="false">
                         <?php if (count($product['images']) > 1) { ?>
                             <ol class="carousel-indicators mb-1">
                                 <?php foreach ($product['images'] as $k => $image) { ?>
-                                    <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>" 
-                                        data-bs-slide-to="<?php echo $k; ?>" 
-                                        class="<?php echo $k == 0 ? 'active' : '' ?>" 
+                                    <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>"
+                                        data-bs-slide-to="<?php echo $k; ?>" class="<?php echo $k == 0 ? 'active' : '' ?>"
                                         style="width: 8px; height: 8px; border-radius: 50%; margin: 0 3px;"></li>
                                 <?php } ?>
                             </ol>
                         <?php } ?>
-                        
+
                         <div class="carousel-inner">
                             <?php foreach ($product['images'] as $k => $image) { ?>
                                 <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
                                     <div class="ratio ratio-4x3">
-                                        <img class="img-fluid object-fit-cover w-100"
-                                            src="../images/products/<?php echo $image ?>"
+                                        <img class="img-fluid object-fit-cover w-100" src="../images/products/<?php echo $image ?>"
                                             alt="<?php echo htmlspecialchars($product['name']); ?>">
                                     </div>
                                 </div>
@@ -236,11 +242,13 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         </div>
 
                         <?php if (count($product['images']) > 1) { ?>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>"
+                                role="button" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
+                            <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>"
+                                role="button" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </a>
@@ -248,7 +256,8 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                     </div>
 
                     <div class="card-body d-flex flex-column">
-                        <h6 class="card-title mb-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
+                        <h6 class="card-title mb-2"
+                            style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
                             <a href="products-add.php?id=<?php echo $product['id'] ?>" class="text-decoration-none text-dark">
                                 <?php echo htmlspecialchars($product['name']); ?>
                             </a>
@@ -270,7 +279,8 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         </div>
 
                         <?php if (!empty($product['description'])) { ?>
-                            <p class="text-muted small mb-2" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
+                            <p class="text-muted small mb-2"
+                                style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
                                 <?php echo htmlspecialchars($product['description']); ?>
                             </p>
                         <?php } ?>
@@ -286,8 +296,10 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         </div>
 
                         <div class="d-flex justify-content-between mt-auto">
-                            <a href="products-add.php?u_id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <button onclick="confirmDelete(<?php echo $product['id'] ?>)" class="btn btn-sm btn-outline-danger">Delete</button>
+                            <a href="products-add.php?u_id=<?php echo $product['id'] ?>"
+                                class="btn btn-sm btn-outline-primary">Edit</a>
+                            <button onclick="confirmDelete(<?php echo $product['id'] ?>)"
+                                class="btn btn-sm btn-outline-danger">Delete</button>
                         </div>
                     </div>
                 </div>

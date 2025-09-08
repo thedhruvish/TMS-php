@@ -1,5 +1,4 @@
-<?php $pageTitle = "Invoice";
-
+<?php 
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 

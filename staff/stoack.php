@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Stock Management";
+
 require_once './include/header-staff.php';
 require_once './include/sidebar-staff.php';
 

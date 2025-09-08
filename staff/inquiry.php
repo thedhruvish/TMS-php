@@ -1,4 +1,5 @@
-<?php $pageTitle = "Invoice";
+<?php
+
 require_once './include/header-staff.php';
 require_once './include/sidebar-staff.php';
 
@@ -61,7 +62,7 @@ if (isset($_GET['d_id'])) {
                     <button type="button" class="btn btn-secondary btn-sm">Edit</button>
                   </a>
                 </td>
-                
+
               </tr>
             <?php } ?>
           </tbody>

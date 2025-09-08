@@ -1,5 +1,5 @@
 <?php
-$pageTitle = isset($_GET['u_id']) ? "Edit Payment" : "Add Payment";
+
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 

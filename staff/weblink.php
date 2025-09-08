@@ -1,4 +1,5 @@
-<?php $pageTitle = "Weblink";
+<?php
+
 require_once './include/header-staff.php';
 require_once './include/sidebar-staff.php';
 if (isset($_GET['d_id'])) {

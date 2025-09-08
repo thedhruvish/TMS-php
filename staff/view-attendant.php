@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Attendance – View Only";
+
 require_once './include/header-staff.php';
 require_once './include/sidebar-staff.php';
 

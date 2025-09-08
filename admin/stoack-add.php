@@ -1,5 +1,4 @@
 <?php
-$pageTitle = "Add Stock";
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 

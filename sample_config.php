@@ -14,16 +14,11 @@ define('GOOGLE_CLIENT_ID', '952752472768-sbnvpm60s3vm6hj93lac9kd5q2cdmj87.apps.g
 define('GOOGLE_CLIENT_SECRET', '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');
 define('GOOGLE_REDIRECT_URI', 'http://localhost/tms-php/g-callback.php');
 
-// mail config
-define("MAIL_ID","d@otp.thedhruvish.com");
-define("USERNAME","resend");
-define("PASSWORD","re_91LHp8xK_Lr43N6tvULhJPtYotPJ4hCqV");
-define("HOST","smtp.resend.com");
 
-define("IS_ALTER_ACTIVE",true);
+define("IS_ALTER_ACTIVE", true);
 // telegram bot setup
-define("BOT_TOKEN","8360906503:AAGDd_p0_CA5LtaId6xPTDUADowL4jDG8GQ");
-define("CHAT_ID","-1002934111466");
+define("BOT_TOKEN", "8360906503:AAGDd_p0_CA5LtaId6xPTDUADowL4jDG8GQ");
+define("CHAT_ID", "-1002934111466");
 
 
 ?>
