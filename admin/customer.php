@@ -2,8 +2,18 @@
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
-
-$customer = $DB->read("customer");
+$sql = "
+    SELECT 
+        c.*, 
+        SUM(i.total) AS calculated_total_amount 
+    FROM 
+        customer c
+    LEFT JOIN 
+        invoices i ON c.id = i.customer_id 
+    GROUP BY 
+        c.id
+";
+$customer = $DB->custom_query($sql);
 
 if (isset($_GET['d_id'])) {
   $deleteId = $_GET['d_id'];
@@ -66,7 +76,7 @@ if (isset($_GET['d_id'])) {
                 </td>
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
-                <td><?php echo $row['total_amount'] ?></td>
+                <td><?php echo $row['calculated_total_amount'] ?></td>
                 <td><?php echo $row['dob'] ?></td>
                 <td><?php echo $row['country'] ?></td>
                 <td>

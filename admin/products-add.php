@@ -32,7 +32,6 @@ require_once './include/sidebar-admin.php';
 $product = [
     'name' => '',
     'description' => '',
-    'product_code' => '',
     'category' => '',
     'tags' => '',
     'regular_price' => '',
@@ -137,7 +136,6 @@ if (isset($_POST['save'])) {
             $data = [
                 $_POST['name'],
                 $_POST['description'],
-                $_POST['product_code'],
                 $_POST['category'],
                 $_POST['regular_price'],
                 $_POST['sale_price'],
@@ -151,7 +149,6 @@ if (isset($_POST['save'])) {
             $columns = [
                 'name',
                 'description',
-                'product_code',
                 'category',
                 'regular_price',
                 'sale_price',
@@ -266,11 +263,7 @@ if (isset($_POST['save'])) {
             <div class="col-xxl-12 col-xl-8 col-lg-8 col-md-7 mt-xxl-0 mt-4">
                 <div class="widget-content widget-content-area ecommerce-create-section">
                     <div class="row">
-                        <div class="col-xxl-12 col-md-6 mb-4">
-                            <label>Product Code</label>
-                            <input type="text" class="form-control" name="product_code"
-                                value="<?php echo $product['product_code'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
-                        </div>
+                       
 
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Category *</label>

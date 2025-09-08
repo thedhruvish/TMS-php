@@ -32,6 +32,7 @@ CREATE TABLE `customer` (
   `notes` text DEFAULT NULL,
   `profile_image` text DEFAULT 'f',
   `total_amount` text DEFAULT '0'
+  `created_by` int(11) NOT NULL,  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -81,7 +82,7 @@ CREATE TABLE `payments` (
   `invoice_id` int(11) NOT NULL,
   `payment_date` date DEFAULT curdate(),
   `amount_paid` decimal(12,2) NOT NULL,
-  `payment_method` enum('cash','card','bank_transfer','upi','paypal') DEFAULT 'cash',
+  `payment_method` enum('cash','card','bank_transfer','upi','cheque') DEFAULT 'cash',
   `reference_number` varchar(100) DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -94,7 +95,6 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  `product_code` varchar(100) NOT NULL,
   `category` varchar(100) DEFAULT NULL,
   `regular_price` decimal(10,2) DEFAULT NULL,
   `sale_price` decimal(10,2) DEFAULT NULL,
