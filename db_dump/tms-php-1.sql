@@ -1,3 +1,31 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 09, 2025 at 05:31 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `tms-php`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
 
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
@@ -6,6 +34,11 @@ CREATE TABLE `attendance` (
   `status` enum('P','A') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
@@ -14,6 +47,11 @@ CREATE TABLE `category` (
   `tag` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
 
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
@@ -32,9 +70,13 @@ CREATE TABLE `customer` (
   `notes` text DEFAULT NULL,
   `profile_image` text DEFAULT 'f',
   `total_amount` text DEFAULT '0'
-  `created_by` int(11) NOT NULL,  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inquiry`
+--
 
 CREATE TABLE `inquiry` (
   `id` int(11) NOT NULL,
@@ -48,6 +90,12 @@ CREATE TABLE `inquiry` (
   `updated_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoices`
+--
 
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
@@ -67,6 +115,12 @@ CREATE TABLE `invoices` (
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_items`
+--
+
 CREATE TABLE `invoice_items` (
   `id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
@@ -76,6 +130,12 @@ CREATE TABLE `invoice_items` (
   `amount` decimal(12,2) DEFAULT 0.00,
   `taxable` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
 
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
@@ -90,6 +150,11 @@ CREATE TABLE `payments` (
   `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
@@ -107,6 +172,11 @@ CREATE TABLE `products` (
   `images` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock`
+--
 
 CREATE TABLE `stock` (
   `id` int(11) NOT NULL,
@@ -117,7 +187,13 @@ CREATE TABLE `stock` (
   `dead_stock` int(11) DEFAULT NULL,
   `pending_stock` int(11) DEFAULT NULL,
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -133,10 +209,20 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `users`
+--
 
-INSERT INTO `users` (`id`, `is_verified`, `name`, `email`, `password`, `mobile_no`, `role`, `profile_picture`, `auth_provider`,  `created_by`, `created_at`) VALUES
-(1, 1, 'admin', 'admin@gmail.com', 'admin@123', 7894568756, 'admin', '1755402618_max-media-landing-pages-5-2000x1332.jpg', 'local', 0,  '2025-08-17 03:46:49'),
-(2, 1, 'staff', 'staff@gmail.com', 'staff@123', 7894568756, 'staff', 'avatar.png', 'local', 0,  '2025-08-17 03:46:49');
+INSERT INTO `users` (`id`, `is_verified`, `name`, `email`, `password`, `mobile_no`, `role`, `profile_picture`, `auth_provider`, `created_by`, `created_at`) VALUES
+(1, 1, 'Maunish', 'maunish247@gmail.com', 'admin@123', 7863039332, 'admin', '1757240344_myphoto.jpg', 'local', 0, '2025-08-16 22:16:49'),
+(3, 1, 'Rohan ', 'rohan24@gmail.com', '123', 8246156750, 'staff', '1757240059_8815077.png', 'local', 1, '2025-09-07 10:14:19'),
+(4, 1, 'Rahul', 'rahul005@gmail.com', '123', 9978828300, 'staff', '1757240362_download (18).jfif', 'local', 1, '2025-09-07 10:15:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_log`
+--
 
 CREATE TABLE `user_log` (
   `id` int(11) NOT NULL,
@@ -146,6 +232,11 @@ CREATE TABLE `user_log` (
   `login_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weblink`
+--
 
 CREATE TABLE `weblink` (
   `id` int(11) NOT NULL,
@@ -154,6 +245,9 @@ CREATE TABLE `weblink` (
   `productIds` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Indexes for dumped tables
+--
 
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
@@ -165,18 +259,15 @@ ALTER TABLE `category`
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
-
 ALTER TABLE `inquiry`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`id`);
 
-
 ALTER TABLE `invoice_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_items_invoice` (`invoice_id`);
-
 
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
@@ -185,7 +276,6 @@ ALTER TABLE `payments`
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
-
 ALTER TABLE `stock`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_stock_product` (`product_id`);
@@ -193,52 +283,57 @@ ALTER TABLE `stock`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
-
 ALTER TABLE `user_log`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
-
 
 ALTER TABLE `weblink`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_weblink_createby` (`createby`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 ALTER TABLE `inquiry`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 ALTER TABLE `invoice_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 ALTER TABLE `stock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 ALTER TABLE `user_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
 ALTER TABLE `weblink`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
 
 ALTER TABLE `invoice_items`
   ADD CONSTRAINT `fk_items_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE;
@@ -248,6 +343,7 @@ ALTER TABLE `payments`
 
 ALTER TABLE `stock`
   ADD CONSTRAINT `fk_stock_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 ALTER TABLE `user_log`
   ADD CONSTRAINT `user_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
