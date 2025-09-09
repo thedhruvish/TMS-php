@@ -58,11 +58,11 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                         <div class="col-sm-6 col-12 mr-auto">
                           <div class="d-flex">
                             <img class="company-logo" src="../src/assets/img/cork-logo.png" alt="company">
-                            <h3 class="in-heading align-self-center">Cork Inc.</h3>
+                            <h3 class="in-heading align-self-center">TMS</h3>
                           </div>
-                          <p class="inv-street-addr mt-3">XYZ Delta Street</p>
-                          <p class="inv-email-address">info@company.com</p>
-                          <p class="inv-email-address">(120) 456 789</p>
+                          <p class="inv-street-addr mt-3">TMS CO. LI.</p>
+                          <p class="inv-email-address">thedhruvish@gmail.com</p>
+                          <p class="inv-email-address">+91 8238129140</p>
                         </div>
                         <div class="col-sm-6 text-sm-end">
                           <p class="inv-list-number mt-sm-3 pb-sm-2 mt-4">
