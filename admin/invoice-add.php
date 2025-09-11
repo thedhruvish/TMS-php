@@ -222,9 +222,9 @@ if (isset($_GET['id'])) {
                   <tr>
                     <th style="width:40px;"></th>
                     <th>Product</th>
-                    <th class="text-end">Rate ($)</th>
-                    <th class="text-end">Qty</th>
-                    <th class="text-end">Amount ($)</th>
+                    <th class="text-end">Rate (₹)</th>
+                    <th class="text-end">Qty(Miter)</th>
+                    <th class="text-end">Amount (₹)</th>
                   </tr>
                 </thead>
                 <tbody id="item-rows">
@@ -261,7 +261,7 @@ if (isset($_GET['id'])) {
                           <?php echo $view_mode ? 'readonly' : '' ?> required>
                       </td>
                       <td class="text-end">
-                        $<span class="item-amount">
+                        ₹<span class="item-amount">
                           <?php echo number_format(($it['rate'] ?? 0) * ($it['quantity'] ?? 0), 2) ?>
                         </span>
                         <input type="hidden" name="items[<?php echo $idx ?>][amount]" class="amount-input"
@@ -313,7 +313,7 @@ if (isset($_GET['id'])) {
                 <h5 class="mb-3">Totals</h5>
                 <div class="d-flex justify-content-between mb-2">
                   <span>Subtotal</span>
-                  <strong>$<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span></strong>
+                  <strong>₹<span id="subtotal-display"><?php echo number_format($invoice['subtotal'] ?? 0, 2) ?></span></strong>
                   <input type="hidden" name="subtotal" id="subtotal-input" value="<?php echo $invoice['subtotal'] ?? 0 ?>">
                 </div>
 
@@ -332,12 +332,12 @@ if (isset($_GET['id'])) {
                         <input type="number" id="discount-value-input" class="form-control form-control-sm text-end me-2" value="<?php echo $discount_value; ?>" min="0" <?php echo $view_mode ? 'readonly' : '' ?>>
                         <select id="discount-type-select" class="form-select form-select-sm" <?php echo $view_mode ? 'disabled' : '' ?>>
                             <option value="percentage" <?php if($discount_type == 'percentage') echo 'selected'; ?>>%</option>
-                            <option value="flat" <?php if($discount_type == 'flat') echo 'selected'; ?>>$</option>
+                            <option value="flat" <?php if($discount_type == 'flat') echo 'selected'; ?>>₹</option>
                         </select>
                     </div>
                 </div>
                  <div class="d-flex justify-content-end mb-2">
-                    <strong class="text-danger">-$<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span></strong>
+                    <strong class="text-danger">-₹<span id="discount-display"><?php echo number_format($invoice['discount'] ?? 0, 2) ?></span></strong>
                     <input type="hidden" name="discount" id="discount-input" value="<?php echo $invoice['discount'] ?? 0 ?>">
                 </div>
 
@@ -347,12 +347,12 @@ if (isset($_GET['id'])) {
                         <input type="number" id="tax-value-input" class="form-control form-control-sm text-end me-2" value="<?php echo $tax_value; ?>" min="0" <?php echo $view_mode ? 'readonly' : '' ?>>
                         <select id="tax-type-select" class="form-select form-select-sm" <?php echo $view_mode ? 'disabled' : '' ?>>
                             <option value="percentage" <?php if($tax_type == 'percentage') echo 'selected'; ?>>%</option>
-                            <option value="flat" <?php if($tax_type == 'flat') echo 'selected'; ?>>$</option>
+                            <option value="flat" <?php if($tax_type == 'flat') echo 'selected'; ?>>₹</option>
                         </select>
                     </div>
                 </div>
                  <div class="d-flex justify-content-end mb-2">
-                    <strong class="text-info">+$<span id="tax-display"><?php echo number_format($invoice['tax'] ?? 0, 2) ?></span></strong>
+                    <strong class="text-info">+₹<span id="tax-display"><?php echo number_format($invoice['tax'] ?? 0, 2) ?></span></strong>
                     <input type="hidden" name="tax" id="tax-input" value="<?php echo $invoice['tax'] ?? 0 ?>">
                 </div>
 
@@ -360,7 +360,7 @@ if (isset($_GET['id'])) {
                 
                 <div class="d-flex justify-content-between">
                   <span class="h5">Total</span>
-                  <strong class="text-success h5">$<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span></strong>
+                  <strong class="text-success h5">₹<span id="total-display"><?php echo number_format($invoice['total'] ?? 0, 2) ?></span></strong>
                   <input type="hidden" name="total" id="total-input" value="<?php echo $invoice['total'] ?? 0 ?>">
                 </div>
               </div>
@@ -581,7 +581,7 @@ if (isset($_GET['id'])) {
                 <select name="items[${idx}][product_id]" class="form-select" required>
                     <option value="">Choose product…</option>
                     <?php foreach ($products as $p) { ?>
-                        <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['name']); ?></option>
+                        <option value="<?php echo $p['id']; ?>"><?php echo $p['name']; ?></option>
                     <?php } ?>
                 </select>
             </td>
@@ -592,7 +592,7 @@ if (isset($_GET['id'])) {
                 <input type="number" name="items[${idx}][quantity]" class="form-control text-end qty-input" value="" required>
             </td>
             <td class="text-end">
-                $<span class="item-amount">0.00</span>
+                ₹<span class="item-amount">0.00</span>
                 <input type="hidden" name="items[${idx}][amount]" class="amount-input" value="0">
             </td>
             `;

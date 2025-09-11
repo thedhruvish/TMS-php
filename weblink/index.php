@@ -107,18 +107,18 @@ WHERE id IN $product_ids_str;
             <!-- Category Badge -->
             <?php if (!empty($product['category'])): ?>
               <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-2">
-                <?= htmlspecialchars($product['category']) ?>
+                <?php echo $product['category']; ?>
               </span>
             <?php endif; ?>
 
             <!-- Product Image Carousel -->
-            <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+            <div id="carouselExampleIndicators<?php echo $product['id']; ?>" class="carousel slide" data-bs-ride="carousel"
+              data-bs-interval="false">
               <?php if (count($product['images']) > 1) { ?>
                 <ol class="carousel-indicators mb-1">
                   <?php foreach ($product['images'] as $k => $image) { ?>
                     <li data-bs-target="#carouselExampleIndicators<?php echo $product['id']; ?>"
-                      data-bs-slide-to="<?php echo $k; ?>"
-                      class="<?php echo $k == 0 ? 'active' : '' ?>"
+                      data-bs-slide-to="<?php echo $k; ?>" class="<?php echo $k == 0 ? 'active' : '' ?>"
                       style="width: 8px; height: 8px; border-radius: 50%; margin: 0 3px;"></li>
                   <?php } ?>
                 </ol>
@@ -129,8 +129,7 @@ WHERE id IN $product_ids_str;
                 <?php foreach ($product['images'] as $k => $image) { ?>
                   <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
                     <div class="ratio ratio-4x3">
-                      <img class="img-fluid object-fit-cover w-100"
-                        src="../images/products/<?php echo $image ?>"
+                      <img class="img-fluid object-fit-cover w-100" src="../images/products/<?php echo $image ?>"
                         alt="<?php echo $product['name']; ?>">
                     </div>
                   </div>
@@ -138,11 +137,13 @@ WHERE id IN $product_ids_str;
               </div>
 
               <?php if (count($product['images']) > 1) { ?>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="prev">
+                <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button"
+                  data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
                 </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button" data-bs-slide="next">
+                <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $product['id']; ?>" role="button"
+                  data-bs-slide="next">
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </a>
@@ -152,8 +153,9 @@ WHERE id IN $product_ids_str;
             <!-- Product Info -->
             <div class="card-body d-flex flex-column">
               <!-- Product Name (just text now) -->
-              <h6 class="card-title mb-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
-                <?php echo htmlspecialchars($product['name']); ?>
+              <h6 class="card-title mb-2"
+                style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
+                <?php echo $product['name'] ?>
               </h6>
 
               <!-- Price -->
@@ -174,8 +176,9 @@ WHERE id IN $product_ids_str;
 
               <!-- Product Description -->
               <?php if (!empty($product['description'])) { ?>
-                <p class="text-muted small mb-2" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
-                  <?php echo htmlspecialchars($product['description']); ?>
+                <p class="text-muted small mb-2"
+                  style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
+                  <?php echo $product['description'] ?>
                 </p>
               <?php } ?>
             </div>

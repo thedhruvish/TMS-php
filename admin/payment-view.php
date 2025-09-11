@@ -61,7 +61,7 @@ $data = mysqli_fetch_assoc($result);
         </tr>
         <tr>
           <th>Amount Paid</th>
-          <td>$<?php echo number_format($data['amount_paid'], 2); ?></td>
+          <td>₹<?php echo number_format($data['amount_paid'], 2); ?></td>
         </tr>
         <tr>
           <th>Payment Method</th>
@@ -110,15 +110,15 @@ $data = mysqli_fetch_assoc($result);
         </tr>
         <tr>
           <th>Subtotal</th>
-          <td>$<?php echo number_format($data['subtotal'], 2); ?></td>
+          <td>₹<?php echo number_format($data['subtotal'], 2); ?></td>
         </tr>
         <tr>
           <th>Discount</th>
-          <td>$<?php echo number_format($data['discount'], 2); ?></td>
+          <td>₹<?php echo number_format($data['discount'], 2); ?></td>
         </tr>
         <tr>
           <th>Total</th>
-          <td class="fw-bold">$<?php echo number_format($data['total'], 2); ?></td>
+          <td class="fw-bold">₹<?php echo number_format($data['total'], 2); ?></td>
         </tr>
       </table>
 

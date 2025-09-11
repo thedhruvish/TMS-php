@@ -115,8 +115,8 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                                 <td><?php echo $index + 1; ?></td>
                                 <td><?php echo $item['product_name']; ?></td>
                                 <td class="text-end"><?php echo $item['quantity']; ?></td>
-                                <td class="text-end">$<?php echo $item['product_price']; ?></td>
-                                <td class="text-end">$<?php echo number_format($item['amount'], 2); ?></td>
+                                <td class="text-end">₹<?php echo $item['product_price']; ?></td>
+                                <td class="text-end">₹<?php echo number_format($item['amount'], 2); ?></td>
                               </tr>
                             <?php } ?>
                           </tbody>
@@ -135,28 +135,28 @@ $items = mysqli_fetch_all($itemRes, MYSQLI_ASSOC);
                                 <p>Sub Total :</p>
                               </div>
                               <div class="col-sm-4 col-5">
-                                <p>$<?php echo number_format($invoice['subtotal'], 2); ?></p>
+                                <p>₹<?php echo number_format($invoice['subtotal'], 2); ?></p>
                               </div>
 
                               <div class="col-sm-8 col-7">
                                 <p>Tax :</p>
                               </div>
                               <div class="col-sm-4 col-5">
-                                <p>$<?php echo number_format($invoice['tax'], 2); ?></p>
+                                <p>₹<?php echo number_format($invoice['tax'], 2); ?></p>
                               </div>
 
                               <div class="col-sm-8 col-7">
                                 <p>Discount :</p>
                               </div>
                               <div class="col-sm-4 col-5">
-                                <p>$<?php echo number_format($invoice['discount'], 2); ?></p>
+                                <p>₹<?php echo number_format($invoice['discount'], 2); ?></p>
                               </div>
 
                               <div class="col-sm-8 col-7 grand-total-title mt-3">
                                 <h4>Grand Total : </h4>
                               </div>
                               <div class="col-sm-4 col-5 grand-total-amount mt-3">
-                                <h4>$<?php echo number_format($invoice['total'], 2); ?></h4>
+                                <h4>₹<?php echo number_format($invoice['total'], 2); ?></h4>
                               </div>
                             </div>
                           </div>

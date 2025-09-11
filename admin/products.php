@@ -123,30 +123,29 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         <form method="get" class="w-100" style="max-width: 400px;">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Search products..."
-                    value="<?php echo htmlspecialchars($searchTerm, ENT_QUOTES); ?>">
+                    value="<?php echo $searchTerm ?>">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
     </div>
     <div class="col-lg-6 text-lg-end text-start">
         <form id="filterForm" method="get" class="d-inline-block w-100">
-            <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm, ENT_QUOTES) ?>">
-            <input type="hidden" name="category" id="categoryInput"
-                value="<?= htmlspecialchars($categoryFilter, ENT_QUOTES) ?>">
-            <input type="hidden" name="sort" id="sortInput" value="<?= htmlspecialchars($sortBy, ENT_QUOTES) ?>">
+            <input type="hidden" name="search" value="<?php echo $searchTerm; ?>">
+            <input type="hidden" name="category" id="categoryInput" value="<?php echo $categoryFilter; ?>">
+            <input type="hidden" name="sort" id="sortInput" value="<?php echo $sortBy; ?>">
 
             <div class="d-flex justify-content-lg-end align-items-center gap-2 flex-wrap">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <?= htmlspecialchars($categoryFilter ?: 'All Categories') ?>
+                        <?php echo $categoryFilter ?: 'All Categories'; ?>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#" onclick="selectCategory('')">All Categories</a></li>
                         <?php foreach ($categories as $cat):
                             if (!empty($cat)): ?>
                                 <li><a class="dropdown-item" href="#"
-                                        onclick="selectCategory('<?= htmlspecialchars($cat, ENT_QUOTES) ?>')"><?= htmlspecialchars($cat) ?></a>
+                                        onclick="selectCategory('<?php echo $cat; ?>')"><?php echo $cat; ?></a>
                                 </li>
                             <?php endif;
                         endforeach; ?>
@@ -208,13 +207,13 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
         <?php foreach ($filteredProducts as $product) { ?>
             <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-6 mb-4">
                 <div class="card h-100 position-relative overflow-hidden shadow-sm" style="transition: all 0.3s ease;">
-                    <div class="position-absolute top-0 start-0 m-2" style="z-index:1050;">
+                    <div class="position-absolute top-0 start-0 m-2" style="z-index:10;">
                         <input type="checkbox" class="form-check-input product-check" value="<?= $product['id'] ?>">
                     </div>
 
                     <?php if (!empty($product['category'])): ?>
                         <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-2">
-                            <?= htmlspecialchars($product['category']) ?>
+                            <?php echo $product['category'] ?>
                         </span>
                     <?php endif; ?>
 
@@ -235,7 +234,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                                 <div class="carousel-item <?php echo $k == 0 ? 'active' : '' ?>">
                                     <div class="ratio ratio-4x3">
                                         <img class="img-fluid object-fit-cover w-100" src="../images/products/<?php echo $image ?>"
-                                            alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                            alt="<?php echo $product['name']; ?>">
                                     </div>
                                 </div>
                             <?php } ?>
@@ -259,21 +258,21 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         <h6 class="card-title mb-2"
                             style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px;">
                             <a href="products-add.php?id=<?php echo $product['id'] ?>" class="text-decoration-none text-dark">
-                                <?php echo htmlspecialchars($product['name']); ?>
+                                <?php echo $product['name']; ?>
                             </a>
                         </h6>
 
                         <div class="d-flex align-items-center mb-2">
                             <?php if (!empty($product['sale_price']) && $product['sale_price'] > 0 && $product['sale_price'] < $product['regular_price']) { ?>
                                 <span class="text-danger text-decoration-line-through me-2 small">
-                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                    ₹<?php echo number_format($product['regular_price'], 2) ?>
                                 </span>
                                 <span class="text-success fw-bold">
-                                    $<?php echo number_format($product['sale_price'], 2) ?>
+                                    ₹<?php echo number_format($product['sale_price'], 2) ?>
                                 </span>
                             <?php } else { ?>
                                 <span class="text-success fw-bold">
-                                    $<?php echo number_format($product['regular_price'], 2) ?>
+                                    ₹<?php echo number_format($product['regular_price'], 2) ?>
                                 </span>
                             <?php } ?>
                         </div>
@@ -281,7 +280,7 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                         <?php if (!empty($product['description'])) { ?>
                             <p class="text-muted small mb-2"
                                 style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 60px;">
-                                <?php echo htmlspecialchars($product['description']); ?>
+                                <?php echo $product['description'] ?>
                             </p>
                         <?php } ?>
 

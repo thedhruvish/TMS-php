@@ -86,7 +86,7 @@ $payment_data = $DB->custom_query($select_query);
                   </td>
                   <td><?php echo $row['client_email']; ?></td>
                   <td><?php echo date('d M Y', strtotime($row['payment_date'])); ?></td>
-                  <td>$<?php echo number_format($row['amount_paid'], 2); ?></td>
+                  <td>₹<?php echo number_format($row['amount_paid'], 2); ?></td>
                   <td><?php echo $row['payment_method']; ?></td>
                   <td><?php echo $row['reference_number'] ?: 'N/A'; ?></td>
                   <td><?php echo $row['notes'] ?: 'N/A'; ?></td>

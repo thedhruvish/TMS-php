@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="col-sm-12">
                                 <label class="form-label fw-bold">Product Name</label>
                                 <div class="form-control-plaintext bg-light p-3 rounded border">
-                                    <h5 class="mb-0 text-primary"><?php echo htmlspecialchars($stock['product_name']) ?></h5>
+                                    <h5 class="mb-0 text-primary"><?php echo $stock['product_name'] ?></h5>
                                 </div>
                             </div>
                         </div>

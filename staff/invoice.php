@@ -86,9 +86,9 @@ $invoices = $DB->custom_query($sql);
                 </div>
               </td>
               <td><?php echo $row['client_email']; ?></td>
-              <td><span class="inv-amount">$<?php echo $row['total']; ?></span></td>
-              <td><span class="inv-amount">$<?php echo $row['paid_amount']; ?></span></td>
-              <td><span class="inv-amount">$<?php echo $row['total'] - $row['paid_amount']; ?></span></td>
+              <td><span class="inv-amount">₹<?php echo $row['total']; ?></span></td>
+              <td><span class="inv-amount">₹<?php echo $row['paid_amount']; ?></span></td>
+              <td><span class="inv-amount">₹<?php echo $row['total'] - $row['paid_amount']; ?></span></td>
               <td>
                 <span class="inv-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

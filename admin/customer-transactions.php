@@ -71,7 +71,7 @@ if ($invoices && mysqli_num_rows($invoices) > 0) {
 
 <div class="row">
     <div class="seperator-header layout-top-spacing mb-4">
-        <h4 class="mb-0">Transaction History - <?php echo htmlspecialchars($customer_data['first_name'] . ' ' . $customer_data['last_name']); ?></h4>
+        <h4 class="mb-0">Transaction History - <?php echo $customer_data['first_name'] . ' ' . $customer_data['last_name']; ?></h4>
         <a href="customer.php" class="btn btn-secondary">Back to Customers</a>
     </div>
 
@@ -81,15 +81,15 @@ if ($invoices && mysqli_num_rows($invoices) > 0) {
                 <h5 class="card-title">Customer Information</h5>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Name:</strong> <?php echo htmlspecialchars($customer_data['first_name'] . ' ' . $customer_data['last_name']); ?></p>
-                        <p><strong>Email:</strong> <?php echo htmlspecialchars($customer_data['email']); ?></p>
-                        <p><strong>Phone:</strong> <?php echo htmlspecialchars($customer_data['phone']); ?></p>
+                        <p><strong>Name:</strong> <?php echo $customer_data['first_name'] . ' ' . $customer_data['last_name']; ?></p>
+                        <p><strong>Email:</strong> <?php echo $customer_data['email']; ?></p>
+                        <p><strong>Phone:</strong> <?php echo $customer_data['phone']; ?></p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Total Invoiced:</strong> $<?php echo number_format($total_invoiced, 2); ?></p>
-                        <p><strong>Total Paid:</strong> $<?php echo number_format($total_paid, 2); ?></p>
-                        <p><strong>Balance Due:</strong> $<?php echo number_format($total_invoiced - $total_paid, 2); ?></p>
-                        <p><strong>Country:</strong> <?php echo htmlspecialchars($customer_data['country']); ?></p>
+                        <p><strong>Total Invoiced:</strong> ₹<?php echo number_format($total_invoiced, 2); ?></p>
+                        <p><strong>Total Paid:</strong> ₹<?php echo number_format($total_paid, 2); ?></p>
+                        <p><strong>Balance Due:</strong> ₹<?php echo number_format($total_invoiced - $total_paid, 2); ?></p>
+                        <p><strong>Country:</strong> <?php echo $customer_data['country']; ?></p>
                     </div>
                 </div>
             </div>
@@ -133,22 +133,22 @@ if ($invoices && mysqli_num_rows($invoices) > 0) {
                                         if (!empty($order['product_id'])) {
                                             if (is_numeric($order['product_id']) && !empty($order['product_name'])) {
                                                 // Numeric ID with product name from products table
-                                                echo htmlspecialchars($order['product_name']);
+                                                echo $order['product_name'];
                                             } elseif (is_numeric($order['product_id']) && empty($order['product_name'])) {
                                                 // Numeric ID but product doesn't exist in products table
-                                                echo 'Product #' . htmlspecialchars($order['product_id']);
+                                                echo 'Product #' . $order['product_id'];
                                             } else {
                                                 // Custom product name stored directly in product_id
-                                                echo htmlspecialchars($order['product_id']);
+                                                echo $order['product_id'];
                                             }
                                         } else {
                                             echo 'Custom Item';
                                         }
                                         ?>
                                     </td>
-                                    <td>$<?php echo number_format($order['unit_price'], 2); ?></td>
+                                    <td>₹<?php echo number_format($order['unit_price'], 2); ?></td>
                                     <td><?php echo $order['quantity']; ?></td>
-                                    <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                                    <td>₹<?php echo number_format($order['total_amount'], 2); ?></td>
                                 </tr>
                             <?php 
                                 }
@@ -199,9 +199,9 @@ if ($invoices && mysqli_num_rows($invoices) > 0) {
                                 <tr>
                                     <td><a href="invoice-add.php?u_id=<?php echo $invoice['id']; ?>">#<?php echo $invoice['id']; ?></a></td>
                                     <td><?php echo date('M d, Y', strtotime($invoice['created_at'])); ?></td>
-                                    <td>$<?php echo number_format($invoice['total'], 2); ?></td>
-                                    <td>$<?php echo number_format($paid, 2); ?></td>
-                                    <td>$<?php echo number_format($balance, 2); ?></td>
+                                    <td>₹<?php echo number_format($invoice['total'], 2); ?></td>
+                                    <td>₹<?php echo number_format($paid, 2); ?></td>
+                                    <td>₹<?php echo number_format($balance, 2); ?></td>
                                     <td>
                                         <span class="badge bg-<?php echo $status === 'Paid' ? 'success' : 'warning'; ?>">
                                             <?php echo $status; ?>
@@ -253,9 +253,9 @@ if ($invoices && mysqli_num_rows($invoices) > 0) {
                                 <tr>
                                     <td><?php echo date('M d, Y', strtotime($payment['payment_date'])); ?></td>
                                     <td><a href="invoice-add.php?u_id=<?php echo $payment['invoice_id']; ?>">#<?php echo $payment['invoice_number']; ?></a></td>
-                                    <td>$<?php echo number_format($payment['amount_paid'], 2); ?></td>
-                                    <td><?php echo htmlspecialchars($payment['payment_method']); ?></td>
-                                    <td><?php echo htmlspecialchars($payment['reference_number']); ?></td>
+                                    <td>₹<?php echo number_format($payment['amount_paid'], 2); ?></td>
+                                    <td><?php echo $payment['payment_method']; ?></td>
+                                    <td><?php echo $payment['reference_number']; ?></td>
                                 </tr>
                             <?php 
                                 }

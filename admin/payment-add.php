@@ -147,7 +147,7 @@ if (isset($_POST['submit'])) {
                                                             mysqli_data_seek($customer_data, 0);
                                                             while ($row = mysqli_fetch_assoc($customer_data)) { ?>
                                                                 <option value="<?php echo $row['id'] ?>" <?php echo ($row['id'] == $selected_customer_id) ? 'selected' : ''; ?>>
-                                                                    <?php echo htmlspecialchars($row['email']); ?>
+                                                                    <?php echo $row['email']; ?>
                                                                 </option>
                                                             <?php }
                                                         } ?>
@@ -176,8 +176,8 @@ if (isset($_POST['submit'])) {
                                             <!-- Invoice Details Display -->
                                             <div class="col-md-6">
                                                 <div id="invoice-details" class="mt-4 p-2 border rounded bg-light" style="display: none;">
-                                                    <p class="mb-1"><strong>Total Bill:</strong> $<span id="invoice-total"></span></p>
-                                                    <p class="mb-0 text-danger"><strong>Pending Amount:</strong> $<span id="invoice-pending"></span></p>
+                                                    <p class="mb-1"><strong>Total Bill:</strong> ₹<span id="invoice-total"></span></p>
+                                                    <p class="mb-0 text-danger"><strong>Pending Amount:</strong> ₹<span id="invoice-pending"></span></p>
                                                 </div>
                                             </div>
 
@@ -217,7 +217,7 @@ if (isset($_POST['submit'])) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="reference_number">Reference Number</label>
-                                                    <input type="text" class="form-control mb-3" name="reference_number" id="reference_number" value="<?php echo htmlspecialchars($reference_number); ?>" placeholder="E.g., Transaction ID">
+                                                    <input type="text" class="form-control mb-3" name="reference_number" id="reference_number" value="<?php echo $reference_number; ?>" placeholder="E.g., Transaction ID">
                                                 </div>
                                             </div>
 
@@ -225,7 +225,7 @@ if (isset($_POST['submit'])) {
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="notes">Notes</label>
-                                                    <textarea class="form-control mb-3" name="notes" id="notes" rows="3" placeholder="Additional Notes..."><?php echo htmlspecialchars($notes); ?></textarea>
+                                                    <textarea class="form-control mb-3" name="notes" id="notes" rows="3" placeholder="Additional Notes..."><?php echo $notes; ?></textarea>
                                                 </div>
                                             </div>
 
@@ -334,7 +334,7 @@ if (isset($_POST['submit'])) {
                     if (remaining > 0.009 || inv.id == selectedInvoiceIdOnLoad) { // Show if pending or if it's the one being edited
                         const option = document.createElement('option');
                         option.value = inv.id;
-                        option.textContent = `${inv.id} (Pending: $${remaining.toFixed(2)})`;
+                        option.textContent = `${inv.id} (Pending: ₹${remaining.toFixed(2)})`;
                         invoiceSelect.appendChild(option);
                     }
                 });

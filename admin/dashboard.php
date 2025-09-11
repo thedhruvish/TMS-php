@@ -183,7 +183,7 @@ function e($string)
           <h6 class="value">Today's Sales</h6>
         </div>
         <div class="w-content">
-          <p class="value fs-4 fw-bold">$ <?php echo number_format($todaySales, 2) ?></p>
+          <p class="value fs-4 fw-bold">₹ <?php echo number_format($todaySales, 2) ?></p>
         </div>
       </div>
     </div>
@@ -196,7 +196,7 @@ function e($string)
           <h6 class="value">Weekly Sales</h6>
         </div>
         <div class="w-content">
-          <p class="value fs-4 fw-bold">$ <?php echo number_format($thisWeekSales, 2) ?></p>
+          <p class="value fs-4 fw-bold">₹ <?php echo number_format($thisWeekSales, 2) ?></p>
         </div>
       </div>
     </div>
@@ -209,7 +209,7 @@ function e($string)
           <h6 class="value">Outstanding</h6>
         </div>
         <div class="w-content">
-          <p class="value fs-4 fw-bold text-warning">$ <?php echo number_format($outstandingPayments, 2) ?></p>
+          <p class="value fs-4 fw-bold text-warning">₹ <?php echo number_format($outstandingPayments, 2) ?></p>
         </div>
       </div>
     </div>
@@ -228,7 +228,7 @@ function e($string)
             <?php foreach ($recentInvoices as $inv) : ?>
               <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                 <span>#<?php echo e($inv['id']) ?> – <?php echo e($inv['customer']) ?></span>
-                <strong>$ <?php echo number_format($inv['total'], 2) ?></strong>
+                <strong>₹ <?php echo number_format($inv['total'], 2) ?></strong>
               </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -299,7 +299,7 @@ function e($string)
                             <?php endif; ?>
                         </small>
                     </div>
-                    <strong class="text-danger">$<?php echo number_format($pendingAmount, 2); ?></strong>
+                    <strong class="text-danger">₹<?php echo number_format($pendingAmount, 2); ?></strong>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

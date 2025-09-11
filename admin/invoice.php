@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
@@ -49,7 +49,7 @@ $invoices = $DB->custom_query($sql);
     <div class="col-lg-8 d-flex align-items-center gap-3">
       <form method="get" class="d-flex flex-grow-1 gap-2">
         <input type="text" name="search" class="form-control" style="max-width: 300px;" placeholder="Search Email..."
-          value="<?php echo htmlspecialchars($search); ?>">
+          value="<?php echo $search; ?>">
         <button type="submit" class="btn btn-primary px-3">Search</button>
         <?php if (!empty($search)) { ?>
           <a href="invoice.php" class="btn btn-outline-secondary">Clear</a>
@@ -96,16 +96,16 @@ $invoices = $DB->custom_query($sql);
                 ?>
                 <tr class="invoice-row" data-status="<?php echo $status; ?>">
                   <td><a href="./invoice-add.php"><span
-                        class="inv-number"><?php echo htmlspecialchars($row['id']); ?></span></a></td>
+                        class="inv-number"><?php echo $row['id']; ?></span></a></td>
                   <td>
                     <div class="d-flex">
-                      <p class="align-self-center mb-0 user-name"><?php echo htmlspecialchars($row['client_name']); ?></p>
+                      <p class="align-self-center mb-0 user-name"><?php echo $row['client_name']; ?></p>
                     </div>
                   </td>
-                  <td><?php echo htmlspecialchars($row['client_email']); ?></td>
-                  <td><span class="inv-amount">$<?php echo number_format($total_amount, 2); ?></span></td>
-                  <td><span class="inv-amount">$<?php echo number_format($paid_amount, 2); ?></span></td>
-                  <td><span class="inv-amount">$<?php echo number_format($pending_amount, 2); ?></span></td>
+                  <td><?php echo $row['client_email']; ?></td>
+                  <td><span class="inv-amount">₹<?php echo number_format($total_amount, 2); ?></span></td>
+                  <td><span class="inv-amount">₹<?php echo number_format($paid_amount, 2); ?></span></td>
+                  <td><span class="inv-amount">₹<?php echo number_format($pending_amount, 2); ?></span></td>
                   <td>
                     <?php if ($status === 'paid') { ?>
                       <span class="badge bg-success">Paid</span>
@@ -113,7 +113,7 @@ $invoices = $DB->custom_query($sql);
                       <span class="badge bg-warning">Pending</span>
                     <?php } ?>
                   </td>
-                  <td><?php echo htmlspecialchars($row['created_by_name'] ?? 'N/A'); ?></td>
+                  <td><?php echo $row['created_by_name'] ?? 'N/A'; ?></td>
                   <td>
                     <span class="inv-date">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
