@@ -9,7 +9,7 @@ $view_mode = false;
 
 /* ---------- fetch products for the drop-down ---------- */
 $productsRes = $DB->read("products", ['where' => ['show_publicly' => ['=' => 1]]]);
-if (mysqli_num_rows($productsRes) > 0) {
+if (mysqli_num_rows(result: $productsRes) > 0) {
     $products = mysqli_fetch_all($productsRes, MYSQLI_ASSOC);
 
     $filteredProducts = []; // store only in-stock products
@@ -68,74 +68,104 @@ foreach ($customers as $c) {
 
 /* ---------- POST handler (insert / update) ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($_POST['customer_id'] == '') {
-        echo "<script>alert('Please select a customer!'); window.history.back();</script>";
-        exit();
-    }
-    $invoice_data = [
-        // 'invoice_label' removed to match new schema
-        'customer_id'     => $_POST['customer_id']     ?? '',
-        'invoice_date'    => $_POST['invoice_date']    ?? '',
-        'due_date'        => $_POST['due_date']        ?: null,
-        'account_number'  => $_POST['account_number']  ?: null,
-        'bank_name'       => $_POST['bank_name']       ?: null,
-        'swift_code'      => $_POST['swift_code']      ?: null,
-        'notes'           => $_POST['notes']           ?: null,
-        'subtotal'        => (float)($_POST['subtotal'] ?? 0),
-        'discount'        => (float)($_POST['discount'] ?? 0),
-        'tax'             => (float)($_POST['tax']      ?? 0), // Added tax field
-        'total'           => (float)($_POST['total']    ?? 0),
-        'created_by'      => $_SESSION['user_id']
-    ];
+  if ($_POST['customer_id'] == '') {
+      echo "<script>alert('Please select a customer!'); window.history.back();</script>";
+      exit();
+  }
 
-    if (!empty($_POST['invoice_id'])) {                 // UPDATE
-        $invoice_id = (int)$_POST['invoice_id'];
-        $DB->update('invoices', array_keys($invoice_data), array_values($invoice_data), 'id', $invoice_id);
-        $DB->delete('invoice_items', 'invoice_id', $invoice_id);
-    } else {                                            // CREATE
-        $DB->create('invoices', array_keys($invoice_data), array_values($invoice_data));
-        $invoice_id = $DB->conn->insert_id;
-    }
+  // Prepare invoice data
+  $invoice_data = [
+      'customer_id'     => $_POST['customer_id']     ?? '',
+      'invoice_date'    => $_POST['invoice_date']    ?? '',
+      'due_date'        => $_POST['due_date']        ?: null,
+      'account_number'  => $_POST['account_number']  ?: null,
+      'bank_name'       => $_POST['bank_name']       ?: null,
+      'swift_code'      => $_POST['swift_code']      ?: null,
+      'notes'           => $_POST['notes']           ?: null,
+      'subtotal'        => (float)($_POST['subtotal'] ?? 0),
+      'discount'        => (float)($_POST['discount'] ?? 0),
+      'tax'             => (float)($_POST['tax']      ?? 0),
+      'total'           => (float)($_POST['total']    ?? 0),
+      'created_by'      => $_SESSION['user_id']
+  ];
 
-    // Save items
-    if (!empty($_POST['items'])) {
-        foreach ($_POST['items'] as $row) {
-            $product_id = (int)($row['product_id'] ?? 0);
-            $qty        = (int)($row['quantity']   ?? 0);
+  // ---------- Step 1: Validate stock for all items ----------
+  if (!empty($_POST['items'])) {
+      foreach ($_POST['items'] as $row) {
+          $product_id = (int)($row['product_id'] ?? 0);
+          $qty        = (int)($row['quantity']   ?? 0);
 
-            $stockRes = $DB->read("stock", ['where' => ['product_id' => ['=' => $product_id]]]);
-            if ($stockRes && mysqli_num_rows($stockRes) > 0) {
-                $stock = mysqli_fetch_assoc($stockRes);
-                $sold  = $stock['sold_stock'] ?? 0;
-                $dead  = $stock['dead_stock'] ?? 0;
-                $available = $stock['current_stock'] - $sold - $dead;
-                $product_name = $productMap[$product_id]['name'] ?? 'Unknown Product';
+          $stockRes = $DB->read("stock", ['where' => ['product_id' => ['=' => $product_id]]]);
+          if ($stockRes && mysqli_num_rows($stockRes) > 0) {
+              $stock = mysqli_fetch_assoc($stockRes);
+              $sold  = $stock['sold_stock'] ?? 0;
+              $dead  = $stock['dead_stock'] ?? 0;
+              $available = $stock['current_stock'] - $sold - $dead;
+              $product_name = $productMap[$product_id]['name'] ?? 'Unknown Product';
 
-                if ($qty > $available) {
-                    echo "<script>alert('Not enough stock for {$product_name}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
-                    exit;
-                }
-                $remaining = $available - $qty;
-                if ($remaining < 100) {
-                    send_message_TG(
-                        "Low Stock Alert\nProduct Name: {$product_name}\nCurrent Stock: {$stock['current_stock']}\nPending Stock: {$remaining}"
-                    );
-                }
-            }
+              if ($qty > $available) {
+                  echo "<script>alert('Not enough stock for {$product_name}! Available: {$available}, Requested: {$qty}'); window.history.back();</script>";
+                  exit();
+              }
+          }
+      }
+  }
 
-            $DB->create('invoice_items', [
-                'invoice_id', 'product_id', 'rate', 'quantity', 'amount'
-            ], [
-                $invoice_id, $product_id, (float)($row['rate'] ?? 0), $qty, (float)($row['amount'] ?? 0)
-            ]);
+  // ---------- Step 2: Begin transaction ----------
+  $DB->conn->begin_transaction();
 
-            $newSold = $sold + $qty;
-            $DB->update("stock", ["sold_stock"], [$newSold], "product_id", $product_id);
-        }
-    }
-    header("Location: invoice.php");
-    exit;
+  try {
+      // Create / Update invoice
+      if (!empty($_POST['invoice_id'])) {   // UPDATE
+          $invoice_id = (int)$_POST['invoice_id'];
+          $DB->update('invoices', array_keys($invoice_data), array_values($invoice_data), 'id', $invoice_id);
+          $DB->delete('invoice_items', 'invoice_id', $invoice_id);
+      } else {                              // CREATE
+          $DB->create('invoices', array_keys($invoice_data), array_values($invoice_data));
+          $invoice_id = $DB->conn->insert_id;
+      }
+
+      // ---------- Step 3: Insert items & update stock ----------
+      if (!empty($_POST['items'])) {
+          foreach ($_POST['items'] as $row) {
+              $product_id = (int)($row['product_id'] ?? 0);
+              $qty        = (int)($row['quantity']   ?? 0);
+
+              $DB->create('invoice_items', [
+                  'invoice_id', 'product_id', 'rate', 'quantity', 'amount'
+              ], [
+                  $invoice_id, $product_id, (float)($row['rate'] ?? 0), $qty, (float)($row['amount'] ?? 0)
+              ]);
+
+              // Update sold stock
+              $stockRes = $DB->read("stock", ['where' => ['product_id' => ['=' => $product_id]]]);
+              if ($stockRes && mysqli_num_rows($stockRes) > 0) {
+                  $stock = mysqli_fetch_assoc($stockRes);
+                  $newSold = ($stock['sold_stock'] ?? 0) + $qty;
+                  $DB->update("stock", ["sold_stock"], [$newSold], "product_id", $product_id);
+
+                  $remaining = ($stock['current_stock'] - $newSold - ($stock['dead_stock'] ?? 0));
+                  if ($remaining < 100) {
+                      send_message_TG("Low Stock Alert\nProduct: {$productMap[$product_id]['name']}\nRemaining: {$remaining}");
+                  }
+              }
+          }
+      }
+
+      // ---------- Step 4: Commit transaction ----------
+      $DB->conn->commit();
+
+      header("Location: invoice.php");
+      exit;
+
+  } catch (Exception $e) {
+      // Rollback on error
+      $DB->conn->rollback();
+      echo "<script>alert('Error saving invoice. Please try again.'); window.history.back();</script>";
+      exit();
+  }
 }
+
 
 /** delete */
 if (isset($_GET['d_id'])) {
@@ -414,6 +444,12 @@ if (isset($_GET['id'])) {
             <?php echo $p['id']; ?>: <?php echo (float)$price; ?>,
         <?php endforeach; ?>
     };
+    const productStockMap = {
+    <?php foreach ($products as $p): ?>
+        <?php echo $p['id']; ?>: <?php echo (int)($p['stock'] ?? 0); ?>,
+    <?php endforeach; ?>
+};
+
     const customerMap = <?php echo json_encode($customerMap); ?>;
 
     // --- Event Listeners ---
@@ -553,20 +589,27 @@ if (isset($_GET['id'])) {
     }
 
     function updateProductPrice(selectElement) {
-        const row = selectElement.closest('tr');
-        const price = productPriceMap[selectElement.value] || 0;
-        const rateInput = row.querySelector('.rate-input');
-        if (rateInput) {
-            rateInput.value = price.toFixed(2);
-            // Manually trigger events to update calculations
-            recalcAmount(row);
-            recalcTotals();
-        }
-    }
+      const row = selectElement.closest('tr');
+      const price = productPriceMap[selectElement.value] || 0;
+      const stock = productStockMap[selectElement.value] || 0;
 
-    function bindRowEvents(row) {
-        // Events are now handled globally, but you could add row-specific logic here if needed.
-    }
+      const rateInput = row.querySelector('.rate-input');
+      const qtyInput  = row.querySelector('.qty-input');
+
+      if (rateInput) {
+          rateInput.value = price.toFixed(2);
+      }
+
+      if (qtyInput) {
+          qtyInput.placeholder = `Available: ${stock}`;
+      }
+
+      recalcAmount(row);
+      recalcTotals();
+  }
+
+
+    
 
     // --- DOM Manipulation ---
     function addNewItemRow() {
