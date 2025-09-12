@@ -21,6 +21,8 @@ $error = null;
 try {
     // Get all products with disabled status
     $res = $DB->read("products");
+    $categoires = $DB->read("category");
+    $categories_all = mysqli_fetch_all($categoires);
     if ($res === false) {
         throw new Exception("Query failed");
     }
@@ -30,6 +32,19 @@ try {
 
         // Get stock information for each product
         foreach ($products as &$product) {
+            // handle category 
+            $is_category_deleted = true;
+            foreach ($categories_all as $category) {
+
+                if ($category[3] == $product['category']) {
+                    $is_category_deleted = false;
+                }
+            }
+
+            if ($is_category_deleted) {
+                $product['is_category_deleted'] = 'deleted category';
+            }
+
             // Decode images
             if (!empty($product['images'])) {
                 $product['images'] = json_decode($product['images'], true);
@@ -267,6 +282,17 @@ usort($filteredProducts, function ($a, $b) use ($sortBy) {
                                 </span>
                             <?php } ?>
                         </div>
+                        <?php if (!empty($product['category'])): ?>
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-2">
+                                <?php echo $product['category'] ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <?php if (!empty($product['is_category_deleted'])): ?>
+                            <span class="badge bg-danger position-absolute top-2 end-0 m-2 z-2 ">
+                                <?php echo $product['is_category_deleted'] ?>
+                            </span>
+                        <?php endif; ?>
 
                         <!-- Product Description with limited lines -->
                         <?php if (!empty($product['description'])) { ?>
