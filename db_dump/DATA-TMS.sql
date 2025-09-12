@@ -52,9 +52,9 @@ INSERT INTO `attendance` (`id`, `user_id`, `att_date`, `status`) VALUES
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `tag` varchar(100) NOT NULL
+  `description` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `tag` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -76,17 +76,17 @@ INSERT INTO `category` (`id`, `description`, `image`, `tag`) VALUES
 
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
-  `email` text NOT NULL,
-  `phone` text NOT NULL,
-  `dob` text NOT NULL,
-  `gender` text NOT NULL,
-  `address` text NOT NULL,
-  `city` text NOT NULL,
-  `state` text NOT NULL,
-  `zip` text NOT NULL,
-  `country` text NOT NULL,
+  `first_name` text DEFAULT NULL,
+  `last_name` text DEFAULT NULL,
+  `email` text DEFAULT NULL,
+  `phone` text DEFAULT NULL,
+  `dob` text DEFAULT NULL,
+  `gender` text DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `city` text DEFAULT NULL,
+  `state` text DEFAULT NULL,
+  `zip` text DEFAULT NULL,
+  `country` text DEFAULT NULL,
   `reference_name` text DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `profile_image` text DEFAULT 'f',
@@ -114,7 +114,7 @@ CREATE TABLE `inquiry` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `phone` varchar(20) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `message` text NOT NULL,
   `status` tinyint(4) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -139,9 +139,9 @@ INSERT INTO `inquiry` (`id`, `name`, `email`, `phone`, `message`, `status`, `cre
 
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
-  `customer_id` varchar(100) NOT NULL,
-  `invoice_date` date NOT NULL,
-  `due_date` date NOT NULL,
+  `customer_id` varchar(100) DEFAULT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
   `account_number` varchar(50) DEFAULT NULL,
   `bank_name` varchar(100) DEFAULT NULL,
   `swift_code` varchar(50) DEFAULT NULL,
@@ -175,7 +175,7 @@ INSERT INTO `invoices` (`id`, `customer_id`, `invoice_date`, `due_date`, `accoun
 CREATE TABLE `invoice_items` (
   `id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
-  `product_id` varchar(255) NOT NULL,
+  `product_id` varchar(255) DEFAULT NULL,
   `rate` decimal(12,2) DEFAULT 0.00,
   `quantity` int(11) DEFAULT 1,
   `amount` decimal(12,2) DEFAULT 0.00,
@@ -237,9 +237,9 @@ INSERT INTO `payments` (`id`, `invoice_id`, `payment_date`, `amount_paid`, `paym
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `regular_price` decimal(10,2) NOT NULL,
+  `description` text DEFAULT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `regular_price` decimal(10,2) DEFAULT NULL,
   `sale_price` decimal(10,2) DEFAULT NULL,
   `includes_tax` tinyint(1) DEFAULT 0,
   `in_stock` tinyint(1) DEFAULT 0,
