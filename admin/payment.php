@@ -4,7 +4,7 @@ require_once './include/header-admin.php';
 require_once './include/sidebar-admin.php';
 
 // Get all payment methods from the database for the filter
-$paymentMethods = ['Cash', 'Credit Card', 'Bank Transfer', 'UPI', 'Cheque'];
+$paymentMethods = ['cash','card','bank_transfer','upi','cheque'];
 
 // Handle filter parameter
 $currentFilter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
