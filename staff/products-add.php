@@ -78,7 +78,7 @@ if (isset($_GET['id'])) {
         <?php echo $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php unset($_SESSION['message']);
+    <?php unset($_SESSION['message']);
 } ?>
 
 <?php if (isset($error)) { ?>
@@ -93,7 +93,8 @@ if (isset($_GET['id'])) {
             <div class="row mb-4">
                 <div class="col-sm-12">
                     <label>Name *</label>
-                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>" placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?> require>
+                    <input type="text" class="form-control" name="name" value="<?php echo $product['name'] ?>"
+                        placeholder="Product Name" <?php echo $readonly ? 'readonly' : '' ?> require>
                 </div>
             </div>
 
@@ -107,20 +108,26 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-md-8">
                     <label>Upload Images</label>
-                    <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
+                    <input accept="image/*" type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?>>
 
                     <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
                             <div class="image-preview-container">
                                 <div class="main-image-container">
-                                    <img src="../images/products/<?php echo $uploadedImages[0] ?>" alt="Product Image" class="main-product-image" style="max-height: 200px;">
+                                    <img src="../images/products/<?php echo $uploadedImages[0] ?>" alt="Product Image"
+                                        class="main-product-image" style="max-height: 200px;">
                                 </div>
                                 <div class="thumbnail-container d-flex mt-2">
                                     <?php foreach ($uploadedImages as $index => $image) { ?>
                                         <div class="thumbnail-wrapper me-2">
-                                            <img src="../images/products/<?php echo $image ?>" alt="Thumbnail <?php echo $index ?>" class="thumbnail-image <?php echo $index === 0 ? 'active' : '' ?>" style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this, '<?php echo $image ?>')">
+                                            <img src="../images/products/<?php echo $image ?>"
+                                                alt="Thumbnail <?php echo $index ?>"
+                                                class="thumbnail-image <?php echo $index === 0 ? 'active' : '' ?>"
+                                                style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;"
+                                                onclick="changeMainImage(this, '<?php echo $image ?>')">
                                         </div>
-                                    <?php }; ?>
+                                    <?php }
+                                    ; ?>
                                 </div>
                                 <p class="text-muted small mt-1">Click thumbnails to view</p>
                             </div>
@@ -148,7 +155,8 @@ if (isset($_GET['id'])) {
                     <div class="row">
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Product Code</label>
-                            <input type="text" class="form-control" name="product_code" value="<?php echo $product['product_code'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
+                            <input type="text" class="form-control" name="product_code"
+                                value="<?php echo $product['product_code'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
 
                         <div class="col-xxl-12 col-md-6 mb-4">
@@ -159,7 +167,8 @@ if (isset($_GET['id'])) {
                                     <option value="<?php echo $cat['tag']; ?>" <?php echo $product['category'] === $cat['tag'] ? 'selected' : '' ?>>
                                         <?php echo $cat['tag']; ?>
                                     </option>
-                                <?php }; ?>
+                                <?php }
+                                ; ?>
                             </select>
                         </div>
 
@@ -172,15 +181,19 @@ if (isset($_GET['id'])) {
                     <div class="row">
                         <div class="col-sm-12 mb-4">
                             <label>Regular Price *</label>
-                            <input type="text" class="form-control" name="regular_price" value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?> required>
+                            <input type="number" class="form-control" name="regular_price"
+                                value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?> required>
                         </div>
                         <div class="col-sm-12 mb-4">
                             <label>Sale Price</label>
-                            <input type="text" class="form-control" name="sale_price" value="<?php echo $product['sale_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
+                            <input type="number" class="form-control" name="sale_price"
+                                value="<?php echo $product['sale_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                         <?php if (!$readonly) { ?>
                             <div class="col-sm-12">
-                                <button type="submit" name="save" class="btn btn-success w-100"><?php echo $isUpdate ? 'Update' : 'Add' ?> Product</button>
+                                <button type="submit" name="save"
+                                    class="btn btn-success w-100"><?php echo $isUpdate ? 'Update' : 'Add' ?>
+                                    Product</button>
                             </div>
                         <?php } ?>
                     </div>

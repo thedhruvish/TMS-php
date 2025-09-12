@@ -137,7 +137,7 @@ $row = $viewMode ? $viewData : $editData;
             </div>
             <div class="col-md-6">
               <label class="form-label">Phone *</label>
-              <input required name="phone" type="tel" class="form-control"
+              <input required name="phone" type="number" class="form-control"
                 value="<?php echo $row['phone'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
@@ -185,7 +185,7 @@ $row = $viewMode ? $viewData : $editData;
             </div>
             <div class="col-md-4">
               <label class="form-label">Zip Code *</label>
-              <input required name="zip" type="text" class="form-control"
+              <input required name="zip" type="number" class="form-control"
                 value="<?php echo $row['zip'] ?? ''; ?>"
                 <?php echo $viewMode ? 'readonly' : '' ?>>
             </div>
@@ -228,7 +228,7 @@ $row = $viewMode ? $viewData : $editData;
               <?php if (!empty($row['profile_image'])) { ?>
                 <div class="mt-2">
                   <img src="../images/profile/<?php echo $row['profile_image']; ?>" width="120" class="img-thumbnail">
-                  <input type="hidden" name="profile_image_old" value="<?php echo $row['profile_image']; ?>">
+                  <input accept="image/*" type="hidden" name="profile_image_old" value="<?php echo $row['profile_image']; ?>">
                 </div>
               <?php } ?>
             </div>

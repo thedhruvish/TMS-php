@@ -211,8 +211,7 @@ if (isset($_POST['save'])) {
             <div class="row">
                 <div class="col-md-8">
                     <label>Upload Images <?php echo !$isUpdate ? '*' : '' ?></label>
-                    <input type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?> 
-                        <?php echo !$isUpdate ? 'required' : '' ?>>
+                    <input accept="image/*" type="file" class="form-control" name="images[]" multiple <?php echo $readonly ? 'disabled' : '' ?> <?php echo !$isUpdate ? 'required' : '' ?>>
 
                     <?php if (!empty($uploadedImages)) { ?>
                         <div class="mt-3">
@@ -263,7 +262,7 @@ if (isset($_POST['save'])) {
             <div class="col-xxl-12 col-xl-8 col-lg-8 col-md-7 mt-xxl-0 mt-4">
                 <div class="widget-content widget-content-area ecommerce-create-section">
                     <div class="row">
-                       
+
 
                         <div class="col-xxl-12 col-md-6 mb-4">
                             <label>Category *</label>
@@ -285,12 +284,12 @@ if (isset($_POST['save'])) {
                     <div class="row">
                         <div class="col-sm-12 mb-4">
                             <label>Regular Price *</label>
-                            <input type="text" class="form-control" name="regular_price"
+                            <input type="number" class="form-control" name="regular_price"
                                 value="<?php echo $product['regular_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?> required>
                         </div>
                         <div class="col-sm-12 mb-4">
                             <label>Sale Price</label>
-                            <input type="text" class="form-control" name="sale_price"
+                            <input type="number" class="form-control" name="sale_price"
                                 value="<?php echo $product['sale_price'] ?>" <?php echo $readonly ? 'readonly' : '' ?>>
                         </div>
                         <?php if (!$readonly) { ?>

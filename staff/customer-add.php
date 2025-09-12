@@ -230,7 +230,7 @@ $row = $viewMode ? $viewData : $editData;
               <?php if (!empty($row['profile_image'])) { ?>
                 <div class="mt-2">
                   <img src="../images/profile/<?php echo $row['profile_image']; ?>" width="120" class="img-thumbnail">
-                  <input type="hidden" name="profile_image_old" value="<?php echo $row['profile_image']; ?>">
+                  <input accept="image/*" type="hidden" name="profile_image_old" value="<?php echo $row['profile_image']; ?>">
                 </div>
               <?php } ?>
             </div>
