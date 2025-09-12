@@ -118,7 +118,7 @@ function e($string)
 ?>
 
 <div class="row layout-top-spacing">
-    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 layout-spacing">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 layout-spacing">
         <div class="widget widget-card-four">
             <div class="widget-content">
                 <div class="w-header">
@@ -131,7 +131,7 @@ function e($string)
         </div>
     </div>
     
-    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 layout-spacing">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 layout-spacing">
         <div class="widget widget-card-four">
             <div class="widget-content">
                 <div class="w-header">
@@ -144,7 +144,7 @@ function e($string)
         </div>
     </div>
     
-    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 layout-spacing">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 layout-spacing">
         <div class="widget widget-card-four">
             <div class="widget-content">
                 <div class="w-header">
@@ -157,7 +157,7 @@ function e($string)
         </div>
     </div>
     
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 layout-spacing">
         <div class="widget widget-card-four">
             <div class="widget-content">
                 <div class="w-header">
@@ -165,19 +165,6 @@ function e($string)
                 </div>
                 <div class="w-content">
                     <p class="value fs-4 fw-bold">₹ <?php echo number_format($totalSales, 2) ?></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-header">
-                    <h6 class="value">Customers Added</h6>
-                </div>
-                <div class="w-content">
-                    <p class="value fs-4 fw-bold"><?php echo number_format($customersAdded) ?></p>
                 </div>
             </div>
         </div>
