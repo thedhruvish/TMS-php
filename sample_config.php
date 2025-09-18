@@ -5,7 +5,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'tms-php');
+define('DB_NAME', 'tms-phps');
 
 // site config
 define('SITE_URL', '/tms-php/');
