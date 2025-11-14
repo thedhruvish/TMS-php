@@ -1,6 +1,6 @@
 <?php
 
-require_once "sample_config.php";
+require_once "config.php";
 
 require_once "send_tg_msg.php";
 

@@ -219,11 +219,22 @@ $selectDisabled = $isViewMode ? 'disabled' : '';
                             <?php } elseif (!$isViewMode) { ?>
                                 <input type="file" class="form-control" name="profile_picture"
                                     accept="image/*" <?php echo $selectDisabled ?>>
-                                <?php if (!empty($userData['profile_picture'])) { ?>
+                            <?php 
+                                if (!empty($userData['profile_picture'])) {
+
+                                    // Check if profile picture is a full URL
+                                    if (strpos($userData['profile_picture'], 'http') === 0) {
+                                        $imagePath = $userData['profile_picture']; // Use the URL directly
+                                    } else {
+                                        $imagePath = "../images/profile/" . $userData['profile_picture']; // Use local folder
+                                    }
+                                ?>
                                     <div class="mt-2">
                                         <small class="text-muted">Current:</small>
-                                        <img src="../images/profile/<?php echo $userData['profile_picture'] ?>"
-                                            alt="Profile" class="rounded ms-2" style="max-height: 80px;">
+                                        <img src="<?php echo $imagePath; ?>" 
+                                            alt="Profile" 
+                                            class="rounded ms-2" 
+                                            style="max-height: 80px;">
                                     </div>
                                 <?php } ?>
                             <?php } ?>

@@ -37,7 +37,8 @@ if (isset($_POST['submit'])) {
     'country',
     'reference_name',
     'notes',
-    'profile_image'
+    'profile_image',
+    "created_by"
   ];
 
   $data = [];
@@ -69,6 +70,7 @@ if (isset($_POST['submit'])) {
       /* keep existing image if nothing uploaded */
       $data['profile_image'] = $editData['profile_image'] ?? '';
     }
+    $data['created_by'] = $_SESSION['user_id'];
     if (isset($_GET['u_id'])) {
       $DB->update("customer", array_keys($data), array_values($data), 'id', (int)$_GET['u_id']);
     } else {
