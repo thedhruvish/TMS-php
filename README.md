@@ -245,23 +245,21 @@ Login using credentials in documentation or register (if enabled).
 
 ### **Dhruvish Lathiya**
 
-[🌐 Website](https://dhruvish.in) <br/> <a href="https://github.com/thedhruvish" target="_blank"> <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" width="20" /> </a> <br/> <a href="https://x.com/dhruvishlathiya" target="_blank"> <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/x.svg" width="20" /> </a>
+[![Website](https://img.shields.io/badge/-Website-black?style=flat-square&logo=website)](https://dhruvish.in)
+[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat-square&logo=github)](https://github.com/thedhruvish)
+[![X](https://img.shields.io/badge/-X-black?style=flat-square&logo=x)](https://x.com/dhruvishlathiya)
 
 ---
 
 ### **Maunish Prajapati**
 
-<a href="https://github.com/MaunishPrajapati" target="_blank">
-<img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" width="20" />
-</a>
+[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat-square&logo=github)](https://github.com/MaunishPrajapati)
 
 ---
 
 ### **Sahil Vaghasiya**
 
-<a href="https://github.com/vaghasiyasahil" target="_blank">
-<img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" width="20" />
-</a>
+[![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat-square&logo=github)](https://github.com/vaghasiyasahil)
 
 ---
 
