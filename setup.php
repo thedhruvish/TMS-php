@@ -8,7 +8,7 @@ if (!$conn) {
 }
 
 $DB_exists = false;
-$sql_file = './db_dump/DATA-TMS.sql'; // ✅ Make sure this path and file exists
+$sql_file = './db_dump/DATA-TMS.sql'; 
 
 // Check if the database exists
 $DB_check_query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NAME . "'";
