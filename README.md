@@ -258,7 +258,7 @@ Login using credentials in documentation or register (if enabled).
 ---
 
 ### **Sahil Vaghasiya**
-
+[![Website](https://img.shields.io/badge/-Website-black?style=flat-square&logo=website)](https://sahilvaghasiya.netlify.app/)
 [![GitHub](https://img.shields.io/badge/-GitHub-black?style=flat-square&logo=github)](https://github.com/vaghasiyasahil)
 
 ---
